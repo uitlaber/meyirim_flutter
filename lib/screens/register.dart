@@ -10,6 +10,34 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: HexColor('#00D7FF'),
+        appBar: AppBar(
+          backgroundColor: HexColor('#00D7FF'),
+          bottom: PreferredSize(
+              child: Container(
+                color: Colors.white60,
+                height: 0.5,
+              ),
+              preferredSize: Size.fromHeight(0.5)),
+          elevation: 0,
+          leading: new Container(
+            child: IconButton(
+              icon: Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 32,
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed('Home');
+              },
+            ),
+          ),
+          actions: <Widget>[
+            // IconButton(icon: Icon(Icons.close, color: Colors.white, size: 32,), onPressed: () {
+            //   Navigator.of(context)
+            //       .pushNamed('Home');
+            // },)
+          ],
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

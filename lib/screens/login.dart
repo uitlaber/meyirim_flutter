@@ -11,12 +11,40 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: HexColor('#00D7FF'),
+        appBar: AppBar(
+          backgroundColor: HexColor('#00D7FF'),
+          bottom: PreferredSize(
+              child: Container(
+                color: Colors.white60,
+                height: 0.5,
+              ),
+              preferredSize: Size.fromHeight(0.5)),
+          elevation: 0,
+          leading: new Container(
+            child: IconButton(
+              icon: Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 32,
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed('Home');
+              },
+            ),
+          ),
+          actions: <Widget>[
+            // IconButton(icon: Icon(Icons.close, color: Colors.white, size: 32,), onPressed: () {
+            //   Navigator.of(context)
+            //       .pushNamed('Home');
+            // },)
+          ],
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-                padding: EdgeInsets.all(30.0),
+                padding: EdgeInsets.only(left: 30.0, right: 30.0),
                 child: FormBuilder(
                   key: _fbKey,
                   child: Column(
@@ -121,8 +149,8 @@ class LoginScreen extends StatelessWidget {
                                 child: new Text('Забыли пароль?',
                                     style: TextStyle(
                                         fontSize: 16.0, color: Colors.white)),
-                                onTap: () => Navigator.of(context)
-                                    .pushNamed('Reset')),
+                                onTap: () =>
+                                    Navigator.of(context).pushNamed('Reset')),
                             Padding(padding: EdgeInsets.all(5.0)),
                             new InkWell(
                                 child: new Text('Регистрация',
@@ -133,7 +161,6 @@ class LoginScreen extends StatelessWidget {
                                     )),
                                 onTap: () => Navigator.of(context)
                                     .pushNamed('Register')),
-
                           ],
                         ),
                       )
@@ -144,5 +171,3 @@ class LoginScreen extends StatelessWidget {
         ));
   }
 }
-
-
