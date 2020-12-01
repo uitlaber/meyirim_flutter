@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/screens/home/lenta.dart';
+import 'package:meyirim/screens/home/complete.dart';
+import 'package:meyirim/screens/home/reports.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,6 +22,11 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
       setState(() {
         _selectedIndex = index;
       });
+
+      if(_selectedIndex == 2) {
+        Navigator.of(context)
+            .pushNamed('Login');
+      }
     }
     return DefaultTabController(
       length: 3,
@@ -32,15 +39,16 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
                 centerTitle: true,
                 elevation: 0,
                 title: Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                  padding: EdgeInsets.only(top: 21.0, bottom: 10.0),
                   child: SizedBox(
                     height: 45,
-                    child:  Image.asset('assets/images/logo.png'),
+                    child:  Image.asset('assets/images/logo_main.png'),
                   ),
                 ),
                 backgroundColor: HexColor('#00D7FF'),
                 bottom: TabBar(
                   indicatorColor: Colors.white,
+                  labelStyle: TextStyle(fontSize: 14.0),
                   // isScrollable: true,
                   tabs: [
                     Tab( text: 'Лента',),
@@ -54,41 +62,30 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
           body: TabBarView(
             children: [
               LentaScreen(),
-              LentaScreen(),
-              LentaScreen(),
+              CompleteScreen(),
+              ReportScreen(),
             ],
           ),
-          bottomNavigationBar: new Theme(
-            data: Theme.of(context).copyWith(
-              canvasColor: Colors.white,
-              primaryColor: Colors.green,
-                textTheme: Theme
-                    .of(context)
-                    .textTheme
-                    .copyWith(caption: new TextStyle(color: Colors.yellow)),
-            ),
-            child: BottomNavigationBar(
-                selectedItemColor: Colors.red,
-
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Главная',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: 'Поиск',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle_outlined),
-                  label: 'Профиль',
-
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-            ),
-          )
+          bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor: HexColor('#00D7FF'),
+            elevation: 0,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Главная',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Поиск',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle_outlined),
+                label: 'Профиль',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+          ),
       ),
     );
   }

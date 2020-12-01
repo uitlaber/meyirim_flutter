@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 
-class LentaScreen extends StatefulWidget {
+class ReportScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return LentaScreenState();
+    return ReportScreenState();
   }
 }
 
-class LentaScreenState extends State<LentaScreen> {
+class ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     List<CharityModel> charityList = new List();
@@ -21,7 +21,7 @@ class LentaScreenState extends State<LentaScreen> {
           "Testing",
           "55000",
           "45069",
-          "http://picsum.photos/id/90" + i.toString() + "/500/700",
+          "http://picsum.photos/id/90"+i.toString()+"/500/700",
           "Добряки Шымкента"));
     }
 
@@ -43,12 +43,14 @@ class LentaScreenState extends State<LentaScreen> {
                   Container(
                       height: 250,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(charityList[index].photo)),
+
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10)),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(charityList[index].photo)),
+
                         gradient: new LinearGradient(
                           end: const Alignment(0.0, -1),
                           begin: const Alignment(0.0, 0.6),
@@ -57,6 +59,7 @@ class LentaScreenState extends State<LentaScreen> {
                             Colors.black12.withOpacity(0.0)
                           ],
                         ),
+
                       ),
                       child: Container(
                           decoration: BoxDecoration(
@@ -69,49 +72,22 @@ class LentaScreenState extends State<LentaScreen> {
                               ],
                             ),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
 
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.black12.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                    EdgeInsets.only(left: 10.0, right: 10.0),
-                                    child: Wrap(
-                                      direction: Axis.horizontal,
-                                      alignment: WrapAlignment.center,
-                                      crossAxisAlignment: WrapCrossAlignment.center,
-
-                                      // mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(Icons.people, color: Colors.white),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '254',
-                                          style: TextStyle(color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Text(charityList[index].title,
-                                    style: TextStyle(
-                                        // fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                        color: Colors.white)),
-                              ],
-                            ),
-                          ))
-                  ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(charityList[index].title,
+                                  style: TextStyle(
+                                    // fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                      color: Colors.white)),
+                            ],
+                          ),
+                        )
+                      )),
                   Padding(
                     padding:
                         EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
@@ -176,10 +152,8 @@ class LentaScreenState extends State<LentaScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                    child: Divider(color: Colors.black12),
-                  ),
+                  Padding(padding: EdgeInsets.only(left:15.0, right: 15.0),
+                  child: Divider(color: Colors.black12),),
                   Padding(
                     padding:
                         EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
@@ -203,8 +177,8 @@ class LentaScreenState extends State<LentaScreen> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text('Шымкент',
-                                    style: TextStyle(
-                                        color: HexColor('#8C8C8C'),
+                                    style:
+                                        TextStyle(color: HexColor('#8C8C8C'),
                                         fontSize: 12)),
                               ],
                             )

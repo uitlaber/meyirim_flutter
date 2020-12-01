@@ -37,7 +37,7 @@ void main() {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
                 Widget child) {
-              return effectMap[PageTransitionType.transferUp](
+              return effectMap[PageTransitionType.transferRight](
                   Curves.linear, animation, secondaryAnimation, child);
             });
       }));
