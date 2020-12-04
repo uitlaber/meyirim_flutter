@@ -1,19 +1,32 @@
+import 'dart:async';
+
+import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
+import '../payment_popup.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 class LentaScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return LentaScreenState();
   }
 }
 
 class LentaScreenState extends State<LentaScreen> {
+  Future<void> share() async {
+    await FlutterShare.share(
+        title: 'Example share',
+        text: 'Example share text',
+        linkUrl: 'https://flutter.dev/',
+        chooserTitle: 'Example Chooser Title');
+  }
+
   @override
   Widget build(BuildContext context) {
     List<CharityModel> charityList = new List();
+
     for (int i = 0; i < 10; i++) {
       charityList.add(new CharityModel(
           i.toString(),
@@ -50,8 +63,8 @@ class LentaScreenState extends State<LentaScreen> {
                             fit: BoxFit.cover,
                             image: NetworkImage(charityList[index].photo)),
                         gradient: new LinearGradient(
-                          end: const Alignment(0.0, -1),
-                          begin: const Alignment(0.0, 0.6),
+                          end: const Alignment(0.0, 5.0),
+                          begin: const Alignment(0.0, 5.0),
                           colors: <Color>[
                             const Color(0x8A000000),
                             Colors.black12.withOpacity(0.0)
@@ -62,7 +75,7 @@ class LentaScreenState extends State<LentaScreen> {
                           decoration: BoxDecoration(
                             gradient: new LinearGradient(
                               end: const Alignment(0.0, -1),
-                              begin: const Alignment(0.0, 0.6),
+                              begin: const Alignment(0.0, 1),
                               colors: <Color>[
                                 const Color(0x8A000000),
                                 Colors.black12.withOpacity(0.0)
@@ -75,19 +88,19 @@ class LentaScreenState extends State<LentaScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Colors.black12.withOpacity(0.5),
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: Padding(
-                                    padding:
-                                    EdgeInsets.only(left: 10.0, right: 10.0),
+                                    padding: EdgeInsets.only(
+                                        left: 10.0, right: 10.0),
                                     child: Wrap(
                                       direction: Axis.horizontal,
                                       alignment: WrapAlignment.center,
-                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
 
                                       // mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
@@ -110,8 +123,7 @@ class LentaScreenState extends State<LentaScreen> {
                                         color: Colors.white)),
                               ],
                             ),
-                          ))
-                  ),
+                          ))),
                   Padding(
                     padding:
                         EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
@@ -128,7 +140,6 @@ class LentaScreenState extends State<LentaScreen> {
                               charityList[index].needSum + '₸',
                               style: TextStyle(
                                 color: Colors.red,
-                                fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),
                             )
@@ -144,7 +155,6 @@ class LentaScreenState extends State<LentaScreen> {
                               charityList[index].collectedSum + '₸',
                               style: TextStyle(
                                 color: HexColor('#00D7FF'),
-                                fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),
                             )
@@ -160,7 +170,9 @@ class LentaScreenState extends State<LentaScreen> {
                                 // side: BorderSide(color: Colors.red)
                               ),
                               textColor: Colors.white,
-                              onPressed: () {},
+                              onPressed: () {
+                                displayPaymentForm(context);
+                              },
                               elevation: 0,
                               child: Text(
                                 "Помочь",
@@ -210,7 +222,7 @@ class LentaScreenState extends State<LentaScreen> {
                             )
                           ],
                         ),
-                        IconButton(icon: Icon(Icons.share), onPressed: null)
+                        IconButton(icon: Icon(Icons.share), onPressed: share),
                       ],
                     ),
                   )

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:intl/intl.dart';
 import '../helpers/hex_color.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -62,19 +61,19 @@ class RegisterScreen extends StatelessWidget {
                         attribute: "phone",
                         decoration: InputDecoration(
                             contentPadding:
-                            EdgeInsets.only(left: 20.0, right: 20.0),
+                                EdgeInsets.only(left: 20.0, right: 20.0),
                             border: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                   const Radius.circular(30.0),
                                 ),
                                 borderSide:
-                                new BorderSide(color: Colors.transparent)),
+                                    new BorderSide(color: Colors.transparent)),
                             enabledBorder: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                   const Radius.circular(30.0),
                                 ),
                                 borderSide:
-                                new BorderSide(color: Colors.transparent)),
+                                    new BorderSide(color: Colors.transparent)),
                             filled: true,
                             hintStyle: new TextStyle(color: Colors.grey[600]),
                             hintText: "email или номер телефона",
@@ -92,7 +91,7 @@ class RegisterScreen extends StatelessWidget {
                           obscureText: true,
                           decoration: InputDecoration(
                               contentPadding:
-                              EdgeInsets.only(left: 20.0, right: 20.0),
+                                  EdgeInsets.only(left: 20.0, right: 20.0),
                               border: new OutlineInputBorder(
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0),
@@ -123,7 +122,7 @@ class RegisterScreen extends StatelessWidget {
                           obscureText: true,
                           decoration: InputDecoration(
                               contentPadding:
-                              EdgeInsets.only(left: 20.0, right: 20.0),
+                                  EdgeInsets.only(left: 20.0, right: 20.0),
                               border: new OutlineInputBorder(
                                   borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0),
@@ -175,7 +174,6 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ),
                             Padding(padding: EdgeInsets.all(10.0)),
-
                             Padding(padding: EdgeInsets.all(5.0)),
                             new InkWell(
                                 child: new Text('У вас есть аккаунт?',
@@ -184,8 +182,8 @@ class RegisterScreen extends StatelessWidget {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     )),
-                                onTap: () => Navigator.of(context)
-                                    .pushNamed('Login')),
+                                onTap: () =>
+                                    Navigator.of(context).pushNamed('Login')),
                           ],
                         ),
                       )
@@ -196,5 +194,3 @@ class RegisterScreen extends StatelessWidget {
         ));
   }
 }
-
-

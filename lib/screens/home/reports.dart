@@ -21,7 +21,7 @@ class ReportScreenState extends State<ReportScreen> {
           "Testing",
           "55000",
           "45069",
-          "http://picsum.photos/id/90"+i.toString()+"/500/700",
+          "http://picsum.photos/id/90" + i.toString() + "/500/700",
           "Добряки Шымкента"));
     }
 
@@ -43,14 +43,12 @@ class ReportScreenState extends State<ReportScreen> {
                   Container(
                       height: 250,
                       decoration: BoxDecoration(
-
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10)),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(charityList[index].photo)),
-
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(charityList[index].photo)),
                         gradient: new LinearGradient(
                           end: const Alignment(0.0, -1),
                           begin: const Alignment(0.0, 0.6),
@@ -59,7 +57,6 @@ class ReportScreenState extends State<ReportScreen> {
                             Colors.black12.withOpacity(0.0)
                           ],
                         ),
-
                       ),
                       child: Container(
                           decoration: BoxDecoration(
@@ -72,41 +69,43 @@ class ReportScreenState extends State<ReportScreen> {
                               ],
                             ),
                           ),
-                        child: Padding(
-                          padding: EdgeInsets.all(15.0),
-
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(charityList[index].title,
-                                  style: TextStyle(
-                                    // fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                        )
-                      )),
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(charityList[index].title,
+                                    style: TextStyle(
+                                        // fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                        color: Colors.white)),
+                              ],
+                            ),
+                          ))),
                   Padding(
                     padding:
                         EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('НУЖНО',
+                            Text('УЧАСТВОВАЛИ',
                                 style: TextStyle(
                                     color: HexColor('#B2B3B2'), fontSize: 10)),
-                            Text(
-                              charityList[index].needSum + '₸',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                              ),
+                            Wrap(
+                              children: [
+                                Text(
+                                  '300',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                                Icon(Icons.people, color: Colors.red)
+                              ],
                             )
                           ],
                         ),
@@ -120,40 +119,18 @@ class ReportScreenState extends State<ReportScreen> {
                               charityList[index].collectedSum + '₸',
                               style: TextStyle(
                                 color: HexColor('#00D7FF'),
-                                fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),
                             )
                           ],
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RaisedButton(
-                              color: HexColor('#41BC73'),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                                // side: BorderSide(color: Colors.red)
-                              ),
-                              textColor: Colors.white,
-                              onPressed: () {},
-                              elevation: 0,
-                              child: Text(
-                                "Помочь",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(left:15.0, right: 15.0),
-                  child: Divider(color: Colors.black12),),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Divider(color: Colors.black12),
+                  ),
                   Padding(
                     padding:
                         EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
@@ -177,8 +154,8 @@ class ReportScreenState extends State<ReportScreen> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text('Шымкент',
-                                    style:
-                                        TextStyle(color: HexColor('#8C8C8C'),
+                                    style: TextStyle(
+                                        color: HexColor('#8C8C8C'),
                                         fontSize: 12)),
                               ],
                             )

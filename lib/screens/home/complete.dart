@@ -5,7 +5,6 @@ import 'package:meyirim/helpers/hex_color.dart';
 class CompleteScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return CompleteScreenState();
   }
 }
@@ -21,7 +20,7 @@ class CompleteScreenState extends State<CompleteScreen> {
           "Testing",
           "55000",
           "45069",
-          "http://picsum.photos/id/90"+i.toString()+"/500/700",
+          "http://picsum.photos/id/90" + i.toString() + "/500/700",
           "Добряки Шымкента"));
     }
 
@@ -43,14 +42,12 @@ class CompleteScreenState extends State<CompleteScreen> {
                   Container(
                       height: 250,
                       decoration: BoxDecoration(
-
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10)),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(charityList[index].photo)),
-
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(charityList[index].photo)),
                         gradient: new LinearGradient(
                           end: const Alignment(0.0, -1),
                           begin: const Alignment(0.0, 0.6),
@@ -59,7 +56,6 @@ class CompleteScreenState extends State<CompleteScreen> {
                             Colors.black12.withOpacity(0.0)
                           ],
                         ),
-
                       ),
                       child: Container(
                           decoration: BoxDecoration(
@@ -72,29 +68,26 @@ class CompleteScreenState extends State<CompleteScreen> {
                               ],
                             ),
                           ),
-                        child: Padding(
-                          padding: EdgeInsets.all(15.0),
-
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(charityList[index].title,
-                                  style: TextStyle(
-                                    // fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                      color: Colors.white)),
-                            ],
-                          ),
-                        )
-                      )),
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(charityList[index].title,
+                                    style: TextStyle(
+                                        // fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                        color: Colors.white)),
+                              ],
+                            ),
+                          ))),
                   Padding(
                     padding:
                         EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -105,7 +98,6 @@ class CompleteScreenState extends State<CompleteScreen> {
                               charityList[index].collectedSum + '₸',
                               style: TextStyle(
                                 color: HexColor('#00D7FF'),
-                                fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),
                             )
@@ -113,9 +105,12 @@ class CompleteScreenState extends State<CompleteScreen> {
                         ),
                         Row(
                           children: [
-                            Text('Завершен', style: TextStyle(
-                              color: HexColor('#41BC73'),
-                            ),),
+                            Text(
+                              'Завершен',
+                              style: TextStyle(
+                                color: HexColor('#41BC73'),
+                              ),
+                            ),
                             SizedBox(
                               width: 5,
                             ),
@@ -125,8 +120,10 @@ class CompleteScreenState extends State<CompleteScreen> {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(left:15.0, right: 15.0),
-                  child: Divider(color: Colors.black12),),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Divider(color: Colors.black12),
+                  ),
                   Padding(
                     padding:
                         EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
@@ -150,8 +147,8 @@ class CompleteScreenState extends State<CompleteScreen> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text('Шымкент',
-                                    style:
-                                        TextStyle(color: HexColor('#8C8C8C'),
+                                    style: TextStyle(
+                                        color: HexColor('#8C8C8C'),
                                         fontSize: 12)),
                               ],
                             )
