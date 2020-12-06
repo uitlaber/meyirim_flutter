@@ -3,6 +3,7 @@ import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/screens/home/lenta.dart';
 import 'package:meyirim/screens/home/complete.dart';
 import 'package:meyirim/screens/home/reports.dart';
+import 'package:meyirim/components/bottom_nav.dart';
 
 import '../app_localizations.dart';
 
@@ -17,16 +18,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeStatefullWidgetState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    int _selectedIndex = 0;
-    void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-
-      if (_selectedIndex == 2) {
-        Navigator.of(context).pushNamed('Login');
-      }
-    }
 
     return DefaultTabController(
       length: 3,
@@ -66,33 +57,16 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
                 ],
               ),
             )),
-        body: TabBarView(
+        body:
+        TabBarView(
           children: [
             LentaScreen(),
             CompleteScreen(),
             ReportScreen(),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: HexColor('#00D7FF'),
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Главная',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Поиск',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined),
-              label: 'Профиль',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
+        extendBody: true,
+        bottomNavigationBar: BottomNav(0),
       ),
     );
   }

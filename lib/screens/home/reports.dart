@@ -82,7 +82,9 @@ class ReportScreenState extends State<ReportScreen> {
                                         color: Colors.white)),
                               ],
                             ),
-                          ))),
+                          )
+                      )
+                  ),
                   Padding(
                     padding:
                         EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),

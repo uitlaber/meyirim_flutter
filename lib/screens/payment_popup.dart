@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:flutter/services.dart';
+import 'package:meyirim/models/project.dart';
 
 final _formKey = GlobalKey<FormBuilderState>();
 
-void displayPaymentForm(BuildContext context) {
+void displayPaymentForm(BuildContext context, Project project) {
   showModalBottomSheet(
       isScrollControlled: true,
       // Important: Makes content maxHeight = full device height
@@ -21,6 +22,34 @@ void displayPaymentForm(BuildContext context) {
                     padding: EdgeInsets.all(15.0),
                     child: Wrap(
                       children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: Wrap(
+                            spacing: 10.0,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(project.fond.avatar.path),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(project.fond.name, style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500
+                                  ),),
+                                  //@Todo нужно добавить регион
+                                  Text(project.fond.region.name, style: TextStyle(
+                                      fontSize: 14,
+                                    color: Colors.grey
+                                  ),),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+
                         FormBuilder(
                           key: _formKey,
                           child: Column(
@@ -152,6 +181,9 @@ void displayPaymentForm(BuildContext context) {
                           ),
                         ),
                       ],
-                    ))));
+                    )
+                )
+            )
+        );
       });
 }

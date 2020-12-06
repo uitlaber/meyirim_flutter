@@ -17,14 +17,17 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+    var userData;
+
     return FutureBuilder(
         future: jwtOrEmpty,
         builder: (context, snapshot) {
-          if(!snapshot.hasData) return CircularProgressIndicator();
-          if(snapshot.data != "") {
-            var userData =  json.decode(snapshot.data);
-
-            return Profile();
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          if (snapshot.data != "") {
+            userData = json.decode(snapshot.data);
+            if (globals.jwtValidate(userData['token'])) {
+              return ProfileScreen();
+            }
           }
           return Scaffold(
               backgroundColor: HexColor('#00D7FF'),

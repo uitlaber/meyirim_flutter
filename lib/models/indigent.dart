@@ -1,5 +1,3 @@
-import 'city.dart';
-
 class Indigent {
 
   final int id;
