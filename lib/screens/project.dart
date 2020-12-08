@@ -25,11 +25,8 @@ class ProjectScreen extends StatefulWidget {
 }
 
 class ProjectScreenState extends State<ProjectScreen> {
-
-
   @override
   Widget build(BuildContext context) {
-
     return Container(
         child: FutureBuilder<Project>(
             future: findProject(widget.params['id']),
@@ -40,7 +37,7 @@ class ProjectScreenState extends State<ProjectScreen> {
                 body = ProjectInfo(snapshot.data);
               } else if (snapshot.hasError) {
                 Navigator.of(context).pushNamed('Home');
-                body = Message ('Проект не найден');
+                body = Message('Проект не найден');
               } else {
                 body = Loading();
               }

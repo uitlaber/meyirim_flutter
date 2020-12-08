@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
-import 'package:meyirim/screens/home/lenta.dart';
-import 'package:meyirim/screens/home/complete.dart';
+import 'package:meyirim/screens/home/_lenta.dart';
 import 'package:meyirim/screens/home/reports.dart';
 import 'package:meyirim/components/bottom_nav.dart';
-
-import '../app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   HomeScreen({Key key}) : super(key: key);
-
   @override
   _HomeStatefullWidgetState createState() => _HomeStatefullWidgetState();
 }
@@ -18,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeStatefullWidgetState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -32,12 +27,11 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
               title: Padding(
                 padding: EdgeInsets.only(top: 21.0, bottom: 10.0),
                 child: SizedBox(
-                  height: 45,
-                  child: Hero(
-                    tag: 'logo',
-                    child: Image.asset('assets/images/logo_main.png'),
-                  )
-                ),
+                    height: 45,
+                    child: Hero(
+                      tag: 'logo',
+                      child: Image.asset('assets/images/logo_main.png'),
+                    )),
               ),
               backgroundColor: HexColor('#00D7FF'),
               bottom: TabBar(
@@ -46,7 +40,7 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
                 // isScrollable: true,
                 tabs: [
                   Tab(
-                    text: AppLocalizations.of(context).translate('lenta'),
+                    text: 'Лента',
                   ),
                   Tab(
                     text: 'Завершенные',
@@ -57,11 +51,10 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
                 ],
               ),
             )),
-        body:
-        TabBarView(
+        body: TabBarView(
           children: [
-            LentaScreen(),
-            CompleteScreen(),
+            LentaScreen(isFinished: 0),
+            LentaScreen(isFinished: 1),
             ReportScreen(),
           ],
         ),

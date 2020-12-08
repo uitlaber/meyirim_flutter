@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:meyirim/models/project.dart';
+import 'package:meyirim/components/project_status.dart';
+import 'package:meyirim/models/report.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:meyirim/components/project_status.dart';
 
-class ProjectCard extends StatefulWidget {
-  final Project project;
-  const ProjectCard(this.project);
+class ReportCard extends StatefulWidget {
+  final Report report;
+
+  const ReportCard(this.report);
+
   @override
-  _ProjectCardState createState() => _ProjectCardState();
+  _ReportScreenState createState() => _ReportScreenState();
 }
 
-class _ProjectCardState extends State<ProjectCard> {
+class _ReportScreenState extends State<ReportCard> {
   @override
   Widget build(BuildContext context) {
-    Project project = widget.project;
+    Report report = widget.report;
+
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: Container(
@@ -29,8 +32,8 @@ class _ProjectCardState extends State<ProjectCard> {
             children: [
               InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, 'Project',
-                        arguments: {'id': project.id});
+                    Navigator.pushNamed(context, 'Report',
+                        arguments: {'id': report.id});
                   },
                   child: Stack(
                     // fit: StackFit.loose,
@@ -42,27 +45,26 @@ class _ProjectCardState extends State<ProjectCard> {
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10))),
                         child: Hero(
-                            tag: project.photos[0].path,
-                            child: CachedNetworkImage(
-                              height: 250,
-                              imageUrl: project.photos[0].path,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    alignment: Alignment.topCenter,
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
+                          tag: report.photos[0].path,
+                          child: CachedNetworkImage(
+                            height: 250,
+                            imageUrl: report.photos[0].path,
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: (context, url, error) => Center(
-                                child: Icon(Icons.error),
-                              ),
-                            )),
+                            ),
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) => Center(
+                              child: Icon(Icons.error),
+                            ),
+                          ),
+                        ),
                       ),
                       Positioned.fill(
                           child: Container(
@@ -84,37 +86,25 @@ class _ProjectCardState extends State<ProjectCard> {
                             children: [
                               Row(
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        left: 10.0,
-                                        right: 10.0,
-                                        top: 5.0,
-                                        bottom: 5.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(14),
-                                        color: Colors.black.withOpacity(0.5)),
-                                    child: Wrap(
-                                      crossAxisAlignment:
-                                          WrapCrossAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.people_alt_outlined,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          project.donations.length.toString(),
-                                          style: TextStyle(color: Colors.white),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
+                                  // Container(
+                                  //   padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0 ),
+                                  //   decoration: BoxDecoration(
+                                  //       borderRadius: BorderRadius.circular(14),
+                                  //       color: Colors.black.withOpacity(0.5)
+                                  //   ),
+                                  //   child: Wrap(
+                                  //     crossAxisAlignment: WrapCrossAlignment.center,
+                                  //
+                                  //     children: [
+                                  //       Icon(Icons.people_alt_outlined, color: Colors.white, size: 15,),
+                                  //       SizedBox(width: 5,),
+                                  //       Text(report.project.donations.length.toString(), style: TextStyle(
+                                  //           color: Colors.white
+                                  //       ),)
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  // SizedBox(width: 5,),
                                   Container(
                                     padding: EdgeInsets.only(
                                         left: 10.0,
@@ -137,7 +127,7 @@ class _ProjectCardState extends State<ProjectCard> {
                                           width: 5,
                                         ),
                                         Text(
-                                          project.photos.length.toString(),
+                                          report.photos.length.toString(),
                                           style: TextStyle(color: Colors.white),
                                         )
                                       ],
@@ -145,7 +135,7 @@ class _ProjectCardState extends State<ProjectCard> {
                                   )
                                 ],
                               ),
-                              Text(project.title,
+                              Text(report.title,
                                   style: TextStyle(
                                       // fontWeight: FontWeight.bold,
                                       fontSize: 18.0,
@@ -156,7 +146,8 @@ class _ProjectCardState extends State<ProjectCard> {
                       ))
                     ],
                   )),
-              ProjectStatus(project: project),
+              //Статус проекта
+              ProjectStatus(project: report.project),
               Padding(
                 padding: EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Divider(color: Colors.black12),
@@ -173,17 +164,17 @@ class _ProjectCardState extends State<ProjectCard> {
                           child: CircleAvatar(
                             backgroundColor: Colors.brown.shade800,
                             backgroundImage:
-                                NetworkImage(project.fond.avatar.path),
+                                NetworkImage(report.fond.avatar.path),
                           ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              project.fond.name,
+                              report.fond.name,
                               // style: TextStyle(fontWeight: FontWeight.w500),
                             ),
-                            Text(project.fond.region.name,
+                            Text(report.fond.region.name,
                                 style: TextStyle(
                                     color: HexColor('#8C8C8C'), fontSize: 12)),
                           ],
@@ -192,7 +183,7 @@ class _ProjectCardState extends State<ProjectCard> {
                     ),
                     IconButton(
                         icon: Icon(Icons.share),
-                        onPressed: () => shareProject(project)),
+                        onPressed: () => shareReport(report)),
                   ],
                 ),
               )

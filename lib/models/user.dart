@@ -25,7 +25,7 @@ class User {
     this.isSuperuser,
     this.createdIpAddress,
     this.lastIpAddress,
-    this.alledBy,
+    this.calledBy,
     this.userCode,
     this.avatar,
     this.region
@@ -48,7 +48,7 @@ class User {
   int isSuperuser;
   dynamic createdIpAddress;
   dynamic lastIpAddress;
-  dynamic alledBy;
+  dynamic calledBy;
   dynamic userCode;
   File avatar;
   Region region;
@@ -71,7 +71,7 @@ class User {
     isSuperuser: json["is_superuser"],
     createdIpAddress: json["created_ip_address"],
     lastIpAddress: json["last_ip_address"],
-    alledBy: json["сalled_by"],
+    calledBy: json["сalled_by"],
     userCode: json["user_code"],
     avatar: File.fromJson(json["avatar"]),
     region: Region.fromJson(json["region"]),
@@ -95,7 +95,7 @@ class User {
     "is_superuser": isSuperuser,
     "created_ip_address": createdIpAddress,
     "last_ip_address": lastIpAddress,
-    "сalled_by": alledBy,
+    "сalled_by": calledBy,
     "user_code": userCode,
     "avatar": avatar.toJson(),
     "region": region.toJson(),

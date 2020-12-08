@@ -4,6 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart';
 import 'package:meyirim/screens/payment_popup.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:meyirim/components/project_status.dart';
 
 class ProjectInfo extends StatefulWidget {
   Project project;
@@ -19,28 +21,6 @@ class _ProjectInfoState extends State<ProjectInfo> {
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
-
-    void _onItemTapped(int index) {
-
-      switch(index) {
-        case 0: {
-          if (project.isFinished != 1) {
-            displayPaymentForm(context, project);
-          }else{
-            //@Todo Редирект на отчет
-            print(project.id);
-          }
-        }
-        break;
-
-        case 1: {
-          shareProject(project);
-        }
-        break;
-      }
-
-
-    }
 
     return Scaffold(
       body: SafeArea(
@@ -59,9 +39,9 @@ class _ProjectInfoState extends State<ProjectInfo> {
                         itemCount: project.photos.length,
                         options: CarouselOptions(
                             enableInfiniteScroll: false,
-                            height: 400,
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
+                            height: 400,
                             onPageChanged: (index, reason) {
                               setState(() {
                                 widget._current = index;
@@ -70,17 +50,31 @@ class _ProjectInfoState extends State<ProjectInfo> {
                         itemBuilder: (context, index) {
                           return Container(
                               child: Hero(
-                                tag: project.photos[index].path,
-                                child: Image.network(
-                                  project.photos[index].path,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
+                            tag: project.photos[index].path,
+                            child: CachedNetworkImage(
+                              imageUrl: project.photos[0].path,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    alignment: Alignment.topCenter,
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ));
+                              ),
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) => Center(
+                                child: Icon(Icons.error),
+                              ),
+                            ),
+                          ));
                         },
                       ),
                     ),
-                    if(project.photos.length > 1)
+                    if (project.photos.length > 1)
                       Positioned(
                         child: Container(
                           padding: EdgeInsets.all(0.0),
@@ -107,90 +101,7 @@ class _ProjectInfoState extends State<ProjectInfo> {
                       ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 15.0, bottom: 15.0, left: 15.0, right: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (project.isFinished != 1)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('НУЖНО',
-                                style: TextStyle(
-                                    color: HexColor('#B2B3B2'), fontSize: 10)),
-                            Text(
-                              project.requiredAmount.round().toString() + '₸',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 24.0,
-                              ),
-                            )
-                          ],
-                        ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('СОБРАЛИ',
-                              style: TextStyle(
-                                  color: HexColor('#B2B3B2'), fontSize: 10)),
-                          Text(
-                            project.collectedAmount.round().toString() + '₸',
-                            style: TextStyle(
-                              color: HexColor('#00D7FF'),
-                              fontSize: 24.0,
-                            ),
-                          )
-                        ],
-                      ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('УЧАСТВОВАЛИ',
-                              style: TextStyle(
-                                  color: HexColor('#B2B3B2'), fontSize: 10)),
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text(
-                                project.donations.length.toString(),
-                                style: TextStyle(
-                                  color: HexColor('#41BC73'),
-                                  fontSize: 24.0,
-                                ),
-                              ),
-                              Icon(
-                                Icons.people_alt_outlined,
-                                color: HexColor('#41BC73'),
-                                size: 25,
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      if (project.isFinished == 1)
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text('Завершен',
-                                style: TextStyle(
-                                    color: HexColor('#41BC73'),
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(
-                              Icons.check_circle,
-                              color: HexColor('#41BC73'),
-                            )
-                          ],
-                        )
-                    ],
-                  ),
-                ),
+                ProjectStatus(project: project)
               ],
             ),
             Padding(
@@ -226,30 +137,98 @@ class _ProjectInfoState extends State<ProjectInfo> {
           ],
         ),
       ),
-
-      bottomNavigationBar: BottomNavigationBar(
-
-        items:  <BottomNavigationBarItem>[
-          project.isFinished != 1?
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Помочь',
-          ):BottomNavigationBarItem(
-            icon: Icon(Icons.insert_drive_file_outlined),
-            label: 'Отчет',
+      bottomSheet: Container(
+        width: double.infinity,
+        height: 72,
+        child: SizedBox(
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 80,
+              ),
+              Container(
+                width: 204,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: (project.isFinished != 1)
+                      ? RaisedButton(
+                          color: HexColor('#41BC73'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            // side: BorderSide(color: Colors.red)
+                          ),
+                          textColor: Colors.white,
+                          onPressed: () {
+                            displayPaymentForm(context, project);
+                          },
+                          elevation: 0,
+                          child: Text(
+                            "Помочь",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text('Завершен',
+                                style: TextStyle(
+                                    color: HexColor('#41BC73'),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16)),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.check_circle,
+                              color: HexColor('#41BC73'),
+                            )
+                          ],
+                        ),
+                ),
+              ),
+              Container(
+                  width: 80,
+                  child: IconButton(
+                    icon: Icon(Icons.share, color: HexColor('#A5A5A5')),
+                    onPressed: () {
+                      shareProject(project);
+                    },
+                  ))
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.share),
-            label: 'Поделиться',
-          ),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
-        backgroundColor: HexColor('#41BC73'),
-
-        onTap: _onItemTapped,
+        ),
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //
+      //   items:  <BottomNavigationBarItem>[
+      //     project.isFinished != 1?
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.favorite),
+      //       label: 'Помочь',
+      //     ):BottomNavigationBarItem(
+      //       icon: Icon(Icons.insert_drive_file_outlined),
+      //       label: 'Отчет',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.share),
+      //       label: 'Поделиться',
+      //     ),
+      //   ],
+      //   currentIndex: 0,
+      //   selectedItemColor: Colors.white,
+      //   unselectedItemColor: Colors.white,
+      //   backgroundColor: HexColor('#41BC73'),
+      //
+      //   onTap: _onItemTapped,
+      // ),
     );
   }
 }
