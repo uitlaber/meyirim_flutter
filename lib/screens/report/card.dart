@@ -40,17 +40,16 @@ class _ReportScreenState extends State<ReportCard> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10))),
                         child: Hero(
-                          tag: report.photos[0].path,
+                          tag: report.firstPhotoUrl,
                           child: CachedNetworkImage(
                             height: 250,
-                            imageUrl: report.photos[0].path,
+                            imageUrl: report.firstPhotoUrl,
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
                                 image: DecorationImage(
                                   image: imageProvider,
                                   fit: BoxFit.cover,
@@ -86,25 +85,6 @@ class _ReportScreenState extends State<ReportCard> {
                             children: [
                               Row(
                                 children: [
-                                  // Container(
-                                  //   padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0 ),
-                                  //   decoration: BoxDecoration(
-                                  //       borderRadius: BorderRadius.circular(14),
-                                  //       color: Colors.black.withOpacity(0.5)
-                                  //   ),
-                                  //   child: Wrap(
-                                  //     crossAxisAlignment: WrapCrossAlignment.center,
-                                  //
-                                  //     children: [
-                                  //       Icon(Icons.people_alt_outlined, color: Colors.white, size: 15,),
-                                  //       SizedBox(width: 5,),
-                                  //       Text(report.project.donations.length.toString(), style: TextStyle(
-                                  //           color: Colors.white
-                                  //       ),)
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                  // SizedBox(width: 5,),
                                   Container(
                                     padding: EdgeInsets.only(
                                         left: 10.0,
@@ -164,7 +144,7 @@ class _ReportScreenState extends State<ReportCard> {
                           child: CircleAvatar(
                             backgroundColor: Colors.brown.shade800,
                             backgroundImage:
-                                NetworkImage(report.fond.avatar.path),
+                                NetworkImage(report.fond.getPhotoUrl),
                           ),
                         ),
                         Column(
@@ -174,7 +154,7 @@ class _ReportScreenState extends State<ReportCard> {
                               report.fond.name,
                               // style: TextStyle(fontWeight: FontWeight.w500),
                             ),
-                            Text(report.fond.region.name,
+                            Text(report.fond.region?.name ?? 'не указан город',
                                 style: TextStyle(
                                     color: HexColor('#8C8C8C'), fontSize: 12)),
                           ],

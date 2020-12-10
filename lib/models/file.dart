@@ -1,4 +1,3 @@
-
 class File {
   File({
     this.id,
@@ -31,34 +30,34 @@ class File {
   String extension;
 
   factory File.fromJson(Map<String, dynamic> json) => File(
-    id: json["id"],
-    diskName: json["disk_name"],
-    fileName: json["file_name"],
-    fileSize: json["file_size"],
-    contentType: json["content_type"],
-    title: json["title"],
-    description: json["description"],
-    field: json["field"],
-    sortOrder: json["sort_order"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    path: json["path"],
-    extension: json["extension"],
-  );
+        id: json["id"],
+        diskName: json["disk_name"],
+        fileName: json["file_name"],
+        fileSize: json["file_size"],
+        contentType: json["content_type"],
+        title: json["title"],
+        description: json["description"],
+        field: json["field"],
+        sortOrder: json["sort_order"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        path: json["path"],
+        extension: json["extension"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "disk_name": diskName,
-    "file_name": fileName,
-    "file_size": fileSize,
-    "content_type": contentType,
-    "title": title,
-    "description": description,
-    "field": field,
-    "sort_order": sortOrder,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
-    "path": path,
-    "extension": extension,
-  };
+        "id": id,
+        "disk_name": diskName,
+        "file_name": fileName,
+        "file_size": fileSize,
+        "content_type": contentType,
+        "title": title,
+        "description": description,
+        "field": field,
+        "sort_order": sortOrder,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "path": path,
+        "extension": extension,
+      };
 }

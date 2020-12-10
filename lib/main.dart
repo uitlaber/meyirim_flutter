@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
             backgroundColor: HexColor("#00D7FF"),
             styleTextUnderTheLoader: new TextStyle(),
             photoSize: 130.0,
-            onClick: () => print("Flutter Egypt"),
             loaderColor: Colors.white),
 
         //Поддерживаемые языки
@@ -100,7 +99,4 @@ class MyApp extends StatelessWidget {
           );
         });
   }
-
 }
-
-

@@ -3,7 +3,7 @@ import 'package:meyirim/models/project.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:meyirim/components/project_status.dart';
+import 'package:meyirim/screens/project/status.dart';
 
 class ProjectCard extends StatefulWidget {
   final Project project;
@@ -37,18 +37,18 @@ class _ProjectCardState extends State<ProjectCard> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10))),
                         child: Hero(
-                            tag: project.photos[0].path,
+                            tag: project.firstPhotoUrl,
                             child: CachedNetworkImage(
+                              color: Colors.red,
                               height: 250,
-                              imageUrl: project.photos[0].path,
+                              imageUrl: project.firstPhotoUrl,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10)),
                                   image: DecorationImage(
                                     alignment: Alignment.topCenter,
                                     image: imageProvider,
@@ -173,7 +173,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           child: CircleAvatar(
                             backgroundColor: Colors.brown.shade800,
                             backgroundImage:
-                                NetworkImage(project.fond.avatar.path),
+                                NetworkImage(project.fond.getPhotoUrl),
                           ),
                         ),
                         Column(
@@ -183,7 +183,7 @@ class _ProjectCardState extends State<ProjectCard> {
                               project.fond.name,
                               // style: TextStyle(fontWeight: FontWeight.w500),
                             ),
-                            Text(project.fond.region.name,
+                            Text(project.fond.region?.name ?? 'не указан город',
                                 style: TextStyle(
                                     color: HexColor('#8C8C8C'), fontSize: 12)),
                           ],

@@ -21,17 +21,22 @@ class _ReportInfoState extends State<ReportInfo> {
   @override
   Widget build(BuildContext context) {
     Report report = widget.report;
+    int sliderLength = report.photos.length;
+    YoutubePlayerController _controller;
 
-    // ignore: close_sinks
-    YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: getIdFromUrl(report.videoUrl),
-      params: YoutubePlayerParams(
-        showControls: true,
-        showFullscreenButton: true,
-      ),
-    );
+    String videUrl = getIdFromUrl(report.videoUrl);
 
-    int sliderLength = report.photos.length + 1;
+    if (videUrl.isNotEmpty) {
+      // ignore: close_sinks
+      _controller = YoutubePlayerController(
+        initialVideoId: getIdFromUrl(report.videoUrl),
+        params: YoutubePlayerParams(
+          showControls: true,
+          showFullscreenButton: true,
+        ),
+      );
+      sliderLength = sliderLength + 1;
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -62,23 +67,28 @@ class _ReportInfoState extends State<ReportInfo> {
                           if (report.photos.asMap().containsKey(index)) {
                             return Container(
                                 child: Hero(
-                              tag: report.photos[index].path,
-                              child: CachedNetworkImage(
-                                height: 250,
-                                imageUrl: report.photos[0].path,
-                                imageBuilder: (context, imageProvider) => Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      alignment: Alignment.topCenter,
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
-                                errorWidget: (context, url, error) => Center(child: Icon(Icons.error),),
-                              )
-                            ));
+                                    tag: report.photos[index].path,
+                                    child: CachedNetworkImage(
+                                      height: 250,
+                                      imageUrl: report.photos[0].path,
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            alignment: Alignment.topCenter,
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Center(
+                                        child: Icon(Icons.error),
+                                      ),
+                                    )));
                           } else {
                             return Container(
                               child: YoutubePlayerIFrame(
@@ -229,7 +239,6 @@ class _ReportInfoState extends State<ReportInfo> {
             children: [
               Container(
                 width: 100,
-
               ),
               Container(
                 width: 100,

@@ -1,23 +1,35 @@
+import 'dart:collection';
+
 import 'package:meyirim/exeptions/exeptions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
+import 'package:meyirim/globals.dart' as globals;
 
 class APIManager {
-  Future<dynamic> postAPICall(String url, Map param) async {
+  Future<dynamic> postAPICall(String url, dynamic param) async {
     print("Calling API: $url");
     print("Calling parameters: $param");
 
-    var responseJson;
+    Map<String, String> headers = new HashMap();
+
+    var userCode = await globals.userCode();
+    var token = await globals.jwtOrEmpty();
+
+    headers['user-code'] = userCode;
+    headers['token'] = token;
+
+    print("Calling headers: $headers");
+
+    var response;
     try {
-      final response = await http.post(url, body: param);
-      responseJson = _response(response);
+      response = await http.post(url, body: param);
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }
-    return responseJson;
+    return response;
   }
 
   Future<dynamic> getAPICall(String url) async {

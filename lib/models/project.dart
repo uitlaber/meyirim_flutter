@@ -8,6 +8,7 @@ import 'package:meyirim/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'file.dart';
 import 'user.dart';
+import 'report.dart';
 import 'donation.dart';
 import 'package:meyirim/api_response.dart';
 import 'package:meyirim/helpers/api_manager.dart';
@@ -17,23 +18,22 @@ Project projectFromJson(String str) => Project.fromJson(json.decode(str));
 String projectToJson(Project data) => json.encode(data.toJson());
 
 class Project {
-  Project({
-    this.id,
-    this.title,
-    this.description,
-    this.indigentId,
-    this.requiredAmount,
-    this.collectedAmount,
-    this.fondId,
-    this.endDate,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-    this.isFinished,
-    this.photos,
-    this.fond,
-    this.donations,
-  });
+  Project(
+      {this.id,
+      this.title,
+      this.description,
+      this.indigentId,
+      this.requiredAmount,
+      this.collectedAmount,
+      this.fondId,
+      this.endDate,
+      this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.isFinished,
+      this.photos,
+      this.fond,
+      this.donations});
 
   int id;
   String title;
@@ -64,11 +64,14 @@ class Project {
         updatedAt: DateTime.parse(json["updated_at"]),
         deletedAt: json["deleted_at"],
         isFinished: json["is_finished"],
-        photos: List<File>.from(json["photos"].map((x) => File.fromJson(x))),
-        fond: new User.fromJson(json['fond']),
-        donations: List<Donation>.from(
-                json["donations"].map((x) => Donation.fromJson(x))) ??
-            List<Donation>(),
+        photos: (json["photos"] != null && json["photos"] is Iterable)
+            ? List<File>.from(json["photos"].map((x) => File.fromJson(x)))
+            : null,
+        fond: json["fond"] != null ? User.fromJson(json['fond']) : null,
+        donations: (json["donations"] != null && json["donations"] is Iterable)
+            ? List<Donation>.from(
+                json["donations"].map((x) => Donation.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +91,17 @@ class Project {
         "fond": fond.toJson(),
         "donations": List<Donation>.from(donations.map((x) => x.toJson())),
       };
+
+  String get firstPhotoUrl {
+    if (photos != null &&
+            photos.asMap().containsKey(0) &&
+            photos[0].path?.isNotEmpty ??
+        false) {
+      return photos[0].path;
+    } else {
+      return 'https://via.placeholder.com/400x300/?text=meyirim';
+    }
+  }
 }
 
 Future<Project> findProject(int projectId) async {
@@ -99,8 +113,10 @@ Future<Project> findProject(int projectId) async {
   return Project.fromJson(responseJson);
 }
 
-Future<dynamic> fetchProjects({int page = 1, int status = 1}) async {
-  var url = globals.apiUrl + "/projects/?is_finished=$status&page=$page";
+Future<dynamic> fetchProjects(
+    {int page = 1, int status = 1, query = ''}) async {
+  var url =
+      globals.apiUrl + "/projects/?is_finished=$status&page=$page&query=$query";
   var api = new APIManager();
   return await api.getAPICall(url);
 }

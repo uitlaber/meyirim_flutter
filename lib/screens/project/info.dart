@@ -5,7 +5,7 @@ import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart';
 import 'package:meyirim/screens/payment_popup.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:meyirim/components/project_status.dart';
+import 'package:meyirim/screens/project/status.dart';
 
 class ProjectInfo extends StatefulWidget {
   Project project;
@@ -101,7 +101,7 @@ class _ProjectInfoState extends State<ProjectInfo> {
                       ),
                   ],
                 ),
-                ProjectStatus(project: project)
+                ProjectStatus(project: project, full: true)
               ],
             ),
             Padding(

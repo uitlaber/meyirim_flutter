@@ -10,7 +10,7 @@ import 'package:meyirim/models/project.dart';
 
 import 'package:meyirim/components/loading.dart';
 import 'package:meyirim/components/message.dart';
-import 'package:meyirim/screens/project/project_info.dart';
+import 'package:meyirim/screens/project/info.dart';
 
 class ProjectScreen extends StatefulWidget {
   final Map params;

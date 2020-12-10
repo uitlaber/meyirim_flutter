@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
-import 'package:meyirim/screens/home/_lenta.dart';
+import 'package:meyirim/screens/home/lenta.dart';
 import 'package:meyirim/screens/home/reports.dart';
 import 'package:meyirim/components/bottom_nav.dart';
 
