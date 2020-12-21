@@ -6,6 +6,7 @@ import 'package:meyirim/globals.dart';
 import 'package:meyirim/screens/payment_popup.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meyirim/screens/project/status.dart';
+import 'package:meyirim/globals.dart' as globals;
 
 class ProjectInfo extends StatefulWidget {
   Project project;
@@ -21,7 +22,6 @@ class _ProjectInfoState extends State<ProjectInfo> {
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
-
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -30,77 +30,79 @@ class _ProjectInfoState extends State<ProjectInfo> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  fit: StackFit.loose,
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Positioned(
-                      child: CarouselSlider.builder(
-                        itemCount: project.photos.length,
-                        options: CarouselOptions(
-                            enableInfiniteScroll: false,
-                            aspectRatio: 16 / 9,
-                            viewportFraction: 1,
-                            height: 400,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                widget._current = index;
-                              });
-                            }),
-                        itemBuilder: (context, index) {
-                          return Container(
-                              child: Hero(
-                            tag: project.photos[index].path,
-                            child: CachedNetworkImage(
-                              imageUrl: project.photos[0].path,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    alignment: Alignment.topCenter,
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                if (project.photos is Iterable && project.photos.length > 0)
+                  Stack(
+                      fit: StackFit.loose,
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Positioned(
+                          child: CarouselSlider.builder(
+                            itemCount: project.photos.length,
+                            options: CarouselOptions(
+                                enableInfiniteScroll: false,
+                                aspectRatio: 16 / 9,
+                                viewportFraction: 1,
+                                height: 300,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    widget._current = index;
+                                  });
+                                }),
+                            itemBuilder: (context, index) {
+                              return Container(
+                                  child: Hero(
+                                tag: project.photos[index].path,
+                                child: CachedNetworkImage(
+                                  imageUrl: project.photos[0].path,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        alignment: Alignment.topCenter,
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) => Center(
+                                    child: Icon(Icons.error),
                                   ),
                                 ),
-                              ),
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: (context, url, error) => Center(
-                                child: Icon(Icons.error),
-                              ),
-                            ),
-                          ));
-                        },
-                      ),
-                    ),
-                    if (project.photos.length > 1)
-                      Positioned(
-                        child: Container(
-                          padding: EdgeInsets.all(0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: project.photos.map((photo) {
-                              int _index = project.photos.indexOf(photo);
-                              return Container(
-                                width: 8.0,
-                                height: 8.0,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 2.0),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: widget._current == _index
-                                      ? HexColor('#00D7FF')
-                                      : Colors.white,
-                                ),
-                              );
-                            }).toList(),
+                              ));
+                            },
                           ),
                         ),
-                      ),
-                  ],
-                ),
+                        if (project.photos.length > 1)
+                          Positioned(
+                            child: Container(
+                              padding: EdgeInsets.all(0.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: project.photos.map((photo) {
+                                  int _index = project.photos.indexOf(photo);
+                                  return Container(
+                                    width: 8.0,
+                                    height: 8.0,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 2.0),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: widget._current == _index
+                                          ? HexColor('#00D7FF')
+                                          : Colors.white,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                      ])
+                else
+                  Image.network(globals.dummyPhoto),
                 ProjectStatus(project: project, full: true)
               ],
             ),
@@ -109,7 +111,8 @@ class _ProjectInfoState extends State<ProjectInfo> {
               child: Divider(color: Colors.black12),
             ),
             Padding(
-              padding: EdgeInsets.all(15),
+              padding:
+                  EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,6 +143,7 @@ class _ProjectInfoState extends State<ProjectInfo> {
       bottomSheet: Container(
         width: double.infinity,
         height: 72,
+        color: HexColor('#EEEEEE'),
         child: SizedBox(
           width: double.infinity,
           child: Row(

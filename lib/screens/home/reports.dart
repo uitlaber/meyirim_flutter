@@ -3,7 +3,7 @@ import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/models/report.dart';
 import 'package:meyirim/screens/report/card.dart';
-import 'package:meyirim/api_response.dart';
+import 'file:///C:/Users/uitlaber/Desktop/meyirim_flutter/meyirim/lib/helpers/api_response.dart';
 import 'package:meyirim/helpers/api_manager.dart';
 import 'package:meyirim/globals.dart' as global;
 import 'dart:convert';
@@ -84,31 +84,25 @@ class ReportScreenState extends State<ReportScreen> {
   }
 
   loadMore() async {
-    if (!_isLoading) {
+    if (!_isLoading && _maxPage > _currentPage) {
       setState(() => _isLoading = true);
-      fetchReports(page: _currentPage).then((value) {
-        switch (value.statusCode) {
-          case 200:
-            ApiResponse response = ApiResponse.fromJson(jsonDecode(value.body));
-            List<Report> results =
-                List<Report>.from(response.data.map((x) => Report.fromJson(x)));
-            setState(() {
-              _currentPage++;
-              _maxPage = response.lastPage;
-              reports.addAll(results);
-              _isLoading = false;
-            });
-            break;
-          default:
-            setState(() => _isLoading = false);
-        }
-      }, onError: (error) {
+      try {
+        var result = await fetchReports(page: _currentPage);
+
+        List<Report> results =
+            List<Report>.from(result['data'].map((x) => Report.fromJson(x)));
+        setState(() {
+          _currentPage++;
+          _maxPage = result['meta']['pagination']['total_pages'];
+          reports.addAll(results);
+          _isLoading = false;
+        });
+      } catch (e) {
         setState(() {
           _isLoading = false;
           _hasError = true;
         });
-        print("Error == $error");
-      });
+      }
     }
   }
 }

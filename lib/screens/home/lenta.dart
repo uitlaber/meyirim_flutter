@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
+import 'package:meyirim/models/response.dart';
 import 'package:meyirim/screens/project/card.dart';
-import 'package:meyirim/api_response.dart';
+
 import 'package:meyirim/helpers/api_manager.dart';
 import 'package:meyirim/globals.dart' as global;
 import 'dart:convert';
@@ -87,34 +88,27 @@ class LentaScreenState extends State<LentaScreen> {
   }
 
   loadMore() async {
-    if (!_isLoading) {
-      var api = new APIManager();
+    if (!_isLoading && _maxPage > _currentPage) {
       setState(() => _isLoading = true);
+      try {
+        var result =
+            await fetchProjects(page: _currentPage, status: widget.isFinished);
+        List<Project> newProjects =
+            List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
 
-      fetchProjects(page: _currentPage, status: widget.isFinished).then(
-          (value) {
-        switch (value.statusCode) {
-          case 200:
-            ApiResponse response = ApiResponse.fromJson(jsonDecode(value.body));
-            List<Project> results = List<Project>.from(
-                response.data.map((x) => Project.fromJson(x)));
-            setState(() {
-              _currentPage++;
-              _maxPage = response.lastPage;
-              projects.addAll(results);
-              _isLoading = false;
-            });
-            break;
-          default:
-            setState(() => _isLoading = false);
-        }
-      }, onError: (error) {
+        setState(() {
+          _currentPage++;
+          _maxPage = result['meta']['pagination']['total_pages'];
+          projects.addAll(newProjects);
+          _isLoading = false;
+        });
+      } catch (e) {
+        // print(e);
         setState(() {
           _isLoading = false;
           _hasError = true;
         });
-        print("Error == $error");
-      });
+      }
     }
   }
 }

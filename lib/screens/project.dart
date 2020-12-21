@@ -19,7 +19,6 @@ class ProjectScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    print(this.params['id']);
     return ProjectScreenState();
   }
 }
@@ -36,7 +35,7 @@ class ProjectScreenState extends State<ProjectScreen> {
               if (snapshot.hasData) {
                 body = ProjectInfo(snapshot.data);
               } else if (snapshot.hasError) {
-                Navigator.of(context).pushNamed('Home');
+                // Navigator.of(context).pushNamed('Home');
                 body = Message('Проект не найден');
               } else {
                 body = Loading();

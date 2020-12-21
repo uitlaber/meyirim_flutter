@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/screens/project/card.dart';
-import 'package:meyirim/api_response.dart';
+import 'file:///C:/Users/uitlaber/Desktop/meyirim_flutter/meyirim/lib/helpers/api_response.dart';
 import 'dart:convert';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/components/bottom_nav.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:meyirim/helpers/api_manager.dart';
 
 class SearchResult extends StatefulWidget {
   @override
@@ -192,59 +193,51 @@ class _SearchResultState extends State<SearchResult> {
         _isLoading = true;
         _currentPage = 1;
       });
-      fetchProjects(page: _currentPage, query: query).then((value) {
-        print(query);
-        switch (value.statusCode) {
-          case 200:
-            ApiResponse response = ApiResponse.fromJson(jsonDecode(value.body));
-            List<Project> results = List<Project>.from(
-                response.data.map((x) => Project.fromJson(x)));
-            setState(() {
-              _maxPage = response.lastPage;
-              projects = results;
-              _isLoading = false;
-              _currentPage++;
-            });
-            break;
-          default:
-            setState(() => _isLoading = false);
-        }
-      }, onError: (error) {
+
+      try {
+        var result = await fetchProjects(page: _currentPage, query: query);
+        List<Project> newProjects =
+            List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
+
+        setState(() {
+          _currentPage++;
+          _maxPage = result['meta']['pagination']['total_pages'];
+          projects.addAll(newProjects);
+          _isLoading = false;
+        });
+      } catch (e) {
         setState(() {
           _isLoading = false;
           _hasError = true;
         });
-        print("Error == $error");
-      });
+      }
     }
   }
 
   loadMore() async {
     if (!_isLoading && _maxPage > _currentPage) {
       setState(() => _isLoading = true);
-      fetchProjects(page: _currentPage, query: query).then((value) {
-        switch (value.statusCode) {
-          case 200:
-            ApiResponse response = ApiResponse.fromJson(jsonDecode(value.body));
-            List<Project> results = List<Project>.from(
-                response.data.map((x) => Project.fromJson(x)));
-            setState(() {
-              _currentPage++;
-              _maxPage = response.lastPage;
-              projects.addAll(results);
-              _isLoading = false;
-            });
-            break;
-          default:
-            setState(() => _isLoading = false);
-        }
-      }, onError: (error) {
+      try {
+        var result = await fetchProjects(page: _currentPage, query: query);
+
+        ApiResponse response = ApiResponse.fromJson(result);
+
+        List<Project> newProjects =
+            List<Project>.from(response.data.map((x) => Project.fromJson(x)));
+
+        // print(newProjects);
+        setState(() {
+          _currentPage++;
+          _maxPage = 3;
+          projects.addAll(newProjects);
+          _isLoading = false;
+        });
+      } catch (e) {
         setState(() {
           _isLoading = false;
           _hasError = true;
         });
-        print("Error == $error");
-      });
+      }
     }
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/components/bottom_nav.dart';
-import '../app_localizations.dart';
 import 'package:meyirim/globals.dart' as globals;
+import 'package:meyirim/helpers/auth.dart' as auth;
+import 'profile/donations.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -13,6 +14,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileStatefullWidgetState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +36,8 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      if (globals.userData == null) {
-                        globals.logout();
+                      if (auth.userData == null) {
+                        auth.logout();
                         Navigator.of(context).pushNamed('Login');
                       }
                     },
@@ -38,9 +45,9 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.white,
-                          backgroundImage: (globals.userData != null &&
-                                  globals.userData.avatar != null)
-                              ? NetworkImage(globals.userData.avatar.path)
+                          backgroundImage: (auth.userData != null &&
+                                  auth.userData.avatar != null)
+                              ? NetworkImage(auth.userData.avatar)
                               : null,
                           child: Icon(
                             Icons.perm_identity_outlined,
@@ -51,24 +58,23 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                           width: 10,
                         ),
                         Container(
-                          width: 283,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                (globals.userData != null)
-                                    ? globals.userData.name?.isEmpty ?? true
+                                (auth.userData != null)
+                                    ? auth.userData.name?.isEmpty ?? true
                                         ? 'Аноним'
-                                        : globals.userData.name
+                                        : auth.userData.name
                                     : 'Войдите или создайте аккаунт',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               ),
                               Text(
-                                  (globals.userData != null)
-                                      ? globals.userData.username
+                                  (auth.userData != null)
+                                      ? auth.userData.username
                                       : 'Чтобы не терять свои пожертвование ',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(color: Colors.white70)),
@@ -78,10 +84,10 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
-                  (globals.userData != null)
+                  (auth.userData != null)
                       ? IconButton(
                           icon: Icon(
-                            Icons.settings,
+                            Icons.edit,
                             color: Colors.white,
                           ),
                           onPressed: () => displayBottomSheet(context))
@@ -89,17 +95,7 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                 ],
               ),
             ),
-
-            // FutureBuilder<String>(
-            //   future: globals.user_code,
-            //   builder: (context, snapshot) {
-            //     if (snapshot.hasData) {
-            //       return Text(snapshot.data);
-            //     }
-
-            //     return Text('112');
-            //   },
-            // )
+            Donations()
           ],
         ),
       ),
@@ -117,17 +113,17 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                 child: ListView(
               children: [
                 ListTile(
-                  title: Text('Выход'),
+                  title: Text('Редактировать профиль'),
                   onTap: () {
-                    globals.logout();
+                    auth.logout();
                     Navigator.of(context).pushNamed('Login');
                   },
                 ),
                 ListTile(
-                  title: Text('Код'),
-                  onTap: () async {
-                    var code = await globals.userCode();
-                    print(code);
+                  title: Text('Выход'),
+                  onTap: () {
+                    auth.logout();
+                    Navigator.of(context).pushNamed('Login');
                   },
                 ),
               ],
@@ -136,48 +132,3 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
         });
   }
 }
-
-// // import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:meyirim/globals.dart' as globals;
-// // import 'package:flutter_form_builder/flutter_form_builder.dart';
-// // import '../helpers/hex_color.dart';
-// //
-// //
-// // class Profile extends Widget  {
-// //   @override
-// //   Element createElement() {
-// //     // TODO: implement createElement
-// //     throw UnimplementedError();
-// //   }
-// //
-// // }
-//
-// class Profile extends StatelessWidget {
-//   var userData;
-//
-//   Profile(this.userData);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     print(userData['user']['username']);
-//     return Scaffold(
-//       body: CustomScrollView(
-//         slivers: <Widget>[
-//           SliverAppBar(
-//             title: Text(userData['user']['username']),
-//             actions: <Widget>[
-//               IconButton(
-//                 icon: Icon(Icons.exit_to_app),
-//                 onPressed: () {
-//                   globals.storage.delete(key: 'jwt');
-//                   Navigator.of(context).pushNamed('Home');
-//                 },
-//               )
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }

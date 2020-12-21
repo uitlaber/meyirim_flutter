@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meyirim/components/project_status.dart';
+import 'package:meyirim/screens/report/status.dart';
 import 'package:meyirim/models/report.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart';
@@ -34,6 +34,7 @@ class _ReportScreenState extends State<ReportCard> {
                   onTap: () {
                     Navigator.pushNamed(context, 'Report',
                         arguments: {'id': report.id});
+                    // print(report.id);
                   },
                   child: Stack(
                     // fit: StackFit.loose,
@@ -127,7 +128,7 @@ class _ReportScreenState extends State<ReportCard> {
                     ],
                   )),
               //Статус проекта
-              ProjectStatus(project: report.project),
+              ReportStatus(project: report.project),
               Padding(
                 padding: EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Divider(color: Colors.black12),
@@ -143,8 +144,7 @@ class _ReportScreenState extends State<ReportCard> {
                           margin: EdgeInsets.only(right: 10.0),
                           child: CircleAvatar(
                             backgroundColor: Colors.brown.shade800,
-                            backgroundImage:
-                                NetworkImage(report.fond.getPhotoUrl),
+                            backgroundImage: NetworkImage(report.fond.avatar),
                           ),
                         ),
                         Column(

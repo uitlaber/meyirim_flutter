@@ -44,8 +44,7 @@ class _DonateModalState extends State<DonateModal> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(project.fond.avatar.path),
+                            backgroundImage: NetworkImage(project.fond.avatar),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,

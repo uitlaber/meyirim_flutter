@@ -16,6 +16,7 @@ class _ProjectCardState extends State<ProjectCard> {
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
+
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: Container(
@@ -172,8 +173,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           margin: EdgeInsets.only(right: 10.0),
                           child: CircleAvatar(
                             backgroundColor: Colors.brown.shade800,
-                            backgroundImage:
-                                NetworkImage(project.fond.getPhotoUrl),
+                            backgroundImage: NetworkImage(project.fond.avatar),
                           ),
                         ),
                         Column(

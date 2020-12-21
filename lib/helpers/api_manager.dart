@@ -5,19 +5,20 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'package:connectivity/connectivity.dart';
 import 'package:meyirim/globals.dart' as globals;
+import 'auth.dart' as auth;
+import 'package:async/async.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 
 class APIManager {
   Future<dynamic> postAPICall(String url, dynamic param) async {
     print("Calling API: $url");
     print("Calling parameters: $param");
 
+    var userCode = await auth.userCode();
+    var token = await auth.jwtOrEmpty();
     Map<String, String> headers = new HashMap();
-
-    var userCode = await globals.userCode();
-    var token = await globals.jwtOrEmpty();
-
     headers['user-code'] = userCode;
     headers['token'] = token;
 
@@ -25,36 +26,40 @@ class APIManager {
 
     var response;
     try {
-      response = await http.post(url, body: param);
+      response = await Dio()
+          .post(url, data: param, options: Options(headers: headers));
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }
-    return response;
+    return _response(response);
   }
 
   Future<dynamic> getAPICall(String url) async {
+    var userCode = await auth.userCode();
+    var token = await auth.jwtOrEmpty();
+    Map<String, String> headers = new HashMap();
+    headers['user-code'] = userCode;
+    headers['token'] = token;
     print("Calling API: $url");
-
-    var response;
-    try {
-      response = await http.get(url);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
-    return response;
+    print("Calling headers: $headers");
+    Response response = await Dio().get(
+      url,
+      options: buildCacheOptions(Duration(hours: 1),
+          options: Options(headers: headers)),
+    );
+    return _response(response);
   }
 
-  dynamic _response(http.Response response) {
+  dynamic _response(Response response) {
     switch (response.statusCode) {
       case 200:
-        var responseJson = json.decode(response.body.toString());
-        return responseJson;
+        return response.data;
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestException(response.data.toString());
       case 401:
 
       case 403:
-        throw UnauthorisedException(response.body.toString());
+        throw UnauthorisedException(response.data.toString());
       case 500:
 
       default:

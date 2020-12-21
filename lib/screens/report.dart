@@ -26,11 +26,10 @@ class ReportScreenState extends State<ReportScreen> {
             future: findReport(widget.params['id']),
             builder: (BuildContext context, AsyncSnapshot<Report> snapshot) {
               Widget body;
-              print(snapshot.data);
               if (snapshot.hasData) {
                 body = ReportInfo(snapshot.data);
               } else if (snapshot.hasError) {
-                Navigator.of(context).pushNamed('Home');
+                // Navigator.of(context).pushNamed('Home');
                 body = Message('Отчет не найден');
               } else {
                 body = Loading();

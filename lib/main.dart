@@ -8,6 +8,7 @@ import 'screens/register.dart';
 import 'screens/reset.dart';
 import 'screens/home.dart';
 import 'screens/profile.dart';
+import 'screens/donations.dart';
 import 'screens/project.dart';
 import 'screens/search.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -74,6 +75,10 @@ class MyApp extends StatelessWidget {
                   return SearchScreen();
                 case 'Profile':
                   return ProfileScreen();
+                case 'Donations':
+                  return DonationsScreen(isReferal: false);
+                case 'Referals':
+                  return DonationsScreen(isReferal: true);
                 case 'Project':
                   return new ProjectScreen(arguments);
                 case 'Report':

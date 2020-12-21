@@ -6,6 +6,7 @@ import 'package:meyirim/globals.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:meyirim/helpers/youtube.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:meyirim/screens/report/status.dart';
 
 class ReportInfo extends StatefulWidget {
   Report report;
@@ -55,7 +56,7 @@ class _ReportInfoState extends State<ReportInfo> {
                         itemCount: sliderLength,
                         options: CarouselOptions(
                             enableInfiniteScroll: false,
-                            height: 400,
+                            height: 300,
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
                             onPageChanged: (index, reason) {
@@ -127,72 +128,7 @@ class _ReportInfoState extends State<ReportInfo> {
                       ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 15.0, bottom: 15.0, left: 15.0, right: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('НУЖНО',
-                              style: TextStyle(
-                                  color: HexColor('#B2B3B2'), fontSize: 10)),
-                          Text(
-                            report.project.requiredAmount.round().toString() +
-                                '₸',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 24.0,
-                            ),
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('СОБРАЛИ',
-                              style: TextStyle(
-                                  color: HexColor('#B2B3B2'), fontSize: 10)),
-                          Text(
-                            report.project.collectedAmount.round().toString() +
-                                '₸',
-                            style: TextStyle(
-                              color: HexColor('#00D7FF'),
-                              fontSize: 24.0,
-                            ),
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('УЧАСТВОВАЛИ',
-                              style: TextStyle(
-                                  color: HexColor('#B2B3B2'), fontSize: 10)),
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text(
-                                report.project.donations.length.toString(),
-                                style: TextStyle(
-                                  color: HexColor('#41BC73'),
-                                  fontSize: 24.0,
-                                ),
-                              ),
-                              Icon(
-                                Icons.people_alt_outlined,
-                                color: HexColor('#41BC73'),
-                                size: 25,
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                ReportStatus(project: report.project),
               ],
             ),
             Padding(
@@ -230,6 +166,7 @@ class _ReportInfoState extends State<ReportInfo> {
       ),
       bottomSheet: Container(
         width: double.infinity,
+        color: HexColor('#EEEEEE'),
         height: 72,
         child: SizedBox(
           width: double.infinity,
