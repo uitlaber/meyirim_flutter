@@ -47,20 +47,34 @@ class _DonationsScreenState extends State<DonationsScreen> {
     return Scaffold(
         backgroundColor: HexColor('#F2F2F7'),
         appBar: AppBar(
-          backgroundColor: HexColor('#00D7FF'),
-          title: Text('Назад'),
-        ),
-        body: Stack(
-          children: [
-            createListView(context),
-            _isLoading
-                ? Center(
-                    child: new CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
-                  )
-                : Container()
-          ],
+            backgroundColor: HexColor('#00D7FF'),
+            title: Text('Назад'),
+            titleSpacing: 0,
+            elevation: 0),
+        body: Container(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                  widget.isReferal
+                      ? 'Через меня помогли '
+                      : 'Мои пожертвования',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              SizedBox(height: 15),
+              Expanded(
+                child: createListView(context),
+              ),
+              _isLoading
+                  ? Center(
+                      child: new CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              HexColor('#00D7FF'))),
+                    )
+                  : Container()
+            ],
+          ),
         ));
   }
 
@@ -95,9 +109,9 @@ class _DonationsScreenState extends State<DonationsScreen> {
                 return Text('ERROR');
               }
               return DonationCard(
-                donation: donation,
-                project: project,
-              );
+                  donation: donation,
+                  project: project,
+                  isReferal: widget.isReferal);
             },
           )
         : !_isLoading

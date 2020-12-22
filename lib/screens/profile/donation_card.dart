@@ -8,7 +8,9 @@ import 'package:meyirim/helpers/hex_color.dart';
 class DonationCard extends StatefulWidget {
   Project project;
   Donation donation;
-  DonationCard({Key key, this.project, this.donation}) : super(key: key);
+  bool isReferal = false;
+  DonationCard({Key key, this.project, this.donation, this.isReferal})
+      : super(key: key);
 
   @override
   _DonationCardState createState() => _DonationCardState();
@@ -59,9 +61,11 @@ class _DonationCardState extends State<DonationCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Вы помогли',
+                    widget.isReferal ? 'Вы привлекли  ' : 'Вы помогли',
                     style: TextStyle(
-                      color: HexColor('#41BC73'),
+                      color: widget.isReferal
+                          ? HexColor('#F82E55')
+                          : HexColor('#41BC73'),
                       fontSize: 15,
                     ),
                   ),

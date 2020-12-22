@@ -4,6 +4,7 @@ import 'package:meyirim/components/bottom_nav.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/helpers/auth.dart' as auth;
 import 'profile/donations.dart';
+import 'package:meyirim/components/profile_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -95,7 +96,14 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            Donations()
+            Donations(),
+            InkWell(
+              child: ProfileButton(
+                icon: Icons.add_circle,
+                label: 'Добавить нуждающегося',
+                color: HexColor('#00D7FF'),
+              ),
+            ),
           ],
         ),
       ),
