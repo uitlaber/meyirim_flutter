@@ -111,6 +111,17 @@ Future<Project> findProject(int projectId) async {
   return Project.fromJson(result);
 }
 
+Future<dynamic> searchProjects(
+    {int page = 1, int status = 1, query = ''}) async {
+  var url = globals.apiUrl +
+      "/search/projects/?include=donations&is_finished=$status&page=$page&query=$query";
+  var api = new APIManager();
+
+  var result = await api.getAPICall(url);
+
+  return result;
+}
+
 Future<dynamic> fetchProjects(
     {int page = 1, int status = 1, query = ''}) async {
   var url = globals.apiUrl +

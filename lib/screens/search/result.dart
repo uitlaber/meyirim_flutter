@@ -195,7 +195,7 @@ class _SearchResultState extends State<SearchResult> {
       });
 
       try {
-        var result = await fetchProjects(page: _currentPage, query: query);
+        var result = await searchProjects(page: _currentPage, query: query);
         List<Project> newProjects =
             List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
 
@@ -218,7 +218,7 @@ class _SearchResultState extends State<SearchResult> {
     if (!_isLoading && _maxPage > _currentPage) {
       setState(() => _isLoading = true);
       try {
-        var result = await fetchProjects(page: _currentPage, query: query);
+        var result = await searchProjects(page: _currentPage, query: query);
 
         ApiResponse response = ApiResponse.fromJson(result);
 
