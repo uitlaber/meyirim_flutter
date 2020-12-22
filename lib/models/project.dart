@@ -19,21 +19,21 @@ Project projectFromJson(String str) => Project.fromJson(json.decode(str));
 String projectToJson(Project data) => json.encode(data.toJson());
 
 class Project {
-  Project({
-    this.id,
-    this.title,
-    this.description,
-    this.requiredAmount,
-    this.collectedAmount,
-    this.isFinished,
-    this.isPublished,
-    this.fondId,
-    this.createdAt,
-    this.photos,
-    this.fond,
-    this.indigent,
-    this.donations,
-  });
+  Project(
+      {this.id,
+      this.title,
+      this.description,
+      this.requiredAmount,
+      this.collectedAmount,
+      this.isFinished,
+      this.isPublished,
+      this.fondId,
+      this.createdAt,
+      this.photos,
+      this.fond,
+      this.indigent,
+      this.donations,
+      this.donationsCount});
 
   int id;
   String title;
@@ -47,6 +47,7 @@ class Project {
   List<File> photos;
   User fond;
   Indigent indigent;
+  int donationsCount;
   List<Donation> donations;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
@@ -59,6 +60,7 @@ class Project {
         isPublished: json["is_published"],
         fondId: json["fond_id"],
         createdAt: DateTime.parse(json["created_at"]),
+        donationsCount: json["donations_count"],
         photos: (json["photos"]["data"] != null &&
                 json["photos"]["data"] is Iterable)
             ? List<File>.from(
@@ -69,12 +71,11 @@ class Project {
             ? Indigent.fromJson(json['indigent'])
             : null,
         //
-        donations: (json["donations"] != null &&
-                json["donations"]["data"] is Iterable &&
-                json["donations"]["data"].length > 0)
-            ? List<Donation>.from(
-                json["donations"]["data"].map((x) => Donation.fromJson(x)))
-            : null,
+        donations:
+            (json["donations"] != null && json["donations"]["data"] is Iterable)
+                ? List<Donation>.from(
+                    json["donations"]["data"].map((x) => Donation.fromJson(x)))
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +86,7 @@ class Project {
         "collected_amount": collectedAmount,
         "created_at": createdAt.toIso8601String(),
         "is_finished": isFinished,
+        "donations_count": donationsCount,
         "photos": List<File>.from(photos.map((x) => x.toJson())),
         "fond": fond.toJson(),
         "donations": List<Donation>.from(donations.map((x) => x.toJson())),

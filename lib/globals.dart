@@ -7,14 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-// const String apiUrl = 'http://192.168.1.4/api.meyirim/api';
-const String apiUrl = 'http://10.0.2.2/api.meyirim/api';
+const String apiUrl = 'http://devilly4.beget.tech/api';
+// const String apiUrl = 'http://10.0.2.2/api.meyirim/api';
 const String siteUrl = 'http://meyirim.com';
 const String loginUrl = apiUrl + '/login';
 const String registerUrl = apiUrl + '/signup';
 const String paymentUrl = apiUrl + '/pay';
 const String dummyAvatar = 'https://ui-avatars.com/api/';
 const String dummyPhoto = 'https://via.placeholder.com/468x300?text=meyirim.kz';
+
+/// Безопасное хранилище
+final storage = new FlutterSecureStorage();
 
 /// Уникальный код пользователя
 Future<String> userCode() async {
@@ -33,13 +36,15 @@ String formatCur(dynamic amount) {
       .format(amount);
 }
 
+String formatDate(DateTime date, {String format: 'dd-MM-yyyy'}) {
+  final DateFormat formatter = DateFormat(format);
+  return formatter.format(date);
+}
+
 /// Форматирование цифр
 String formatNum(dynamic amount) {
   return new NumberFormat.compact(locale: 'kk').format(amount);
 }
-
-/// Безопасное хранилище
-final storage = new FlutterSecureStorage();
 
 /// Первод текста из папки /lang
 String _t(String text, BuildContext context) {

@@ -63,7 +63,9 @@ class _ProjectStatusState extends State<ProjectStatus> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
-                      formatNum(widget.project.donations.length),
+                      widget.project.donationsCount != null
+                          ? formatNum(widget.project.donationsCount.toDouble())
+                          : '0',
                       style: TextStyle(
                         color: HexColor('#41BC73'),
                         fontSize: 20.0,

@@ -49,6 +49,11 @@ class LentaScreenState extends State<LentaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading)
+      return Center(
+        child: new CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
+      );
     return createListView(context);
   }
 
@@ -81,10 +86,25 @@ class LentaScreenState extends State<LentaScreen> {
               return ProjectCard(projects[index]);
             },
           ))
-        : Center(
-            child: new CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
-          );
+        : !_isLoading
+            ? Center(
+                child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 5,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.grey,
+                    size: 44,
+                  ),
+                  Text(
+                    'Список пуст',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ))
+            : Container();
   }
 
   loadMore() async {

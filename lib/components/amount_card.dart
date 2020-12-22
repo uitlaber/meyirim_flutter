@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/globals.dart' as globals;
 
+// ignore: must_be_immutable
 class AmountCount extends StatefulWidget {
   String label;
   Color labelColor;

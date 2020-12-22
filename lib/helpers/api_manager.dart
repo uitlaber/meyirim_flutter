@@ -16,11 +16,9 @@ class APIManager {
     print("Calling API: $url");
     print("Calling parameters: $param");
 
-    var userCode = await auth.userCode();
-    var token = await auth.jwtOrEmpty();
     Map<String, String> headers = new HashMap();
-    headers['user-code'] = userCode;
-    headers['token'] = token;
+    headers['user-code'] = await auth.userCode();
+    headers['token'] = await auth.jwtOrEmpty();
 
     print("Calling headers: $headers");
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'dart:async';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable

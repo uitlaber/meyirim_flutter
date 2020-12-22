@@ -44,6 +44,7 @@ bool jwtValidate(String token) {
 Future<String> jwtOrEmpty() async {
   var jwt = await globals.storage.read(key: "jwt");
   if (jwt == null) return "";
+  print(jwt);
   return jwt;
 }
 

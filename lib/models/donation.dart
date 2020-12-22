@@ -13,7 +13,7 @@ class Donation {
       this.project});
 
   int id;
-  String amount;
+  double amount;
   String note;
   DateTime paidAt;
   String referal;
@@ -21,7 +21,7 @@ class Donation {
 
   factory Donation.fromJson(Map<String, dynamic> json) => Donation(
         id: json["id"],
-        amount: json["amount"],
+        amount: double.parse(json["amount"]),
         note: json["note"],
         paidAt: DateTime.parse(json["paid_at"]),
         referal: json["referal"],
@@ -39,18 +39,13 @@ class Donation {
       };
 }
 
-Future<List<Donation>> fetchDonations(
-    {int page = 1, bool isRef = false}) async {
+Future<dynamic> fetchDonations({int page = 1, bool isRef = false}) async {
   var url = '';
   if (isRef) {
-    url = globals.apiUrl + "/donations?ref=1&page=$page";
+    url = globals.apiUrl + "/donations?include=donations&ref=1&page=$page";
   } else {
-    url = globals.apiUrl + "/donations?page=$page";
+    url = globals.apiUrl + "/donations?include=donations&page=$page";
   }
   var api = new APIManager();
-  var result = await api.getAPICall(url);
-  var items =
-      List<Donation>.from(result['data'].map((x) => Donation.fromJson(x)));
-
-  return items;
+  return await api.getAPICall(url);
 }

@@ -246,6 +246,9 @@ class _LoginScreenState extends State<LoginScreen> {
           jwt = authData['token'];
           _isLoading = false;
         });
+
+        await globals.storage
+            .write(key: "user_code", value: auth.userData.userCode);
       }
       // on Exception1 {
       //   // code for handling exception
