@@ -12,7 +12,7 @@ const String apiUrl = 'http://devilly4.beget.tech/api';
 const String siteUrl = 'http://meyirim.com';
 const String loginUrl = apiUrl + '/login';
 const String registerUrl = apiUrl + '/signup';
-const String paymentUrl = apiUrl + '/pay';
+const String paymentUrl = apiUrl + '/payment/pay';
 const String dummyAvatar = 'https://ui-avatars.com/api/';
 const String dummyPhoto = 'https://via.placeholder.com/468x300?text=meyirim.kz';
 

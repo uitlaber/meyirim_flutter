@@ -123,7 +123,6 @@ class LentaScreenState extends State<LentaScreen> {
           _isLoading = false;
         });
       } catch (e) {
-        // print(e);
         setState(() {
           _isLoading = false;
           _hasError = true;

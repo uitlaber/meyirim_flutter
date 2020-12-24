@@ -4,17 +4,10 @@ import 'package:meyirim/helpers/api_manager.dart';
 import 'package:meyirim/models/project.dart';
 
 class Donation {
-  Donation(
-      {this.id,
-      this.amount,
-      this.note,
-      this.paidAt,
-      this.referal,
-      this.project});
+  Donation({this.id, this.amount, this.paidAt, this.referal, this.project});
 
   int id;
   double amount;
-  String note;
   DateTime paidAt;
   String referal;
   Project project;
@@ -22,8 +15,8 @@ class Donation {
   factory Donation.fromJson(Map<String, dynamic> json) => Donation(
         id: json["id"],
         amount: double.parse(json["amount"]),
-        note: json["note"],
-        paidAt: DateTime.parse(json["paid_at"]),
+        paidAt:
+            json['paid_at'] == null ? null : DateTime.parse(json["paid_at"]),
         referal: json["referal"],
         project:
             json["project"] != null ? Project.fromJson(json["project"]) : null,
@@ -32,7 +25,6 @@ class Donation {
   Map<String, dynamic> toJson() => {
         "id": id,
         "amount": amount,
-        "note": note,
         "paid_at": paidAt.toIso8601String(),
         "referal": referal,
         "project": project.toJson()

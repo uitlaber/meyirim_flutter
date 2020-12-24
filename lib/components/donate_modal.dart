@@ -7,6 +7,8 @@ import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/globals.dart' as globals;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 
 // ignore: must_be_immutable
 class DonateModal extends StatefulWidget {
@@ -20,6 +22,7 @@ class DonateModal extends StatefulWidget {
 class _DonateModalState extends State<DonateModal> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
@@ -189,7 +192,7 @@ class _DonateModalState extends State<DonateModal> {
                               child: RaisedButton(
                                 color: HexColor('#41BC73'),
                                 textColor: Colors.white,
-                                onPressed: () => payCard(),
+                                onPressed: () => payCard(project.id),
                                 elevation: 0,
                                 child: Text(
                                   "Оплата банковской картой",
@@ -209,7 +212,7 @@ class _DonateModalState extends State<DonateModal> {
                 ))));
   }
 
-  void payCard() async {
+  payCard(int projectId) async {
     var errorMessage = '';
     if (_isLoading) return;
     _formKey.currentState.save();
@@ -220,8 +223,18 @@ class _DonateModalState extends State<DonateModal> {
       Map<String, String> data = new HashMap();
       data['amount'] =
           _formKey.currentState.fields['amount'].currentState.value;
+      data['project_id'] = projectId.toString();
 
-      return await api.postAPICall(url, data);
+      var response = await api.postAPICall(url, data);
+      var paymentUrl = response;
+      if (await canLaunch(paymentUrl)) {
+        await FlutterWebBrowser.openWebPage(
+            url: paymentUrl,
+            customTabsOptions:
+                CustomTabsOptions(toolbarColor: HexColor('#00D7FF')));
+      } else {
+        throw 'Could not launch $url';
+      }
     }
   }
 }
