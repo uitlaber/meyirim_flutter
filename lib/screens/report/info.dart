@@ -27,7 +27,7 @@ class _ReportInfoState extends State<ReportInfo> {
 
     String videUrl = getIdFromUrl(report.videoUrl);
 
-    if (videUrl.isNotEmpty) {
+    if (videUrl != null && videUrl.isNotEmpty) {
       // ignore: close_sinks
       _controller = YoutubePlayerController(
         initialVideoId: getIdFromUrl(report.videoUrl),

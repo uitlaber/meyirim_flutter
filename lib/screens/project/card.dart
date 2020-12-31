@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meyirim/screens/project/status.dart';
+
+import '../project.dart';
 
 class ProjectCard extends StatefulWidget {
   final Project project;
@@ -58,7 +61,9 @@ class _ProjectCardState extends State<ProjectCard> {
                                 ),
                               ),
                               placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                  backgroundColor: HexColor('#00D7FF'),
+                                ),
                               ),
                               errorWidget: (context, url, error) => Center(
                                 child: Icon(Icons.error),

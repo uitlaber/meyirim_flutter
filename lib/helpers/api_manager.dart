@@ -15,7 +15,6 @@ class APIManager {
   Future<dynamic> postAPICall(String url, dynamic param) async {
     print("Calling API: $url");
     print("Calling parameters: $param");
-
     Map<String, String> headers = new HashMap();
     headers['user-code'] = await auth.userCode();
     headers['token'] = await auth.jwtOrEmpty();

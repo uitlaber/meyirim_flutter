@@ -26,21 +26,29 @@ class ProjectScreen extends StatefulWidget {
 class ProjectScreenState extends State<ProjectScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: FutureBuilder<Project>(
-            future: findProject(widget.params['id']),
-            builder: (BuildContext context, AsyncSnapshot<Project> snapshot) {
-              Widget body;
-              // print(snapshot.data);
-              if (snapshot.hasData) {
-                body = ProjectInfo(snapshot.data);
-              } else if (snapshot.hasError) {
-                // Navigator.of(context).pushNamed('Home');
-                body = Message('Проект не найден');
-              } else {
-                body = Loading();
-              }
-              return body;
-            }));
+    return Scaffold(
+        backgroundColor: HexColor('#F2F2F7'),
+        appBar: AppBar(
+            backgroundColor: HexColor('#00D7FF'),
+            title: Text('Назад'),
+            titleSpacing: 0,
+            elevation: 0),
+        body: Container(
+            child: FutureBuilder<Project>(
+                future: findProject(widget.params['id']),
+                builder:
+                    (BuildContext context, AsyncSnapshot<Project> snapshot) {
+                  Widget body;
+                  // print(snapshot.data);
+                  if (snapshot.hasData) {
+                    body = ProjectInfo(snapshot.data);
+                  } else if (snapshot.hasError) {
+                    // Navigator.of(context).pushNamed('Home');
+                    body = Message('Проект не найден');
+                  } else {
+                    body = Loading();
+                  }
+                  return body;
+                })));
   }
 }

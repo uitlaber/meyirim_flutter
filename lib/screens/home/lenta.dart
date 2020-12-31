@@ -49,7 +49,7 @@ class LentaScreenState extends State<LentaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading)
+    if (_isLoading && projects.length == 0)
       return Center(
         child: new CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
@@ -109,16 +109,17 @@ class LentaScreenState extends State<LentaScreen> {
 
   loadMore() async {
     if (!_isLoading && _maxPage > _currentPage) {
-      setState(() => _isLoading = true);
+      setState(() {
+        _isLoading = true;
+      });
       try {
         var result =
             await fetchProjects(page: _currentPage, status: widget.isFinished);
         List<Project> newProjects =
             List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
-
         setState(() {
           _currentPage++;
-          _maxPage = result['meta']['pagination']['total_pages'];
+          _maxPage = result['meta']['pagination']['total_pages'] + 1;
           projects.addAll(newProjects);
           _isLoading = false;
         });

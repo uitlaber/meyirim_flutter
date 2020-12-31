@@ -47,6 +47,8 @@ dependencies:
   dio_http_cache: ^0.2.11
   url_launcher: ^5.7.10
   flutter_web_browser: ^0.13.1
+  mime: ^0.9.7
+  firebase_dynamic_links: ^0.6.3
   flutter_localizations: # Add this line
     sdk: flutter # Add this line
 

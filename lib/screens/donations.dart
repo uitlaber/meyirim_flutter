@@ -57,22 +57,24 @@ class _DonationsScreenState extends State<DonationsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  widget.isReferal
-                      ? 'Через меня помогли '
-                      : 'Мои пожертвования',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              _isLoading
+                  ? Expanded(
+                      child: Center(
+                        child: new CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                HexColor('#00D7FF'))),
+                      ),
+                    )
+                  : Text(
+                      widget.isReferal
+                          ? 'Через меня помогли '
+                          : 'Мои пожертвования',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               SizedBox(height: 15),
               Expanded(
                 child: createListView(context),
               ),
-              _isLoading
-                  ? Center(
-                      child: new CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              HexColor('#00D7FF'))),
-                    )
-                  : Container()
             ],
           ),
         ));
@@ -147,7 +149,7 @@ class _DonationsScreenState extends State<DonationsScreen> {
 
         setState(() {
           _currentPage++;
-          _maxPage = result['meta']['pagination']['total_pages'];
+          _maxPage = result['meta']['pagination']['total_pages'] + 1;
           donations.addAll(newDonations);
           _isLoading = false;
         });

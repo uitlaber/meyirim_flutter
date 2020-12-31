@@ -133,7 +133,33 @@ class _ProjectInfoState extends State<ProjectInfo> {
                       color: Colors.black,
                       fontSize: 16,
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 10.0),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.brown.shade800,
+                          backgroundImage: NetworkImage(project.fond.avatar),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            project.fond.name,
+                            // style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          Text(project.fond.region?.name ?? 'не указан город',
+                              style: TextStyle(
+                                  color: HexColor('#8C8C8C'), fontSize: 12)),
+                        ],
+                      )
+                    ],
+                  ),
                 ],
               ),
             )

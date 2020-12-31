@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meyirim/helpers/hex_color.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -18,7 +19,9 @@ class _LoadingState extends State<Loading> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                new CircularProgressIndicator(),
+                new CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
               ],
             ),
           )

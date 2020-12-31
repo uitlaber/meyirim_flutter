@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'profile.dart';
-import 'package:meyirim/helpers/api_manager.dart';
-import 'file:///C:/Users/uitlaber/Desktop/meyirim_flutter/meyirim/lib/helpers/api_response.dart';
 import 'package:meyirim/models/user.dart';
 import 'package:meyirim/helpers/auth.dart' as auth;
 

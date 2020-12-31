@@ -45,7 +45,7 @@ class ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    if (_isLoading && reports.length == 0) {
       return Center(
         child: new CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
@@ -114,7 +114,7 @@ class ReportScreenState extends State<ReportScreen> {
             List<Report>.from(result['data'].map((x) => Report.fromJson(x)));
         setState(() {
           _currentPage++;
-          _maxPage = result['meta']['pagination']['total_pages'];
+          _maxPage = result['meta']['pagination']['total_pages'] + 1;
           reports.addAll(results);
           _isLoading = false;
         });

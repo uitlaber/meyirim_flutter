@@ -98,6 +98,7 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
             ),
             Donations(),
             InkWell(
+              onTap: () => Navigator.of(context).pushNamed('AddIndigent'),
               child: ProfileButton(
                 icon: Icons.add_circle,
                 label: 'Добавить нуждающегося',
