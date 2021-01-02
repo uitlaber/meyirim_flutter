@@ -25,6 +25,7 @@ class Project {
       this.description,
       this.requiredAmount,
       this.collectedAmount,
+      this.videoUrl,
       this.isFinished,
       this.isPublished,
       this.fondId,
@@ -40,6 +41,7 @@ class Project {
   String description;
   double requiredAmount;
   double collectedAmount;
+  String videoUrl;
   int isFinished;
   int isPublished;
   int fondId;
@@ -56,10 +58,13 @@ class Project {
         description: json["description"],
         requiredAmount: double.parse(json["required_amount"]),
         collectedAmount: double.parse(json["collected_amount"]),
+        videoUrl: json["video_url"],
         isFinished: json["is_finished"],
         isPublished: json["is_published"],
         fondId: json["fond_id"],
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"] != null
+            ? DateTime.parse(json["created_at"])
+            : null,
         donationsCount: json["donations_count"],
         photos: (json["photos"]["data"] != null &&
                 json["photos"]["data"] is Iterable)
@@ -70,7 +75,6 @@ class Project {
         indigent: json["indigent"] != null
             ? Indigent.fromJson(json['indigent'])
             : null,
-        //
         donations:
             (json["donations"] != null && json["donations"]["data"] is Iterable)
                 ? List<Donation>.from(
@@ -84,6 +88,7 @@ class Project {
         "description": description,
         "required_amount": requiredAmount,
         "collected_amount": collectedAmount,
+        "video_url": videoUrl,
         "created_at": createdAt.toIso8601String(),
         "is_finished": isFinished,
         "donations_count": donationsCount,
@@ -95,6 +100,7 @@ class Project {
   String get firstPhotoUrl {
     if (photos != null &&
             photos.asMap().containsKey(0) &&
+            // ignore: null_aware_in_logical_operator
             photos[0].path?.isNotEmpty ??
         false) {
       return photos[0].path;
@@ -129,6 +135,5 @@ Future<dynamic> fetchProjects(
   var api = new APIManager();
 
   var result = await api.getAPICall(url);
-
   return result;
 }

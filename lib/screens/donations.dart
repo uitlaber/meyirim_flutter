@@ -48,7 +48,6 @@ class _DonationsScreenState extends State<DonationsScreen> {
         backgroundColor: HexColor('#F2F2F7'),
         appBar: AppBar(
             backgroundColor: HexColor('#00D7FF'),
-            title: Text('Назад'),
             titleSpacing: 0,
             elevation: 0),
         body: Container(

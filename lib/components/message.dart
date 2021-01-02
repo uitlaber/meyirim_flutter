@@ -5,7 +5,6 @@ class Message extends StatefulWidget {
 
   const Message(this.message);
 
-
   @override
   _MessageState createState() => _MessageState();
 }
@@ -17,12 +16,14 @@ class _MessageState extends State<Message> {
       body: Column(
         children: [
           IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                new Text(widget.message),
-              ],
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  new Text(widget.message),
+                ],
+              ),
             ),
           )
         ],

@@ -5,6 +5,7 @@ import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/models/user.dart';
 import 'package:meyirim/helpers/auth.dart' as auth;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key key}) : super(key: key);
@@ -237,6 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void register() async {
     var errorMessage = '';
+    SharedPreferences storage = await SharedPreferences.getInstance();
     if (_isLoading) return;
     _formKey.currentState.save();
     if (_formKey.currentState.validate()) {
@@ -262,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       }
       if (jwt != null) {
-        globals.storage.write(key: "jwt", value: jwt);
+        storage.setString("jwt", jwt);
         Navigator.of(context).pushNamed('Home');
       }
     } else {

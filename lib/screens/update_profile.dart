@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -8,19 +6,19 @@ import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/helpers/api_manager.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:meyirim/helpers/auth.dart' as auth;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class AddIndigentScreen extends StatefulWidget {
+class UpdateProfileScreen extends StatefulWidget {
   @override
-  _AddIndigentScreenState createState() => _AddIndigentScreenState();
+  _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
 
-class _AddIndigentScreenState extends State<AddIndigentScreen> {
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormBuilderState>();
   var phoneFormatter = new MaskTextInputFormatter(
       mask: '+# (###) ###-##-##', filter: {"#": RegExp(r'[0-9]')});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +28,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
           backgroundColor: HexColor('#00D7FF'),
         ),
         body: SafeArea(
-            child: Center(
-                child: SingleChildScrollView(
+            child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(15),
             child: FormBuilder(
@@ -40,7 +37,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Добавить нуждающего',
+                    Text('Редактировать профиль',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     FormBuilderImagePicker(
@@ -55,8 +52,9 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                       height: 20,
                     ),
                     FormBuilderTextField(
-                      attribute: "fio",
+                      attribute: "name",
                       key: UniqueKey(),
+                      initialValue: auth.userData.name,
                       decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.only(left: 20.0, right: 20.0),
@@ -74,11 +72,11 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                                   new BorderSide(color: Colors.transparent)),
                           filled: true,
                           hintStyle: new TextStyle(color: Colors.grey[600]),
-                          hintText: "ФИО",
+                          hintText: "Имя",
                           fillColor: Colors.white),
                       validators: [
                         FormBuilderValidators.required(
-                            errorText: 'Введите ФИО'),
+                            errorText: 'Введите Имя'),
                       ],
                     ),
                     SizedBox(
@@ -107,7 +105,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                           fillColor: Colors.white),
                       // initialValue: 'Male',
                       allowClear: true,
-                      hint: Text('Город'),
+                      hint: Text('Город или регион'),
                       items: regionOptions()
                           .map((region) => DropdownMenuItem(
                                 value: region['id'],
@@ -119,8 +117,9 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                       height: 20,
                     ),
                     FormBuilderTextField(
-                      attribute: "address",
+                      attribute: "email",
                       key: UniqueKey(),
+                      initialValue: auth.userData.email,
                       decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.only(left: 20.0, right: 20.0),
@@ -138,40 +137,12 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                                   new BorderSide(color: Colors.transparent)),
                           filled: true,
                           hintStyle: new TextStyle(color: Colors.grey[600]),
-                          hintText: "Адрес",
+                          hintText: "E-mail",
                           fillColor: Colors.white),
                       validators: [
                         FormBuilderValidators.required(
-                            errorText: 'Введите Адрес'),
+                            errorText: 'Введите E-mail'),
                       ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    FormBuilderTextField(
-                      attribute: "note",
-                      key: UniqueKey(),
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                              top: 20, bottom: 20, left: 20.0, right: 20.0),
-                          border: new OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(30.0),
-                              ),
-                              borderSide:
-                                  new BorderSide(color: Colors.transparent)),
-                          enabledBorder: new OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(30.0),
-                              ),
-                              borderSide:
-                                  new BorderSide(color: Colors.transparent)),
-                          filled: true,
-                          hintStyle: new TextStyle(color: Colors.grey[600]),
-                          hintText: "Дополнительная информация  ",
-                          fillColor: Colors.white),
-                      validators: [],
                     ),
                     SizedBox(
                       height: 20,
@@ -237,7 +208,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                   ],
                 )),
           ),
-        ))));
+        )));
   }
 
   List<Map<String, dynamic>> regionOptions() {
@@ -259,11 +230,10 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
       var api = new APIManager();
       try {
         Map<String, dynamic> data = {
-          'fio': _formKey.currentState.value['fio'],
+          'name': _formKey.currentState.value['name'],
           'region': _formKey.currentState.value['region'],
-          'address': _formKey.currentState.value['address'],
           'phone': _formKey.currentState.value['phone'],
-          'note': _formKey.currentState.value['note'],
+          'email': _formKey.currentState.value['email'],
           'photo': Iterable<dynamic>.generate(
                   _formKey.currentState.value['photo'].length)
               .toList(),
@@ -282,11 +252,12 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
 
         await api.postAPICall(url, formData);
         _formKey.currentState.reset();
-        displayDialog(context, "Спасибо!", 'Ваш запрос отправлен!');
-        // print(response);
+
         setState(() {
           _isLoading = false;
         });
+
+        Navigator.of(context).pushNamed('Profile');
       } catch (e) {
         errorMessage = e.toString();
         setState(() {

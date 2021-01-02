@@ -17,7 +17,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          EdgeInsets.only(top: 15.0, bottom: 15.0, left: 15.0, right: 15.0),
+          EdgeInsets.only(top: 15.0, bottom: 10.0, left: 15.0, right: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

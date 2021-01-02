@@ -32,9 +32,7 @@ class _ReportScreenState extends State<ReportCard> {
             children: [
               InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, 'Report',
-                        arguments: {'id': report.id});
-                    // print(report.id);
+                    Navigator.pushNamed(context, 'Report/${report.id}');
                   },
                   child: Stack(
                     // fit: StackFit.loose,

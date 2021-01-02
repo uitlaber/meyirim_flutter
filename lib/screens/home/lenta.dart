@@ -115,8 +115,13 @@ class LentaScreenState extends State<LentaScreen> {
       try {
         var result =
             await fetchProjects(page: _currentPage, status: widget.isFinished);
-        List<Project> newProjects =
-            List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
+
+        List<Project> newProjects = List<Project>.from(result['data'].map((x) {
+          print(x.runtimeType);
+          // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
+          return Project.fromJson(x);
+        }));
+
         setState(() {
           _currentPage++;
           _maxPage = result['meta']['pagination']['total_pages'] + 1;
@@ -124,6 +129,7 @@ class LentaScreenState extends State<LentaScreen> {
           _isLoading = false;
         });
       } catch (e) {
+        print(e);
         setState(() {
           _isLoading = false;
           _hasError = true;

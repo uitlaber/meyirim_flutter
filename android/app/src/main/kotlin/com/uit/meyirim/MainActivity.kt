@@ -1,4 +1,4 @@
-package com.uit.meyirim
+package com.beyit.meyirim
 
 import io.flutter.embedding.android.FlutterActivity
 

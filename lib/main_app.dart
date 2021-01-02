@@ -3,6 +3,7 @@ import 'package:meyirim/app_localizations.dart';
 import 'package:meyirim/screens/home.dart';
 import 'package:meyirim/screens/project.dart';
 import 'package:meyirim/screens/report.dart';
+import 'package:meyirim/screens/success.dart';
 import 'screens/login.dart';
 import 'screens/register.dart';
 import 'screens/reset.dart';
@@ -16,7 +17,7 @@ import 'package:splashscreen/splashscreen.dart';
 import 'helpers/hex_color.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_page_transition/flutter_page_transition.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'screens/update_profile.dart';
 
 class MainApp extends StatefulWidget {
   @override
@@ -24,36 +25,6 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  @override
-  void initState() {
-    super.initState();
-    initDynamicLinks();
-  }
-
-  void initDynamicLinks() async {
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData dynamicLink) async {
-      final Uri deepLink = dynamicLink?.link;
-
-      if (deepLink != null) {
-        print(deepLink);
-        // Navigator.pushNamed(context, deepLink.path);
-      }
-    }, onError: (OnLinkErrorException e) async {
-      print('onLinkError');
-      print(e.message);
-    });
-
-    final PendingDynamicLinkData data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
-    final Uri deepLink = data?.link;
-
-    if (deepLink != null) {
-      print(deepLink);
-      //Navigator.pushNamed(context, deepLink.path);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -103,6 +74,20 @@ class _MainAppState extends State<MainApp> {
               pageBuilder: (BuildContext context, Animation<double> animation,
                   Animation<double> secondaryAnimation) {
                 final dynamic arguments = routeSettings.arguments;
+
+                final List<String> path = routeSettings.name.split('/');
+
+                if (path[0] != '') {
+                  if (path[0].startsWith('Project')) {
+                    Map params = {'id': int.parse(path[1])};
+                    return new ProjectScreen(params);
+                  }
+                  if (path[0].startsWith('Report')) {
+                    Map params = {'id': int.parse(path[1])};
+                    return new ReportScreen(params);
+                  }
+                }
+
                 switch (routeSettings.name) {
                   case 'Home':
                     return HomeScreen();
@@ -114,10 +99,6 @@ class _MainAppState extends State<MainApp> {
                     return DonationsScreen(isReferal: false);
                   case 'Referals':
                     return DonationsScreen(isReferal: true);
-                  case 'Project':
-                    return new ProjectScreen(arguments);
-                  case 'Report':
-                    return new ReportScreen(arguments);
                   case 'Login':
                     return LoginScreen();
                   case 'Register':
@@ -126,19 +107,40 @@ class _MainAppState extends State<MainApp> {
                     return ResetScreen();
                   case 'AddIndigent':
                     return AddIndigentScreen();
+                  case 'UpdateProfile':
+                    return UpdateProfileScreen();
+                  case 'Success':
+                    return SuccessScreen(
+                      title: 'Спасибо',
+                      message: 'Ваша оплата успешно отправлено',
+                    );
                   default:
-                    return null;
+                    return Container();
                 }
+
+                // case 'Project':
+                // return new ProjectScreen(arguments);
+                // case 'Report':
+                // return new ReportScreen(arguments);
               },
               transitionDuration: const Duration(milliseconds: 200),
               transitionsBuilder: (BuildContext context,
                   Animation<double> animation,
                   Animation<double> secondaryAnimation,
                   Widget child) {
-                switch (routeSettings.name) {
-                  case 'Project':
+                final List<String> path = routeSettings.name.split('/');
+                if (path[0] != '') {
+                  if (path[0].startsWith('Project')) {
                     return effectMap[PageTransitionType.slideInLeft](
                         Curves.linear, animation, secondaryAnimation, child);
+                  }
+                  if (path[0].startsWith('Report')) {
+                    return effectMap[PageTransitionType.slideInLeft](
+                        Curves.linear, animation, secondaryAnimation, child);
+                  }
+                }
+
+                switch (routeSettings.name) {
                   case 'Donations':
                     return effectMap[PageTransitionType.slideInLeft](
                         Curves.linear, animation, secondaryAnimation, child);

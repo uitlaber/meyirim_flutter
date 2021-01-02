@@ -1,6 +1,6 @@
 String getIdFromUrl(String url) {
   if (url == null) {
-    throw ArgumentError('Url must not be null');
+    return null;
   }
 
   if (url.isEmpty || url.contains(' ')) {
@@ -20,11 +20,12 @@ String getIdFromUrl(String url) {
 
   // youtube.com/watch?v=xxxxxxxxxxx
   try {
-    if (['youtube.com', 'www.youtube.com', 'm.youtube.com'].contains(uri.host)
-        && uri.pathSegments.first == 'watch') {
+    if (['youtube.com', 'www.youtube.com', 'm.youtube.com']
+            .contains(uri.host) &&
+        uri.pathSegments.first == 'watch') {
       videoId = uri.queryParameters['v'];
     }
-  } catch(e) {
+  } catch (e) {
     return null;
   }
 
@@ -33,7 +34,7 @@ String getIdFromUrl(String url) {
     if (uri.host == 'youtu.be') {
       videoId = uri.pathSegments.first;
     }
-  } catch(e) {
+  } catch (e) {
     return null;
   }
 

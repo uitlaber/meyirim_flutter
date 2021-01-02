@@ -121,13 +121,13 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
             child: Center(
                 child: ListView(
               children: [
-                ListTile(
-                  title: Text('Редактировать профиль'),
-                  onTap: () {
-                    auth.logout();
-                    Navigator.of(context).pushNamed('Login');
-                  },
-                ),
+                if (auth.userData != null)
+                  ListTile(
+                    title: Text('Редактировать профиль'),
+                    onTap: () {
+                      Navigator.of(context).pushNamed('UpdateProfile');
+                    },
+                  ),
                 ListTile(
                   title: Text('Выход'),
                   onTap: () {

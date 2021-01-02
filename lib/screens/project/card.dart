@@ -33,8 +33,7 @@ class _ProjectCardState extends State<ProjectCard> {
             children: [
               InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, 'Project',
-                        arguments: {'id': project.id});
+                    Navigator.pushNamed(context, 'Project/${project.id}');
                   },
                   child: Stack(
                     // fit: StackFit.loose,
@@ -62,7 +61,9 @@ class _ProjectCardState extends State<ProjectCard> {
                               ),
                               placeholder: (context, url) => Center(
                                 child: CircularProgressIndicator(
-                                  backgroundColor: HexColor('#00D7FF'),
+                                  backgroundColor: HexColor('#FFFFFF'),
+                                  valueColor: new AlwaysStoppedAnimation<Color>(
+                                      HexColor('#00D7FF')),
                                 ),
                               ),
                               errorWidget: (context, url, error) => Center(

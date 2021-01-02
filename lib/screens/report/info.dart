@@ -7,6 +7,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:meyirim/helpers/youtube.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meyirim/screens/report/status.dart';
+import 'package:meyirim/components/fond_card.dart';
 
 class ReportInfo extends StatefulWidget {
   Report report;
@@ -25,12 +26,11 @@ class _ReportInfoState extends State<ReportInfo> {
     int sliderLength = report.photos.length;
     YoutubePlayerController _controller;
 
-    String videUrl = getIdFromUrl(report.videoUrl);
-
-    if (videUrl != null && videUrl.isNotEmpty) {
+    if (report.videoUrl != null && report.videoUrl.isNotEmpty) {
+      String videoUrl = getIdFromUrl(report.videoUrl);
       // ignore: close_sinks
       _controller = YoutubePlayerController(
-        initialVideoId: getIdFromUrl(report.videoUrl),
+        initialVideoId: videoUrl,
         params: YoutubePlayerParams(
           showControls: true,
           showFullscreenButton: true,
@@ -43,6 +43,10 @@ class _ReportInfoState extends State<ReportInfo> {
       body: SafeArea(
         child: ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: FondCard(fond: report.fond),
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

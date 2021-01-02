@@ -1,6 +1,7 @@
 import 'package:meyirim/globals.dart' as globals;
 import 'dart:convert';
 import 'package:meyirim/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'api_manager.dart';
 
@@ -8,11 +9,12 @@ User userData;
 
 /// Уникальный код пользователя
 Future<String> userCode() async {
-  var userCode = await globals.storage.read(key: "user_code");
+  SharedPreferences storage = await SharedPreferences.getInstance();
+  var userCode = await storage.get("user_code");
   if (userCode?.isEmpty ?? true) {
     var uuid = Uuid();
     userCode = uuid.v1();
-    await globals.storage.write(key: "user_code", value: userCode);
+    await storage.setString("user_code", userCode);
   }
   return userCode;
 }
@@ -42,7 +44,8 @@ bool jwtValidate(String token) {
 
 /// Возвращаем токен из хранилищ
 Future<String> jwtOrEmpty() async {
-  var jwt = await globals.storage.read(key: "jwt");
+  SharedPreferences storage = await SharedPreferences.getInstance();
+  var jwt = await storage.get("jwt");
   if (jwt == null) return "";
   print(jwt);
   return jwt;
@@ -65,13 +68,14 @@ Future<dynamic> attemptLogIn(Map<String, dynamic> data) async {
 Future<dynamic> attemptRegister(Map<String, dynamic> data) async {
   var url = globals.registerUrl;
   var api = new APIManager();
-  data['user_code'] = await globals.userCode();
+  data['user_code'] = await userCode();
   return await api.postAPICall(url, data);
 }
 
 /// Выход
 void logout() async {
-  await globals.storage.delete(key: 'jwt');
+  SharedPreferences storage = await SharedPreferences.getInstance();
+  await storage.remove('jwt');
   userData = null;
 }
 

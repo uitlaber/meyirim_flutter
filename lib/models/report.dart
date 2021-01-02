@@ -40,7 +40,9 @@ class Report {
         description: json["description"],
         videoUrl: json["video_url"],
         isPublished: json["is_published"],
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"] != null
+            ? DateTime.parse(json["created_at"])
+            : null,
         photos: (json["photos"]["data"] != null &&
                 json["photos"]["data"] is Iterable)
             ? List<File>.from(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+// import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
@@ -15,8 +15,6 @@ class BottomNav extends StatefulWidget {
 }
 
 class BottomNavState extends State<BottomNav> {
-  GlobalKey _bottomNavigationKey = GlobalKey();
-
   void _onItemTapped(int index) {
     setState(() {
       widget._page = index;
@@ -73,6 +71,7 @@ class BottomNavState extends State<BottomNav> {
       showUnselectedLabels: false,
       onTap: _onItemTapped,
     );
+    /*
     return CurvedNavigationBar(
       height: 50.0,
       // buttonBackgroundColor: Colors.red,
@@ -96,5 +95,6 @@ class BottomNavState extends State<BottomNav> {
       ],
       onTap: _onItemTapped,
     );
+    */
   }
 }

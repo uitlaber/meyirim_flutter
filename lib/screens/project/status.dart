@@ -17,6 +17,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
   @override
   Widget build(BuildContext context) {
     String routeName = ModalRoute.of(context).settings.name;
+    print(routeName);
     return Padding(
       padding:
           EdgeInsets.only(top: 15.0, bottom: 15.0, left: 15.0, right: 15.0),
@@ -24,7 +25,8 @@ class _ProjectStatusState extends State<ProjectStatus> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (widget.project.isFinished != 1 ||
-              widget.project.isFinished == 1 && routeName == 'Project')
+              widget.project.isFinished == 1 &&
+                  routeName.startsWith('Project/'))
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -53,7 +55,8 @@ class _ProjectStatusState extends State<ProjectStatus> {
               )
             ],
           ),
-          if (widget.project.isFinished == 1 || routeName == 'Project')
+          if (widget.project.isFinished == 1 ||
+              routeName.startsWith('Project/'))
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -80,7 +83,8 @@ class _ProjectStatusState extends State<ProjectStatus> {
                 )
               ],
             ),
-          if (widget.project.isFinished != 1 && routeName != 'Project')
+          if (widget.project.isFinished != 1 &&
+              !routeName.startsWith('Project/'))
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -106,7 +110,8 @@ class _ProjectStatusState extends State<ProjectStatus> {
                 ),
               ],
             ),
-          if (widget.project.isFinished == 1 && routeName != 'Project')
+          if (widget.project.isFinished == 1 &&
+              !routeName.startsWith('Project/'))
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

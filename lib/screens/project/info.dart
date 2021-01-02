@@ -7,6 +7,9 @@ import 'package:meyirim/screens/payment_popup.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meyirim/screens/project/status.dart';
 import 'package:meyirim/globals.dart' as globals;
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:meyirim/helpers/youtube.dart';
+import 'package:meyirim/components/fond_card.dart';
 
 class ProjectInfo extends StatefulWidget {
   Project project;
@@ -22,10 +25,32 @@ class _ProjectInfoState extends State<ProjectInfo> {
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
+
+    int sliderLength = project.photos.length;
+    YoutubePlayerController _controller;
+
+    String videoUrl = getIdFromUrl(project.videoUrl);
+
+    if (videoUrl != null && videoUrl.isNotEmpty) {
+      // ignore: close_sinks
+      _controller = YoutubePlayerController(
+        initialVideoId: videoUrl,
+        params: YoutubePlayerParams(
+          showControls: true,
+          showFullscreenButton: true,
+        ),
+      );
+      sliderLength = sliderLength + 1;
+    }
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: FondCard(fond: project.fond),
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +62,7 @@ class _ProjectInfoState extends State<ProjectInfo> {
                       children: [
                         Positioned(
                           child: CarouselSlider.builder(
-                            itemCount: project.photos.length,
+                            itemCount: sliderLength,
                             options: CarouselOptions(
                                 enableInfiniteScroll: false,
                                 aspectRatio: 16 / 9,
@@ -49,41 +74,52 @@ class _ProjectInfoState extends State<ProjectInfo> {
                                   });
                                 }),
                             itemBuilder: (context, index) {
-                              return Container(
-                                  child: Hero(
-                                tag: project.photos[index].path,
-                                child: CachedNetworkImage(
-                                  imageUrl: project.photos[0].path,
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        alignment: Alignment.topCenter,
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
+                              if (project.photos.asMap().containsKey(index)) {
+                                return Container(
+                                    child: Hero(
+                                  tag: project.photos[index].path,
+                                  child: CachedNetworkImage(
+                                    imageUrl: project.photos[0].path,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          alignment: Alignment.topCenter,
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
+                                    placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Center(
+                                      child: Icon(Icons.error),
+                                    ),
                                   ),
-                                  placeholder: (context, url) => Center(
-                                    child: CircularProgressIndicator(),
+                                ));
+                              } else {
+                                return Container(
+                                  child: YoutubePlayerIFrame(
+                                    controller: _controller,
+                                    aspectRatio: 16 / 9,
                                   ),
-                                  errorWidget: (context, url, error) => Center(
-                                    child: Icon(Icons.error),
-                                  ),
-                                ),
-                              ));
+                                );
+                              }
                             },
                           ),
                         ),
-                        if (project.photos.length > 1)
+                        if (sliderLength > 1)
                           Positioned(
                             child: Container(
                               padding: EdgeInsets.all(0.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: project.photos.map((photo) {
-                                  int _index = project.photos.indexOf(photo);
+                                children:
+                                    List<int>.generate(sliderLength, (i) => i)
+                                        .map((index) {
                                   return Container(
                                     width: 8.0,
                                     height: 8.0,
@@ -91,7 +127,7 @@ class _ProjectInfoState extends State<ProjectInfo> {
                                         vertical: 10.0, horizontal: 2.0),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: widget._current == _index
+                                      color: widget._current == index
                                           ? HexColor('#00D7FF')
                                           : Colors.white,
                                     ),
@@ -136,29 +172,6 @@ class _ProjectInfoState extends State<ProjectInfo> {
                   ),
                   SizedBox(
                     height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 10.0),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.brown.shade800,
-                          backgroundImage: NetworkImage(project.fond.avatar),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            project.fond.name,
-                            // style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          Text(project.fond.region?.name ?? 'не указан город',
-                              style: TextStyle(
-                                  color: HexColor('#8C8C8C'), fontSize: 12)),
-                        ],
-                      )
-                    ],
                   ),
                 ],
               ),

@@ -32,10 +32,10 @@ dependencies:
   image_res: ^0.2.3
   flutter_svg: ^0.19.1
   shared_preferences: ^0.5.12+4
+  flutter_gifimage: ^1.0.1
   http: ^0.12.2
   flutter_share: ^1.0.5
-  flutter_secure_storage: ^3.3.5
-  curved_navigation_bar: ^0.3.4
+  mask_text_input_formatter: ^1.2.1
   carousel_slider: ^2.3.1
   youtube_player_iframe: ^1.1.0
   cached_network_image: ^2.4.1
@@ -48,6 +48,7 @@ dependencies:
   url_launcher: ^5.7.10
   flutter_web_browser: ^0.13.1
   mime: ^0.9.7
+  firebase_core: ^0.5.3
   firebase_dynamic_links: ^0.6.3
   flutter_localizations: # Add this line
     sdk: flutter # Add this line
@@ -82,10 +83,12 @@ flutter:
      - assets/icon/home.svg
      - assets/icon/search.svg
      - assets/icon/user.svg
+     - assets/icon/check-mark.svg
      - assets/images/logo_main.png
      - assets/icon/icon.png
      - lang/kk.json
      - lang/ru.json
+     - assets/images/success.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

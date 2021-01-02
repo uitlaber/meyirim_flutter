@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'profile.dart';
 import 'package:meyirim/helpers/api_manager.dart';
@@ -219,6 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() async {
     var errorMessage = '';
     if (_isLoading) return;
+    SharedPreferences storage = await SharedPreferences.getInstance();
     _formKey.currentState.save();
     if (_formKey.currentState.validate()) {
       setState(() => _isLoading = true);
@@ -247,8 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _isLoading = false;
         });
 
-        await globals.storage
-            .write(key: "user_code", value: auth.userData.userCode);
+        await storage.setString("user_code", auth.userData.userCode);
       }
       // on Exception1 {
       //   // code for handling exception
@@ -269,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       if (jwt != null) {
-        globals.storage.write(key: "jwt", value: jwt);
+        storage.setString("jwt", jwt);
         Navigator.of(context).pushNamed('Home');
       }
     } else {
