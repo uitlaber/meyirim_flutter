@@ -17,8 +17,7 @@ class APIManager {
     print("Calling parameters: $param");
     Map<String, String> headers = new HashMap();
     headers['user-code'] = await auth.userCode();
-    headers['token'] = await auth.jwtOrEmpty();
-
+    headers['Authorization'] = 'Bearer ' + await auth.jwtOrEmpty();
     print("Calling headers: $headers");
 
     var response;
@@ -36,7 +35,7 @@ class APIManager {
     var token = await auth.jwtOrEmpty();
     Map<String, String> headers = new HashMap();
     headers['user-code'] = userCode;
-    headers['token'] = token;
+    headers['Authorization'] = 'Bearer ' + token;
     print("Calling API: $url");
     print("Calling headers: $headers");
     Response response = await Dio().get(
@@ -54,7 +53,6 @@ class APIManager {
       case 400:
         throw BadRequestException(response.data.toString());
       case 401:
-
       case 403:
         throw UnauthorisedException(response.data.toString());
       case 500:

@@ -11,6 +11,7 @@ import 'screens/home.dart';
 import 'screens/profile.dart';
 import 'screens/donations.dart';
 import 'screens/project.dart';
+import 'screens/fond.dart';
 import 'screens/search.dart';
 import 'screens/add_indigent.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -18,6 +19,7 @@ import 'helpers/hex_color.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_page_transition/flutter_page_transition.dart';
 import 'screens/update_profile.dart';
+import 'globals.dart' as globals;
 
 class MainApp extends StatefulWidget {
   @override
@@ -25,6 +27,13 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  @override
+  void initState() {
+    super.initState();
+    globals
+        .loadInitialData(); // continue your work in the `fetchSavedItemNo` function
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -85,6 +94,11 @@ class _MainAppState extends State<MainApp> {
                   if (path[0].startsWith('Report')) {
                     Map params = {'id': int.parse(path[1])};
                     return new ReportScreen(params);
+                  }
+
+                  if (path[0].startsWith('Fond')) {
+                    return new FondScreen(
+                        fondId: int.parse(path[1]), isFinished: 0);
                   }
                 }
 

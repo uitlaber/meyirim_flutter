@@ -48,11 +48,12 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: HexColor('#F2F2F7'),
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(120.0), // here the desired height
+            preferredSize: Size.fromHeight(120.0),
             child: AppBar(
-              leading: Container(child: null),
+              automaticallyImplyLeading: false,
+              elevation: 2,
+              shadowColor: HexColor('#069AFC'),
               centerTitle: true,
-              elevation: 0,
               title: Padding(
                 padding: EdgeInsets.only(top: 21.0, bottom: 10.0),
                 child: SizedBox(
@@ -63,6 +64,14 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
                     )),
               ),
               backgroundColor: HexColor('#00D7FF'),
+              // actions: [
+              //   IconButton(
+              //     icon: Icon(
+              //       Icons.mail,
+              //       color: Colors.white70,
+              //     ),
+              //   ),
+              // ],
               bottom: TabBar(
                 indicatorColor: Colors.white,
                 labelPadding: EdgeInsets.only(left: 2, right: 2),

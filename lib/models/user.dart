@@ -14,6 +14,7 @@ class User {
       this.name,
       this.username,
       this.email,
+      this.phone,
       this.userCode,
       this.avatar,
       this.region});
@@ -21,6 +22,7 @@ class User {
   int id;
   dynamic name;
   String email;
+  String phone;
   String username;
   String userCode;
   String avatar;
@@ -30,6 +32,7 @@ class User {
         id: json["id"],
         name: json["name"] != null ? json["name"] : 'Аноним',
         email: json["email"],
+        phone: json["phone"],
         username: json["username"],
         userCode: json["user_code"],
         avatar: json["avatar"],
@@ -42,9 +45,17 @@ class User {
         "id": id,
         "name": name,
         "email": email,
+        "phone": phone,
         "username": username,
         "user_code": userCode,
         "avatar": avatar,
         "region": region.toJson(),
       };
+}
+
+Future<User> fetchUser(int fondId) async {
+  var url = globals.apiUrl + "/fonds/$fondId";
+  var api = new APIManager();
+  var result = await api.getAPICall(url);
+  return User.fromJson(result);
 }

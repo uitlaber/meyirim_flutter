@@ -6,6 +6,10 @@ import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/models/user.dart';
 import 'package:meyirim/helpers/auth.dart' as auth;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'package:meyirim/ui/input_decoration.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key key}) : super(key: key);
@@ -18,6 +22,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isLoading = false;
   String jwt = '';
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+  var phoneFormatter = new MaskTextInputFormatter(
+    mask: '+7 (###) ###-##-##',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Image.asset('assets/images/logo.png'),
                           ),
                         ),
-                        (_isLoading || jwt?.isNotEmpty ?? false)
+                        (_isLoading)
                             ? Center(
                                 child: new CircularProgressIndicator(
                                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -67,109 +75,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             : Column(
                                 children: [
                                   FormBuilderTextField(
-                                    attribute: "email",
-                                    decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                            left: 20.0, right: 20.0),
-                                        border: new OutlineInputBorder(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              const Radius.circular(30.0),
-                                            ),
-                                            borderSide: new BorderSide(
-                                                color: Colors.transparent)),
-                                        enabledBorder: new OutlineInputBorder(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              const Radius.circular(30.0),
-                                            ),
-                                            borderSide: new BorderSide(
-                                                color: Colors.transparent)),
-                                        filled: true,
-                                        hintStyle: new TextStyle(
-                                            color: Colors.grey[600]),
-                                        hintText: "E-mail или номер телефона",
-                                        fillColor: Colors.white),
-                                    validators: [
-                                      FormBuilderValidators.required(
-                                          errorText:
-                                              'Введите E-mail или Телефон'),
-                                    ],
-                                  ),
+                                      name: "phone",
+                                      keyboardType: TextInputType.phone,
+                                      decoration: uiInputDecoration(
+                                          hintText: '+7 (___) ___-__-__'),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(context,
+                                            errorText:
+                                                'Введите номер телефона'),
+                                        FormBuilderValidators.match(context,
+                                            r'^\+7 \(([0-9]{3})\) ([0-9]{3})-([0-9]{2})-([0-9]{2})$',
+                                            errorText:
+                                                'Неверный номер телефона')
+                                      ]),
+                                      inputFormatters: [phoneFormatter]),
                                   Container(
                                     margin: const EdgeInsets.only(top: 20.0),
                                     child: FormBuilderTextField(
-                                      attribute: "password",
+                                      name: "password",
                                       enableSuggestions: false,
                                       autocorrect: false,
                                       obscureText: true,
-                                      decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 20.0, right: 20.0),
-                                          border: new OutlineInputBorder(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                const Radius.circular(30.0),
-                                              ),
-                                              borderSide: new BorderSide(
-                                                  color: Colors.transparent)),
-                                          enabledBorder: new OutlineInputBorder(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                const Radius.circular(30.0),
-                                              ),
-                                              borderSide: new BorderSide(
-                                                  color: Colors.transparent)),
-                                          filled: true,
-                                          hintStyle: new TextStyle(
-                                              color: Colors.grey[600]),
-                                          hintText: "Пароль",
-                                          fillColor: Colors.white),
-                                      validators: [
-                                        FormBuilderValidators.required(
+                                      decoration:
+                                          uiInputDecoration(hintText: 'Пароль'),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(context,
                                             errorText: 'Введите пароль'),
-                                        FormBuilderValidators.minLength(6,
+                                        FormBuilderValidators.minLength(
+                                            context, 6,
                                             errorText:
                                                 'Пароль должен содержать минимум 6 символов'),
-                                      ],
+                                      ]),
                                     ),
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(top: 20.0),
                                     child: FormBuilderTextField(
-                                      attribute: "password_confirmation",
+                                      name: "password_confirmation",
                                       enableSuggestions: false,
                                       autocorrect: false,
                                       obscureText: true,
-                                      decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 20.0, right: 20.0),
-                                          border: new OutlineInputBorder(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                const Radius.circular(30.0),
-                                              ),
-                                              borderSide: new BorderSide(
-                                                  color: Colors.transparent)),
-                                          enabledBorder: new OutlineInputBorder(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                const Radius.circular(30.0),
-                                              ),
-                                              borderSide: new BorderSide(
-                                                  color: Colors.transparent)),
-                                          filled: true,
-                                          hintStyle: new TextStyle(
-                                              color: Colors.grey[600]),
-                                          hintText: "Потвердите пароль",
-                                          fillColor: Colors.white),
-                                      validators: [
-                                        FormBuilderValidators.required(
+                                      decoration: uiInputDecoration(
+                                          hintText: 'Потвердите свой пароль'),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(context,
                                             errorText: 'Потвердите пароль'),
-                                        FormBuilderValidators.minLength(6,
+                                        FormBuilderValidators.minLength(
+                                            context, 6,
                                             errorText:
                                                 'Пароль должен содержать минимум 6 символов'),
-                                      ],
+                                      ]),
                                     ),
                                   ),
                                   Container(
@@ -250,6 +205,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           jwt = authData['token'];
           _isLoading = false;
+        });
+      } on DioError catch (error) {
+        Map<String, dynamic> response = jsonDecode(error.response.toString());
+        errorMessage = response['error'];
+        setState(() {
+          _isLoading = false;
+          jwt = null;
         });
       } catch (e) {
         errorMessage = e.toString();

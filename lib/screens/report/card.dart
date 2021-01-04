@@ -39,27 +39,30 @@ class _ReportScreenState extends State<ReportCard> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       Container(
-                        child: Hero(
-                          tag: report.firstPhotoUrl,
-                          child: CachedNetworkImage(
-                            height: 250,
-                            imageUrl: report.firstPhotoUrl,
-                            imageBuilder: (context, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
+                        child: AspectRatio(
+                          aspectRatio: 3 / 2,
+                          child: Hero(
+                            tag: report.firstPhotoUrl,
+                            child: CachedNetworkImage(
+                              imageUrl: report.firstPhotoUrl,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => Center(
-                              child: Icon(Icons.error),
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) => Center(
+                                child: Icon(Icons.error),
+                              ),
                             ),
                           ),
                         ),

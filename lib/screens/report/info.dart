@@ -140,7 +140,8 @@ class _ReportInfoState extends State<ReportInfo> {
               child: Divider(color: Colors.black12),
             ),
             Padding(
-              padding: EdgeInsets.all(15),
+              padding:
+                  EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

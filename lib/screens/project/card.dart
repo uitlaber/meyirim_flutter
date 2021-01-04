@@ -10,7 +10,9 @@ import '../project.dart';
 
 class ProjectCard extends StatefulWidget {
   final Project project;
-  const ProjectCard(this.project);
+  bool hideFond = false;
+  ProjectCard({Key key, this.project, this.hideFond}) : super(key: key);
+
   @override
   _ProjectCardState createState() => _ProjectCardState();
 }
@@ -40,36 +42,40 @@ class _ProjectCardState extends State<ProjectCard> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       Container(
-                        child: Hero(
-                            tag: project.firstPhotoUrl,
-                            child: CachedNetworkImage(
-                              color: Colors.red,
-                              height: 250,
-                              imageUrl: project.firstPhotoUrl,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  image: DecorationImage(
-                                    alignment: Alignment.topCenter,
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                        child: AspectRatio(
+                          aspectRatio: 3 / 2,
+                          child: Hero(
+                              tag: project.firstPhotoUrl,
+                              child: CachedNetworkImage(
+                                color: Colors.red,
+                                // height: 250,
+                                imageUrl: project.firstPhotoUrl,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10)),
+                                    image: DecorationImage(
+                                      alignment: Alignment.topCenter,
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(
-                                  backgroundColor: HexColor('#FFFFFF'),
-                                  valueColor: new AlwaysStoppedAnimation<Color>(
-                                      HexColor('#00D7FF')),
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: HexColor('#FFFFFF'),
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            HexColor('#00D7FF')),
+                                  ),
                                 ),
-                              ),
-                              errorWidget: (context, url, error) => Center(
-                                child: Icon(Icons.error),
-                              ),
-                            )),
+                                errorWidget: (context, url, error) => Center(
+                                  child: Icon(Icons.error),
+                                ),
+                              )),
+                        ),
                       ),
                       Positioned.fill(
                           child: Container(
@@ -149,7 +155,10 @@ class _ProjectCardState extends State<ProjectCard> {
                                         )
                                       ],
                                     ),
-                                  )
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
                                 ],
                               ),
                               Text(project.title,
@@ -164,44 +173,51 @@ class _ProjectCardState extends State<ProjectCard> {
                     ],
                   )),
               ProjectStatus(project: project),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                child: Divider(color: Colors.black12),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10.0),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.brown.shade800,
-                            backgroundImage: NetworkImage(project.fond.avatar),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              project.fond.name,
-                              // style: TextStyle(fontWeight: FontWeight.w500),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 15.0, right: 15.0),
+              //   child: Divider(color: Colors.black12),
+              // ),
+              if (false)
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 10.0),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.brown.shade800,
+                              backgroundImage:
+                                  NetworkImage(project.fond.avatar),
                             ),
-                            Text(project.fond.region?.name ?? 'не указан город',
-                                style: TextStyle(
-                                    color: HexColor('#8C8C8C'), fontSize: 12)),
-                          ],
-                        )
-                      ],
-                    ),
-                    IconButton(
-                        icon: Icon(Icons.share),
-                        onPressed: () => shareProject(project)),
-                  ],
-                ),
-              )
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                project.fond.name,
+                                // style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                  project.fond.region?.name ??
+                                      'не указан город',
+                                  style: TextStyle(
+                                      color: HexColor('#8C8C8C'),
+                                      fontSize: 12)),
+                            ],
+                          )
+                        ],
+                      ),
+                      IconButton(
+                          focusColor: Colors.blue,
+                          icon: Icon(Icons.share),
+                          onPressed: () => shareProject(project)),
+                    ],
+                  ),
+                )
             ],
           )),
     );

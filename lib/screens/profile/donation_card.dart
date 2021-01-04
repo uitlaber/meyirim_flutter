@@ -22,8 +22,7 @@ class _DonationCardState extends State<DonationCard> {
     var project = widget.project;
     var donation = widget.donation;
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, 'Project',
-          arguments: {'id': project.id}),
+      onTap: () => Navigator.pushNamed(context, 'Project/${project.id}'),
       child: Container(
         margin: EdgeInsets.only(bottom: 15),
         padding: EdgeInsets.all(10),

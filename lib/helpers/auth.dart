@@ -47,16 +47,22 @@ Future<String> jwtOrEmpty() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
   var jwt = await storage.get("jwt");
   if (jwt == null) return "";
-  print(jwt);
   return jwt;
 }
 
 /// Проверка авторизации
 Future<bool> authCheck() async {
   String jwt = await jwtOrEmpty();
-  var result = jwtValidate(jwt);
-  if (result == null) return false;
-  return result;
+  var url = globals.checkAuth;
+  var api = new APIManager();
+  try {
+    var authData = await api.postAPICall(url, {});
+    userData = User.fromJson(authData['user']);
+    SharedPreferences storage = await SharedPreferences.getInstance();
+    await storage.setString("user_code", userData.userCode);
+  } catch (e) {
+    logout();
+  }
 }
 
 Future<dynamic> attemptLogIn(Map<String, dynamic> data) async {
@@ -65,10 +71,15 @@ Future<dynamic> attemptLogIn(Map<String, dynamic> data) async {
   return await api.postAPICall(url, data);
 }
 
+Future<dynamic> resetPassword(Map<String, dynamic> data) async {
+  var url = globals.resetUrl;
+  var api = new APIManager();
+  return await api.postAPICall(url, data);
+}
+
 Future<dynamic> attemptRegister(Map<String, dynamic> data) async {
   var url = globals.registerUrl;
   var api = new APIManager();
-  data['user_code'] = await userCode();
   return await api.postAPICall(url, data);
 }
 

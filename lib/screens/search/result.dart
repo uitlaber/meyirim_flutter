@@ -154,7 +154,7 @@ class _SearchResultState extends State<SearchResult> {
             controller: _scrollController,
             itemCount: projects.length,
             itemBuilder: (BuildContext context, int index) {
-              return ProjectCard(projects[index]);
+              return ProjectCard(project: projects[index]);
             },
           ))
         : Container(

@@ -2,30 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/screens/project/card.dart';
+import 'package:meyirim/components/fond_card.dart';
+import 'package:meyirim/models/user.dart';
 
-class LentaScreen extends StatefulWidget {
+// ignore: must_be_immutable
+class FondScreen extends StatefulWidget {
   int isFinished = 0;
+  int fondId;
 
-  LentaScreen({this.isFinished});
+  FondScreen({Key key, this.isFinished, this.fondId}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return LentaScreenState();
-  }
+  _FondScreenState createState() => _FondScreenState();
 }
 
-class LentaScreenState extends State<LentaScreen> {
+class _FondScreenState extends State<FondScreen> {
   ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   int _maxPage = 2;
   bool _isLoading = false;
   bool _hasError = false;
   List<Project> projects = [];
+  User fond;
+
   //loadMore();
 
   @override
   void initState() {
     super.initState();
+
     loadMore();
     _scrollController
       ..addListener(() {
@@ -44,12 +49,29 @@ class LentaScreenState extends State<LentaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading && projects.length == 0)
-      return Center(
-        child: new CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
-      );
-    return createListView(context);
+    return Scaffold(
+        backgroundColor: HexColor('#F2F2F7'),
+        appBar: AppBar(
+            backgroundColor: HexColor('#00D7FF'),
+            title: Text('Все активные проекты фонда'),
+            titleSpacing: 0,
+            elevation: 0),
+        body: SafeArea(
+            child: (_isLoading && projects.length == 0)
+                ? Center(
+                    child: new CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
+                  )
+                : ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: FondCard(fond: fond),
+                      ),
+                      createListView(context)
+                    ],
+                  )));
   }
 
   Widget createListView(BuildContext context) {
@@ -73,14 +95,18 @@ class LentaScreenState extends State<LentaScreen> {
       ));
     }
     return (projects.length > 0)
-        ? Container(
-            child: ListView.builder(
+        ? ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             controller: _scrollController,
             itemCount: projects.length,
             itemBuilder: (BuildContext context, int index) {
-              return ProjectCard(project: projects[index]);
+              return ProjectCard(
+                project: projects[index],
+                hideFond: true,
+              );
             },
-          ))
+          )
         : !_isLoading
             ? Center(
                 child: Wrap(
@@ -108,11 +134,19 @@ class LentaScreenState extends State<LentaScreen> {
         _isLoading = true;
       });
       try {
-        var result =
-            await fetchProjects(page: _currentPage, status: widget.isFinished);
+        if (fond == null) {
+          User resultFond = await fetchUser(widget.fondId);
+          setState(() {
+            fond = resultFond;
+          });
+        }
+        var result = await fetchProjects(
+            page: _currentPage,
+            status: widget.isFinished,
+            fondId: widget.fondId);
 
         List<Project> newProjects = List<Project>.from(result['data'].map((x) {
-          print(x.runtimeType);
+          // print(x.runtimeType);
           // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
           return Project.fromJson(x);
         }));

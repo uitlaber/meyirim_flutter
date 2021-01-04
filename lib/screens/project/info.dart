@@ -65,9 +65,8 @@ class _ProjectInfoState extends State<ProjectInfo> {
                             itemCount: sliderLength,
                             options: CarouselOptions(
                                 enableInfiniteScroll: false,
-                                aspectRatio: 16 / 9,
+                                aspectRatio: 4 / 3,
                                 viewportFraction: 1,
-                                height: 300,
                                 onPageChanged: (index, reason) {
                                   setState(() {
                                     widget._current = index;

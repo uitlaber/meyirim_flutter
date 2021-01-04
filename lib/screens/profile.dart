@@ -26,86 +26,90 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: HexColor('#F2F2F7'),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              color: HexColor('#00D7FF'),
-              padding: EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      if (auth.userData == null) {
-                        auth.logout();
-                        Navigator.of(context).pushNamed('Login');
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage: (auth.userData != null &&
-                                  auth.userData.avatar != null)
-                              ? NetworkImage(auth.userData.avatar)
-                              : null,
-                          child: Icon(
-                            Icons.perm_identity_outlined,
-                            color: HexColor('#00D7FF'),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                (auth.userData != null)
-                                    ? auth.userData.name?.isEmpty ?? true
-                                        ? 'Аноним'
-                                        : auth.userData.name
-                                    : 'Войдите или создайте аккаунт',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                              Text(
-                                  (auth.userData != null)
-                                      ? auth.userData.username
-                                      : 'Чтобы не терять свои пожертвование ',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.white70)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  (auth.userData != null)
-                      ? IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => displayBottomSheet(context))
-                      : Container()
-                ],
-              ),
-            ),
-            Donations(),
-            InkWell(
-              onTap: () => Navigator.of(context).pushNamed('AddIndigent'),
-              child: ProfileButton(
-                icon: Icons.add_circle,
-                label: 'Добавить нуждающегося',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
                 color: HexColor('#00D7FF'),
+                padding: EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (auth.userData == null) {
+                          auth.logout();
+                          Navigator.of(context).pushNamed('Login');
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                              backgroundColor: Colors.white,
+                              backgroundImage: (auth.userData != null &&
+                                      auth.userData.avatar != null)
+                                  ? NetworkImage(auth.userData.avatar)
+                                  : null,
+                              child: (auth.userData == null ||
+                                      auth.userData.avatar == null)
+                                  ? Icon(
+                                      Icons.perm_identity_outlined,
+                                      color: HexColor('#00D7FF'),
+                                    )
+                                  : Container()),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  (auth.userData != null)
+                                      ? auth.userData.name?.isEmpty ?? true
+                                          ? 'Аноним'
+                                          : auth.userData.name
+                                      : 'Войдите или создайте аккаунт',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                Text(
+                                    (auth.userData != null)
+                                        ? auth.userData.username
+                                        : 'Чтобы не терять свои пожертвование ',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white70)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    (auth.userData != null)
+                        ? IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => displayBottomSheet(context))
+                        : Container()
+                  ],
+                ),
               ),
-            ),
-          ],
+              Donations(),
+              InkWell(
+                onTap: () => Navigator.of(context).pushNamed('AddIndigent'),
+                child: ProfileButton(
+                  icon: Icons.add_circle,
+                  label: 'Добавить нуждающегося',
+                  color: HexColor('#00D7FF'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNav(2),

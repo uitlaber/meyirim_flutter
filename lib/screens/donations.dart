@@ -47,8 +47,9 @@ class _DonationsScreenState extends State<DonationsScreen> {
     return Scaffold(
         backgroundColor: HexColor('#F2F2F7'),
         appBar: AppBar(
+            title: Text(
+                widget.isReferal ? 'Через меня помогли ' : 'Мои пожертвования'),
             backgroundColor: HexColor('#00D7FF'),
-            titleSpacing: 0,
             elevation: 0),
         body: Container(
           padding: EdgeInsets.all(15),
@@ -56,20 +57,14 @@ class _DonationsScreenState extends State<DonationsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _isLoading
-                  ? Expanded(
-                      child: Center(
-                        child: new CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                HexColor('#00D7FF'))),
-                      ),
-                    )
-                  : Text(
-                      widget.isReferal
-                          ? 'Через меня помогли '
-                          : 'Мои пожертвования',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              if (_isLoading)
+                Expanded(
+                  child: Center(
+                    child: new CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(HexColor('#00D7FF'))),
+                  ),
+                ),
               SizedBox(height: 15),
               Expanded(
                 child: createListView(context),

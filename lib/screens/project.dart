@@ -30,7 +30,7 @@ class ProjectScreenState extends State<ProjectScreen> {
         backgroundColor: HexColor('#F2F2F7'),
         appBar: AppBar(
             backgroundColor: HexColor('#00D7FF'),
-            titleSpacing: 0,
+            title: Text('Проект'),
             elevation: 0),
         body: Container(
             child: FutureBuilder<Project>(

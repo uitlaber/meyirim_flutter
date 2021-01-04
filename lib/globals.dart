@@ -6,29 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'helpers/auth.dart';
+import 'models/region.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String apiUrl = 'https://dev.meyirim.kz/api';
-// const String apiUrl = 'http://10.0.2.2/api.meyirim/api';
+
 const String siteUrl = 'https://dev.meyirim.kz';
 const String loginUrl = apiUrl + '/login';
 const String registerUrl = apiUrl + '/signup';
 const String paymentUrl = apiUrl + '/payment/pay';
 const String addIndigentUrl = apiUrl + '/indigent/store';
+const String updateProfile = apiUrl + '/users/update';
+const String checkAuth = apiUrl + '/check';
+const String resetUrl = apiUrl + '/reset';
+
+var lastReset = null;
 
 const String dummyAvatar = 'https://ui-avatars.com/api/';
 const String dummyPhoto = 'https://via.placeholder.com/468x300?text=meyirim.kz';
 
-/// Уникальный код пользователя
-// Future<String> userCode() async {
-//   SharedPreferences storage = await SharedPreferences.getInstance();
-//   var userCode = await storage.get("user_code");
-//   if (userCode?.isEmpty ?? true) {
-//     var uuid = Uuid();
-//     userCode = uuid.v1();
-//     await storage.setString("user_code", userCode);
-//   }
-//   return userCode;
-// }
+/**
+ * Initial data
+ */
+
+List<Region> regions;
 
 /// Форматирование суммы
 String formatCur(dynamic amount) {
@@ -121,4 +122,17 @@ Future<String> _createDynamicLink(String link, bool short) async {
   }
 
   return url.toString();
+}
+
+loadInitialData() async {
+  SharedPreferences storage = await SharedPreferences.getInstance();
+  print('Обнавление данных');
+  try {
+    regions = await fetchRegions(1);
+    final String encodedData = Region.encode(regions);
+    storage.setString('regions', encodedData);
+  } catch (e) {
+    throw 'Не удалось загрузить регионы';
+  }
+  authCheck();
 }

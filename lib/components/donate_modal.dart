@@ -92,7 +92,7 @@ class _DonateModalState extends State<DonateModal> {
                                 ],
                                 // Only numbers can be entered
                                 initialValue: '100',
-                                attribute: "amount",
+                                name: "amount",
                                 style: TextStyle(fontSize: 25.0),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
@@ -115,10 +115,12 @@ class _DonateModalState extends State<DonateModal> {
                                         new TextStyle(color: Colors.grey[600]),
                                     hintText: "0 ₸",
                                     fillColor: HexColor('#F0F0F7')),
-                                validators: [
-                                  FormBuilderValidators.required(),
-                                  FormBuilderValidators.numeric(),
-                                ],
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context,
+                                      errorText: 'Введите сумму'),
+                                  FormBuilderValidators.numeric(context,
+                                      errorText: 'Введите сумму'),
+                                ]),
                               ),
                               SizedBox(
                                 height: 15,
@@ -141,8 +143,8 @@ class _DonateModalState extends State<DonateModal> {
                                           elevation: 0,
                                           child: Text('100₸'),
                                           onPressed: () {
-                                            _formKey.currentState
-                                                .fields['amount'].currentState
+                                            _formKey
+                                                .currentState.fields['amount']
                                                 .didChange('100');
                                           }),
                                     ),
@@ -164,8 +166,8 @@ class _DonateModalState extends State<DonateModal> {
                                             elevation: 0,
                                             child: Text('500₸'),
                                             onPressed: () {
-                                              _formKey.currentState
-                                                  .fields['amount'].currentState
+                                              _formKey
+                                                  .currentState.fields['amount']
                                                   .didChange('500');
                                             }),
                                       ),
@@ -185,8 +187,8 @@ class _DonateModalState extends State<DonateModal> {
                                           elevation: 0,
                                           child: Text('1000₸'),
                                           onPressed: () {
-                                            _formKey.currentState
-                                                .fields['amount'].currentState
+                                            _formKey
+                                                .currentState.fields['amount']
                                                 .didChange('1000');
                                           }),
                                     ),
@@ -238,8 +240,7 @@ class _DonateModalState extends State<DonateModal> {
       var api = new APIManager();
 
       Map<String, String> data = new HashMap();
-      data['amount'] =
-          _formKey.currentState.fields['amount'].currentState.value;
+      data['amount'] = _formKey.currentState.fields['amount'].value;
       data['project_id'] = projectId.toString();
 
       var response = await api.postAPICall(url, data);
