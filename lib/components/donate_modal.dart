@@ -213,7 +213,7 @@ class _DonateModalState extends State<DonateModal> {
                                     onPressed: () => payCard(project.id),
                                     elevation: 0,
                                     child: Text(
-                                      "Оплата банковской картой",
+                                      "Оплатить банковской картой",
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,

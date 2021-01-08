@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/screens/project/card.dart';
-import 'file:///C:/Users/uitlaber/Desktop/meyirim_flutter/meyirim/lib/helpers/api_response.dart';
-import 'dart:convert';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/components/bottom_nav.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:meyirim/helpers/api_manager.dart';
 
 class SearchResult extends StatefulWidget {
   @override
@@ -220,10 +216,11 @@ class _SearchResultState extends State<SearchResult> {
       try {
         var result = await searchProjects(page: _currentPage, query: query);
 
-        ApiResponse response = ApiResponse.fromJson(result);
-
-        List<Project> newProjects =
-            List<Project>.from(response.data.map((x) => Project.fromJson(x)));
+        List<Project> newProjects = List<Project>.from(result['data'].map((x) {
+          print(x.runtimeType);
+          // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
+          return Project.fromJson(x);
+        }));
 
         // print(newProjects);
         setState(() {

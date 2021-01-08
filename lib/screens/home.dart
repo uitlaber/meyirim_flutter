@@ -7,7 +7,9 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  HomeScreen({Key key}) : super(key: key);
+  HomeScreen({
+    Key key,
+  }) : super(key: key);
   @override
   _HomeStatefullWidgetState createState() => _HomeStatefullWidgetState();
 }
@@ -64,34 +66,16 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
                     )),
               ),
               backgroundColor: HexColor('#00D7FF'),
-              // actions: [
-              //   IconButton(
-              //     icon: Icon(
-              //       Icons.mail,
-              //       color: Colors.white70,
-              //     ),
-              //   ),
-              // ],
-              bottom: TabBar(
-                indicatorColor: Colors.white,
-                labelPadding: EdgeInsets.only(left: 2, right: 2),
-                labelStyle: TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1),
-                // isScrollable: true,
-                tabs: [
-                  Tab(
-                    text: 'Лента'.toUpperCase(),
-                  ),
-                  Tab(
-                    text: 'Завершенные'.toUpperCase(),
-                  ),
-                  Tab(
-                    text: 'Отчеты'.toUpperCase(),
-                  ),
-                ],
-              ),
+              actions: [
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(
+                //     Icons.,
+                //     color: Colors.white70,
+                //   ),
+                // ),
+              ],
+              bottom: myTabBar(),
             )),
         body: TabBarView(
           children: [
@@ -104,5 +88,28 @@ class _HomeStatefullWidgetState extends State<HomeScreen> {
         bottomNavigationBar: BottomNav(0),
       ),
     );
+  }
+
+  Widget myTabBar() {
+    return PreferredSize(
+        preferredSize: Size.fromHeight(120.0),
+        child: new TabBar(
+          indicatorColor: Colors.white,
+          labelPadding: EdgeInsets.only(left: 2, right: 2),
+          labelStyle: TextStyle(
+              fontSize: 12.0, fontWeight: FontWeight.w500, letterSpacing: 1),
+          // isScrollable: true,
+          tabs: [
+            Tab(
+              text: 'Лента'.toUpperCase(),
+            ),
+            Tab(
+              text: 'Завершенные'.toUpperCase(),
+            ),
+            Tab(
+              text: 'Отчеты'.toUpperCase(),
+            ),
+          ],
+        ));
   }
 }

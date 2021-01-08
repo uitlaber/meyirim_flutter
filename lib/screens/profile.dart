@@ -79,7 +79,7 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                                 Text(
                                     (auth.userData != null)
                                         ? auth.userData.username
-                                        : 'Чтобы не терять свои пожертвование ',
+                                        : 'Чтобы не потерять свои пожертвования',
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.white70)),
                               ],

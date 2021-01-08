@@ -29,7 +29,7 @@ class _DonationsState extends State<Donations> {
                     Navigator.of(context).pushNamed('Donations');
                   },
                   child: AmountCount(
-                      label: 'Мои пожертвование',
+                      label: 'Мои пожертвования',
                       labelColor: HexColor('#41BC73'),
                       amount: snapshot.data.amount),
                 ),

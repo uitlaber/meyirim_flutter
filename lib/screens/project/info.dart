@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meyirim/components/slider.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:meyirim/helpers/hex_color.dart';
@@ -10,6 +11,7 @@ import 'package:meyirim/globals.dart' as globals;
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:meyirim/helpers/youtube.dart';
 import 'package:meyirim/components/fond_card.dart';
+import 'package:meyirim/components/slider.dart';
 
 class ProjectInfo extends StatefulWidget {
   Project project;
@@ -25,23 +27,7 @@ class _ProjectInfoState extends State<ProjectInfo> {
   @override
   Widget build(BuildContext context) {
     Project project = widget.project;
-
-    int sliderLength = project.photos.length;
-    YoutubePlayerController _controller;
-
     String videoUrl = getIdFromUrl(project.videoUrl);
-
-    if (videoUrl != null && videoUrl.isNotEmpty) {
-      // ignore: close_sinks
-      _controller = YoutubePlayerController(
-        initialVideoId: videoUrl,
-        params: YoutubePlayerParams(
-          showControls: true,
-          showFullscreenButton: true,
-        ),
-      );
-      sliderLength = sliderLength + 1;
-    }
 
     return Scaffold(
       body: SafeArea(
@@ -51,96 +37,8 @@ class _ProjectInfoState extends State<ProjectInfo> {
               padding: const EdgeInsets.all(15.0),
               child: FondCard(fond: project.fond),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (project.photos is Iterable && project.photos.length > 0)
-                  Stack(
-                      fit: StackFit.loose,
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Positioned(
-                          child: CarouselSlider.builder(
-                            itemCount: sliderLength,
-                            options: CarouselOptions(
-                                enableInfiniteScroll: false,
-                                aspectRatio: 4 / 3,
-                                viewportFraction: 1,
-                                onPageChanged: (index, reason) {
-                                  setState(() {
-                                    widget._current = index;
-                                  });
-                                }),
-                            itemBuilder: (context, index) {
-                              if (project.photos.asMap().containsKey(index)) {
-                                return Container(
-                                    child: Hero(
-                                  tag: project.photos[index].path,
-                                  child: CachedNetworkImage(
-                                    imageUrl: project.photos[0].path,
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          alignment: Alignment.topCenter,
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Center(
-                                      child: Icon(Icons.error),
-                                    ),
-                                  ),
-                                ));
-                              } else {
-                                return Container(
-                                  child: YoutubePlayerIFrame(
-                                    controller: _controller,
-                                    aspectRatio: 16 / 9,
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        if (sliderLength > 1)
-                          Positioned(
-                            child: Container(
-                              padding: EdgeInsets.all(0.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children:
-                                    List<int>.generate(sliderLength, (i) => i)
-                                        .map((index) {
-                                  return Container(
-                                    width: 8.0,
-                                    height: 8.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 2.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: widget._current == index
-                                          ? HexColor('#00D7FF')
-                                          : Colors.white,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                      ])
-                else
-                  Image.network(globals.dummyPhoto),
-                ProjectStatus(project: project, full: true)
-              ],
-            ),
+            SliderWidget(photos: project.photos, videoUrl: videoUrl),
+            ProjectStatus(project: project, full: true),
             Padding(
               padding: EdgeInsets.only(left: 15.0, right: 15.0),
               child: Divider(color: Colors.black12),

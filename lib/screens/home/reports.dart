@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
-import 'package:meyirim/models/project.dart';
 import 'package:meyirim/models/report.dart';
 import 'package:meyirim/screens/report/card.dart';
-import 'file:///C:/Users/uitlaber/Desktop/meyirim_flutter/meyirim/lib/helpers/api_response.dart';
-import 'package:meyirim/helpers/api_manager.dart';
-import 'package:meyirim/globals.dart' as global;
-import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class ReportScreen extends StatefulWidget {
   @override
@@ -22,7 +18,6 @@ class ReportScreenState extends State<ReportScreen> {
   bool _isLoading = false;
   bool _hasError = false;
   List<Report> reports = [];
-  //loadMore();
 
   @override
   void initState() {
@@ -118,8 +113,12 @@ class ReportScreenState extends State<ReportScreen> {
           reports.addAll(results);
           _isLoading = false;
         });
+      } on DioError catch (e) {
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+        });
       } catch (e) {
-        print(e);
         setState(() {
           _isLoading = false;
           _hasError = true;

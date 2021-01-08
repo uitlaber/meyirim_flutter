@@ -105,7 +105,7 @@ class Project {
         false) {
       return photos[0].path;
     } else {
-      return globals.dummyPhoto;
+      return globals.dummyPhoto + '&id=${this.id}';
     }
   }
 }

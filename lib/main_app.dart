@@ -13,6 +13,7 @@ import 'screens/donations.dart';
 import 'screens/project.dart';
 import 'screens/fond.dart';
 import 'screens/search.dart';
+import 'screens/test.dart';
 import 'screens/add_indigent.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'helpers/hex_color.dart';

@@ -153,7 +153,6 @@ class _ReportScreenState extends State<ReportCard> {
                           children: [
                             Text(
                               report.fond.name,
-                              // style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                             Text(report.fond.region?.name ?? 'не указан город',
                                 style: TextStyle(

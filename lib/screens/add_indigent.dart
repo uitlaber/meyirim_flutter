@@ -35,7 +35,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
     return Scaffold(
         backgroundColor: HexColor('#EFEFF4'),
         appBar: AppBar(
-          title: Text('Добавить нуждающего'),
+          title: Text('Добавить нуждающегося'),
           backgroundColor: HexColor('#00D7FF'),
         ),
         body: SafeArea(
@@ -59,7 +59,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                         children: [
                           FormBuilderImagePicker(
                               decoration: InputDecoration(
-                                hintText: 'Фото',
+                                hintText: 'Фото нуждающегося',
                               ),
                               name: 'photo',
                               maxImages: 5,
@@ -89,11 +89,11 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                                 filled: true,
                                 hintStyle:
                                     new TextStyle(color: Colors.grey[600]),
-                                hintText: "ФИО нуждающего",
+                                hintText: "ФИО нуждающегося",
                                 fillColor: Colors.white),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
-                                  errorText: 'Введите ФИО нуждающего'),
+                                  errorText: 'Введите ФИО нуждающегося'),
                             ]),
                           ),
                           SizedBox(
@@ -123,7 +123,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                                 fillColor: Colors.white),
                             // initialValue: 'Male',
                             allowClear: true,
-                            hint: Text('Город нуждающего'),
+                            hint: Text('Город нуждающегося'),
                             items: List<DropdownMenuItem>.from(regions
                                     ?.map((region) => DropdownMenuItem(
                                         value: region.id,
@@ -155,7 +155,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                                 filled: true,
                                 hintStyle:
                                     new TextStyle(color: Colors.grey[600]),
-                                hintText: "Адрес нуждающего",
+                                hintText: "Адрес нуждающегося",
                                 fillColor: Colors.white),
                           ),
                           SizedBox(
@@ -303,7 +303,8 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
 
         await api.postAPICall(url, formData);
         _formKey.currentState?.reset();
-        displayDialog(context, "Спасибо!", 'Ваш запрос отправлен!');
+        displayDialog(context, "Спасибо!",
+            'Данные и координаты нуждающегося отправлены в фонды на проверку.');
         // print(response);
         setState(() {
           _isLoading = false;

@@ -126,7 +126,6 @@ Future<String> _createDynamicLink(String link, bool short) async {
 
 loadInitialData() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
-  print('Обнавление данных');
   try {
     regions = await fetchRegions(1);
     final String encodedData = Region.encode(regions);

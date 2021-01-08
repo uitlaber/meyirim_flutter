@@ -9,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meyirim/screens/report/status.dart';
 import 'package:meyirim/components/fond_card.dart';
 
+// ignore: must_be_immutable
 class ReportInfo extends StatefulWidget {
   Report report;
   int _current = 0;
@@ -24,6 +25,7 @@ class _ReportInfoState extends State<ReportInfo> {
   Widget build(BuildContext context) {
     Report report = widget.report;
     int sliderLength = report.photos.length;
+    // ignore: close_sinks
     YoutubePlayerController _controller;
 
     if (report.videoUrl != null && report.videoUrl.isNotEmpty) {

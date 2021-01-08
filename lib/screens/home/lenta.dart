@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/screens/project/card.dart';
+import 'package:dio/dio.dart';
 
+// ignore: must_be_immutable
 class LentaScreen extends StatefulWidget {
   int isFinished = 0;
 
@@ -21,7 +23,6 @@ class LentaScreenState extends State<LentaScreen> {
   bool _isLoading = false;
   bool _hasError = false;
   List<Project> projects = [];
-  //loadMore();
 
   @override
   void initState() {
@@ -111,11 +112,8 @@ class LentaScreenState extends State<LentaScreen> {
         var result =
             await fetchProjects(page: _currentPage, status: widget.isFinished);
 
-        List<Project> newProjects = List<Project>.from(result['data'].map((x) {
-          print(x.runtimeType);
-          // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
-          return Project.fromJson(x);
-        }));
+        List<Project> newProjects =
+            List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
 
         setState(() {
           _currentPage++;
@@ -123,8 +121,12 @@ class LentaScreenState extends State<LentaScreen> {
           projects.addAll(newProjects);
           _isLoading = false;
         });
+      } on DioError catch (e) {
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+        });
       } catch (e) {
-        print(e);
         setState(() {
           _isLoading = false;
           _hasError = true;
