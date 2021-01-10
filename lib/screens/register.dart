@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/models/user.dart';
@@ -21,7 +20,9 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _isLoading = false;
   String jwt = '';
-  final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+
+  final _formKey = GlobalKey<FormState>();
+
   var phoneFormatter = new MaskTextInputFormatter(
     mask: '+7 (###) ###-##-##',
     filter: {"#": RegExp(r'[0-9]')},
@@ -52,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: SingleChildScrollView(
               child: Padding(
                   padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: FormBuilder(
+                  child: Form(
                     key: _formKey,
                     child: Column(
                       // mainAxisSize: MainAxisSize.max,
@@ -74,57 +75,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               )
                             : Column(
                                 children: [
-                                  FormBuilderTextField(
-                                      name: "phone",
+                                  TextFormField(
                                       keyboardType: TextInputType.phone,
                                       decoration: uiInputDecoration(
                                           hintText: '+7 (___) ___-__-__'),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(context,
-                                            errorText:
-                                                'Введите номер телефона'),
-                                        FormBuilderValidators.match(context,
-                                            r'^\+7 \(([0-9]{3})\) ([0-9]{3})-([0-9]{2})-([0-9]{2})$',
-                                            errorText:
-                                                'Неверный номер телефона')
-                                      ]),
                                       inputFormatters: [phoneFormatter]),
                                   Container(
                                     margin: const EdgeInsets.only(top: 20.0),
-                                    child: FormBuilderTextField(
-                                      name: "password",
+                                    child: TextFormField(
                                       enableSuggestions: false,
                                       autocorrect: false,
                                       obscureText: true,
                                       decoration:
                                           uiInputDecoration(hintText: 'Пароль'),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(context,
-                                            errorText: 'Введите пароль'),
-                                        FormBuilderValidators.minLength(
-                                            context, 6,
-                                            errorText:
-                                                'Пароль должен содержать минимум 6 символов'),
-                                      ]),
                                     ),
                                   ),
                                   Container(
                                     margin: const EdgeInsets.only(top: 20.0),
-                                    child: FormBuilderTextField(
-                                      name: "password_confirmation",
+                                    child: TextFormField(
                                       enableSuggestions: false,
                                       autocorrect: false,
                                       obscureText: true,
                                       decoration: uiInputDecoration(
                                           hintText: 'Потвердите свой пароль'),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(context,
-                                            errorText: 'Потвердите пароль'),
-                                        FormBuilderValidators.minLength(
-                                            context, 6,
-                                            errorText:
-                                                'Пароль должен содержать минимум 6 символов'),
-                                      ]),
                                     ),
                                   ),
                                   Container(
@@ -191,46 +164,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
             AlertDialog(title: Text(title), content: Text(text)),
       );
 
-  void register() async {
-    var errorMessage = '';
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    if (_isLoading) return;
-    _formKey.currentState.save();
-    if (_formKey.currentState.validate()) {
-      setState(() => _isLoading = true);
-      var authData;
-      try {
-        authData = await auth.attemptRegister(_formKey.currentState.value);
-        auth.userData = User.fromJson(authData['user']);
-        setState(() {
-          jwt = authData['token'];
-          _isLoading = false;
-        });
-      } on DioError catch (error) {
-        Map<String, dynamic> response = jsonDecode(error.response.toString());
-        errorMessage = response['error'];
-        setState(() {
-          _isLoading = false;
-          jwt = null;
-        });
-      } catch (e) {
-        errorMessage = e.toString();
-        setState(() {
-          _isLoading = false;
-          jwt = null;
-        });
-      }
-
-      if (errorMessage?.isNotEmpty ?? false) {
-        displayDialog(context, "Ошибка!", errorMessage);
-        return;
-      }
-      if (jwt != null) {
-        storage.setString("jwt", jwt);
-        Navigator.of(context).pushNamed('Home');
-      }
-    } else {
-      print("validation failed");
-    }
-  }
+  void register() async {}
 }

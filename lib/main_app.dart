@@ -4,22 +4,21 @@ import 'package:meyirim/screens/home.dart';
 import 'package:meyirim/screens/project.dart';
 import 'package:meyirim/screens/report.dart';
 import 'package:meyirim/screens/success.dart';
-import 'screens/login.dart';
-import 'screens/register.dart';
-import 'screens/reset.dart';
+// import 'screens/login.dart';
+// import 'screens/register.dart';
+// import 'screens/reset.dart';
+// import 'screens/profile.dart';
+// import 'screens/search.dart';
+// import 'screens/donations.dart';
+// import 'screens/update_profile.dart';
+// import 'screens/add_indigent.dart';
 import 'screens/home.dart';
-import 'screens/profile.dart';
-import 'screens/donations.dart';
 import 'screens/project.dart';
 import 'screens/fond.dart';
-import 'screens/search.dart';
-import 'screens/test.dart';
-import 'screens/add_indigent.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'helpers/hex_color.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_page_transition/flutter_page_transition.dart';
-import 'screens/update_profile.dart';
 import 'globals.dart' as globals;
 
 class MainApp extends StatefulWidget {
@@ -99,31 +98,31 @@ class _MainAppState extends State<MainApp> {
 
                   if (path[0].startsWith('Fond')) {
                     return new FondScreen(
-                        fondId: int.parse(path[1]), isFinished: 0);
+                        fondId: int.parse(path[1]), isFinished: false);
                   }
                 }
 
                 switch (routeSettings.name) {
                   case 'Home':
                     return HomeScreen();
-                  case 'Search':
-                    return SearchScreen();
-                  case 'Profile':
-                    return ProfileScreen();
-                  case 'Donations':
-                    return DonationsScreen(isReferal: false);
-                  case 'Referals':
-                    return DonationsScreen(isReferal: true);
-                  case 'Login':
-                    return LoginScreen();
-                  case 'Register':
-                    return RegisterScreen();
-                  case 'Reset':
-                    return ResetScreen();
-                  case 'AddIndigent':
-                    return AddIndigentScreen();
-                  case 'UpdateProfile':
-                    return UpdateProfileScreen();
+                  // case 'Search':
+                  //   return SearchScreen();
+                  // case 'Profile':
+                  //   return ProfileScreen();
+                  // case 'Donations':
+                  //   return DonationsScreen(isReferal: false);
+                  // case 'Referals':
+                  //   return DonationsScreen(isReferal: true);
+                  // case 'Login':
+                  //   return LoginScreen();
+                  // case 'Register':
+                  //   return RegisterScreen();
+                  // case 'Reset':
+                  //   return ResetScreen();
+                  // case 'AddIndigent':
+                  //   return AddIndigentScreen();
+                  // case 'UpdateProfile':
+                  //   return UpdateProfileScreen();
                   case 'Success':
                     return SuccessScreen(
                       title: 'Спасибо',

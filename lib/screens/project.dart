@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'package:meyirim/models/project.dart';
 import 'package:meyirim/components/loading.dart';
 import 'package:meyirim/components/message.dart';
 import 'package:meyirim/screens/project/info.dart';
+import 'package:meyirim/globals.dart' as globals;
 
 class ProjectScreen extends StatefulWidget {
   final Map params;
@@ -49,5 +50,15 @@ class ProjectScreenState extends State<ProjectScreen> {
                   }
                   return body;
                 })));
+  }
+
+  Future<Project> findProject(String id) async {
+    try {
+      final sdk = await globals.sdk();
+      final result = await sdk.items('projects').readOne(id);
+      return Project.fromJson(result.data);
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -1,103 +1,83 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:core';
-import 'dart:io';
-
-import 'package:async/async.dart';
-import 'package:dio/dio.dart';
+import 'package:meyirim/models/file.dart';
 import 'package:meyirim/globals.dart' as globals;
-import 'package:http/http.dart' as http;
-import 'file.dart';
-import 'user.dart';
-import 'report.dart';
-import 'donation.dart';
-import 'package:meyirim/helpers/api_manager.dart';
-import 'package:meyirim/models/indigent.dart';
 
 Project projectFromJson(String str) => Project.fromJson(json.decode(str));
 
 String projectToJson(Project data) => json.encode(data.toJson());
 
 class Project {
-  Project(
-      {this.id,
-      this.title,
-      this.description,
-      this.requiredAmount,
-      this.collectedAmount,
-      this.videoUrl,
-      this.isFinished,
-      this.isPublished,
-      this.fondId,
-      this.createdAt,
-      this.photos,
-      this.fond,
-      this.indigent,
-      this.donations,
-      this.donationsCount});
+  Project({
+    this.id,
+    this.status,
+    // this.userCreated,
+    // this.dateCreated,
+    // this.userUpdated,
+    // this.dateUpdated,
+    this.title,
+    this.description,
+    this.requiredAmount,
+    this.collectedAmount,
+    this.isFinished,
+    this.indigentId,
+    this.videoUrl,
+    this.fondId,
+    this.photos,
+  });
 
   int id;
+  String status;
+  // String userCreated;
+  // DateTime dateCreated;
+  // String userUpdated;
+  // DateTime dateUpdated;
   String title;
   String description;
-  double requiredAmount;
-  double collectedAmount;
-  String videoUrl;
-  int isFinished;
-  int isPublished;
-  int fondId;
-  DateTime createdAt;
+  String requiredAmount;
+  String collectedAmount;
+  bool isFinished;
+  dynamic indigentId;
+  dynamic videoUrl;
+  String fondId;
   List<File> photos;
-  User fond;
-  Indigent indigent;
-  int donationsCount;
-  List<Donation> donations;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json["id"],
+        status: json["status"],
+        // userCreated: json["user_created"],
+        // dateCreated: DateTime.parse(json["date_created"]),
+        // userUpdated: json["user_updated"],
+        // dateUpdated: DateTime.parse(json["date_updated"]),
         title: json["title"],
         description: json["description"],
-        requiredAmount: double.parse(json["required_amount"]),
-        collectedAmount: double.parse(json["collected_amount"]),
-        videoUrl: json["video_url"],
+        requiredAmount: json["required_amount"],
+        collectedAmount: json["collected_amount"],
         isFinished: json["is_finished"],
-        isPublished: json["is_published"],
+        indigentId: json["indigent_id"],
+        videoUrl: json["video_url"],
         fondId: json["fond_id"],
-        createdAt: json["created_at"] != null
-            ? DateTime.parse(json["created_at"])
-            : null,
-        donationsCount: json["donations_count"],
-        photos: (json["photos"]["data"] != null &&
-                json["photos"]["data"] is Iterable)
-            ? List<File>.from(
-                json["photos"]["data"].map((x) => File.fromJson(x)))
-            : null,
-        fond: json["fond"] != null ? User.fromJson(json['fond']) : null,
-        indigent: json["indigent"] != null
-            ? Indigent.fromJson(json['indigent'])
-            : null,
-        donations:
-            (json["donations"] != null && json["donations"]["data"] is Iterable)
-                ? List<Donation>.from(
-                    json["donations"]["data"].map((x) => Donation.fromJson(x)))
-                : null,
+        photos: List<File>.from(json["photos"].map((x) => File.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "status": status,
+        // "user_created": userCreated,
+        // "date_created": dateCreated.toIso8601String(),
+        // "user_updated": userUpdated,
+        // "date_updated": dateUpdated.toIso8601String(),
         "title": title,
         "description": description,
         "required_amount": requiredAmount,
         "collected_amount": collectedAmount,
-        "video_url": videoUrl,
-        "created_at": createdAt.toIso8601String(),
         "is_finished": isFinished,
-        "donations_count": donationsCount,
-        "photos": List<File>.from(photos.map((x) => x.toJson())),
-        "fond": fond.toJson(),
-        "donations": List<Donation>.from(donations.map((x) => x.toJson())),
+        "indigent_id": indigentId,
+        "video_url": videoUrl,
+        "fond_id": fondId,
+        "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
       };
 
-  String get firstPhotoUrl {
+  get firstPhotoUrl {
     if (photos != null &&
             photos.asMap().containsKey(0) &&
             // ignore: null_aware_in_logical_operator
@@ -108,37 +88,4 @@ class Project {
       return globals.dummyPhoto + '&id=${this.id}';
     }
   }
-}
-
-Future<Project> findProject(int projectId) async {
-  var url = globals.apiUrl + "/projects/$projectId?include=donations";
-  var api = new APIManager();
-  var result = await api.getAPICall(url);
-  return Project.fromJson(result);
-}
-
-Future<dynamic> searchProjects(
-    {int page = 1, int status = 0, query = ''}) async {
-  var url = globals.apiUrl +
-      "/search/projects/?include=donations&page=$page&query=$query";
-
-  var api = new APIManager();
-
-  var result = await api.getAPICall(url);
-
-  return result;
-}
-
-Future<dynamic> fetchProjects(
-    {int page = 1, int status = 1, query = '', int fondId = 0}) async {
-  var url = globals.apiUrl +
-      "/projects/?include=donations&is_finished=$status&page=$page&query=$query";
-
-  if (fondId != 0) {
-    url = url + '&fond_id=$fondId';
-  }
-
-  var api = new APIManager();
-  var result = await api.getAPICall(url);
-  return result;
 }

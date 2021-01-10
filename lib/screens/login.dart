@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -19,13 +18,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
-  bool isAuth = false;
-  String jwt = '';
-  final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
+
   var phoneFormatter = new MaskTextInputFormatter(
       mask: '+7 (###) ###-##-##', filter: {"#": RegExp(r'[0-9]')});
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SingleChildScrollView(
               child: Padding(
                   padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: FormBuilder(
+                  child: Form(
                     key: _formKey,
                     child: Column(
-                      // mainAxisSize: MainAxisSize.max,
-                      // crossAxisAlignment: CrossAxisAlignment.stretch,
-                      // mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(bottom: 30.0),
@@ -69,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Image.asset('assets/images/logo.png'),
                           ),
                         ),
-                        (_isLoading || jwt?.isNotEmpty ?? false)
+                        (_isLoading)
                             ? Center(
                                 child: new CircularProgressIndicator(
                                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -77,38 +70,31 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             : Column(
                                 children: [
-                                  FormBuilderTextField(
-                                      name: "phone",
+                                  TextFormField(
                                       keyboardType: TextInputType.phone,
                                       decoration: uiInputDecoration(
                                           hintText: '+7 (___) ___-__-__'),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(context,
-                                            errorText:
-                                                'Введите номер телефона'),
-                                        FormBuilderValidators.match(context,
-                                            r'^\+7 \(([0-9]{3})\) ([0-9]{3})-([0-9]{2})-([0-9]{2})$',
-                                            errorText:
-                                                'Неверный номер телефона')
-                                      ]),
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return 'Введите номер телефона';
+                                        }
+                                        return null;
+                                      },
                                       inputFormatters: [phoneFormatter]),
                                   Container(
                                     margin: const EdgeInsets.only(top: 20.0),
-                                    child: FormBuilderTextField(
-                                      name: "password",
+                                    child: TextFormField(
                                       enableSuggestions: false,
                                       autocorrect: false,
                                       obscureText: true,
                                       decoration:
                                           uiInputDecoration(hintText: 'Пароль'),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(context,
-                                            errorText: 'Введите пароль'),
-                                        FormBuilderValidators.minLength(
-                                            context, 6,
-                                            errorText:
-                                                'Пароль должен содержать минимум 6 символов'),
-                                      ]),
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return 'Введите пароль';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
                                   Container(
@@ -173,8 +159,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  // Проверка авторизации пользователя
-
   void displayDialog(BuildContext context, String title, String text) =>
       showDialog(
         context: context,
@@ -182,49 +166,5 @@ class _LoginScreenState extends State<LoginScreen> {
             AlertDialog(title: Text(title), content: Text(text)),
       );
 
-  void login() async {
-    var errorMessage = '';
-    if (_isLoading) return;
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    _formKey.currentState.save();
-    if (_formKey.currentState.validate()) {
-      setState(() => _isLoading = true);
-
-      var authData;
-      try {
-        authData = await auth.attemptLogIn(_formKey.currentState.value);
-        auth.userData = User.fromJson(authData['user']);
-        setState(() {
-          jwt = authData['token'];
-          _isLoading = false;
-        });
-
-        await storage.setString("user_code", auth.userData.userCode);
-      }
-      // on Exception1 {
-      //   // code for handling exception
-      // }
-      catch (e) {
-        print(e.toString());
-        errorMessage = e.toString();
-        setState(() {
-          _isLoading = false;
-          jwt = '';
-        });
-      }
-
-      if (errorMessage?.isNotEmpty ?? false) {
-        print(errorMessage);
-        displayDialog(context, "Ошибка!", 'Не правильный логин или пароль');
-        return;
-      }
-
-      if (jwt != null) {
-        storage.setString("jwt", jwt);
-        Navigator.of(context).pushNamed('Home');
-      }
-    } else {
-      print("validation failed");
-    }
-  }
+  void login() async {}
 }

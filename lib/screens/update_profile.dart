@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/helpers/api_manager.dart';
@@ -14,7 +13,6 @@ import 'package:meyirim/models/user.dart';
 import 'package:meyirim/ui/input_decoration.dart';
 import 'package:meyirim/ui/button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   @override
@@ -25,7 +23,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool _isLoading = false;
   bool photoUpdated = false;
 
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
   List<Region> regions;
 
   var phoneFormatter = new MaskTextInputFormatter(
@@ -58,46 +56,37 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 )
               : Padding(
                   padding: EdgeInsets.all(15),
-                  child: FormBuilder(
+                  child: Form(
                       key: _formKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FormBuilderImagePicker(
-                              initialValue: [auth.userData.avatar],
-                              decoration: InputDecoration(
-                                hintText: 'Фото',
-                              ),
-                              maxWidth: 258.0,
-                              maxHeight: 258.0,
-                              name: 'photo',
-                              maxImages: 1,
-                              key: UniqueKey(),
-                              bottomSheetPadding: EdgeInsets.all(40)),
+                          // FormBuilderImagePicker(
+                          //     initialValue: [auth.userData.avatar],
+                          //     decoration: InputDecoration(
+                          //       hintText: 'Фото',
+                          //     ),
+                          //     maxWidth: 258.0,
+                          //     maxHeight: 258.0,
+                          //     name: 'photo',
+                          //     maxImages: 1,
+                          //     key: UniqueKey(),
+                          //     bottomSheetPadding: EdgeInsets.all(40)),
                           SizedBox(
                             height: 20,
                           ),
-                          FormBuilderTextField(
-                            name: "name",
-                            key: UniqueKey(),
+                          TextFormField(
                             initialValue: auth.userData.name,
                             decoration: uiInputDecoration(hintText: 'Имя'),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context,
-                                  errorText: 'Введите Имя'),
-                            ]),
                           ),
                           SizedBox(
                             height: 20,
                           ),
-                          FormBuilderDropdown(
-                            name: 'region',
+                          DropdownButtonFormField(
                             key: UniqueKey(),
-                            initialValue: auth.userData.region?.id,
                             decoration:
                                 uiInputDecoration(hintText: 'Регион или город'),
-                            allowClear: true,
                             hint: Text('Город или регион'),
                             items: List<DropdownMenuItem>.from(regions
                                     ?.map((region) => DropdownMenuItem(
@@ -109,17 +98,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          FormBuilderTextField(
-                              name: "email",
-                              key: UniqueKey(),
-                              initialValue: auth.userData.email,
-                              decoration: uiInputDecoration(hintText: 'E-mail'),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.email(context,
-                                    errorText: 'Введите E-mail'),
-                                FormBuilderValidators.required(context,
-                                    errorText: 'Введите E-mail'),
-                              ])),
+                          TextFormField(
+                            initialValue: auth.userData.email,
+                            decoration: uiInputDecoration(hintText: 'E-mail'),
+                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -142,64 +124,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     var errorMessage = '';
 
     if (_isLoading) return;
-
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      setState(() => _isLoading = true);
-      var url = globals.updateProfile;
-      var api = new APIManager();
-      try {
-        Map<String, dynamic> data = {
-          'name': _formKey.currentState.value['name'],
-          'region': _formKey.currentState.value['region'],
-          'email': _formKey.currentState.value['email'],
-          'photo': Iterable<dynamic>.generate(
-                  _formKey.currentState.value['photo'].length)
-              .toList(),
-        };
-
-        if (_formKey.currentState.value != null &&
-            _formKey.currentState.value['photo'].length > 0 &&
-            _formKey.currentState.value['photo'][0] is File) {
-          final mimeTypeData = lookupMimeType(
-              _formKey.currentState.value['photo'][0].path,
-              headerBytes: [0xFF, 0xD8]).split('/');
-          data['photo'][0] = await MultipartFile.fromFile(
-              _formKey.currentState.value['photo'][0].path,
-              contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
-        }
-
-        FormData formData = FormData.fromMap(data);
-
-        var userData = await api.postAPICall(url, formData);
-
-        auth.userData = User.fromJson(userData);
-
-        setState(() {
-          _isLoading = false;
-        });
-
-        Navigator.of(context).pushNamed('Profile');
-      } on DioError catch (error) {
-        print(error.response.data);
-        errorMessage = error.response.data['error']['message'];
-        setState(() {
-          _isLoading = false;
-        });
-      } catch (e) {
-        errorMessage = e.toString();
-        setState(() {
-          _isLoading = false;
-        });
-      }
-
-      if (errorMessage?.isNotEmpty ?? false) {
-        displayDialog(context, "Ошибка!", errorMessage);
-        return;
-      }
-    } else {
-      print("validation failed");
-    }
   }
 
   void displayDialog(BuildContext context, String title, String text) =>

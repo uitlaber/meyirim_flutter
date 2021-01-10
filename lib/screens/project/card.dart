@@ -119,7 +119,7 @@ class _ProjectCardState extends State<ProjectCard> {
                                           width: 5,
                                         ),
                                         Text(
-                                          project.donations.length.toString(),
+                                          '0', //project.donations.length.toString(),
                                           style: TextStyle(color: Colors.white),
                                         )
                                       ],
@@ -190,20 +190,20 @@ class _ProjectCardState extends State<ProjectCard> {
                             margin: EdgeInsets.only(right: 10.0),
                             child: CircleAvatar(
                               backgroundColor: Colors.brown.shade800,
-                              backgroundImage:
-                                  NetworkImage(project.fond.avatar),
+                              // backgroundImage:
+                              //     NetworkImage(project.fond.avatar),
                             ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                project.fond.name,
+                                'Имя фонда ', //project.fond.name,
                                 // style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              Text(
-                                  project.fond.region?.name ??
-                                      'не указан город',
+                              Text('Регион фонда',
+                                  // project.fond.region?.name ??
+                                  //     'не указан город',
                                   style: TextStyle(
                                       color: HexColor('#8C8C8C'),
                                       fontSize: 12)),

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:meyirim/helpers/api_manager.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
@@ -20,7 +19,7 @@ class DonateModal extends StatefulWidget {
 }
 
 class _DonateModalState extends State<DonateModal> {
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   @override
@@ -56,23 +55,24 @@ class _DonateModalState extends State<DonateModal> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(project.fond.avatar),
-                              ),
+                                  // backgroundImage:
+                                  //     NetworkImage(project.fond.avatar),
+                                  ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    project.fond.name,
+                                    'Имя фонда', //project.fond.name,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
                                   //@Todo нужно добавить регион
                                   Text(
-                                    project.fond.region?.name ??
-                                        'не указан город',
+                                    'Регион фонда',
+                                    // project.fond.region?.name ??
+                                    //     'не указан город',
                                     style: TextStyle(
                                         fontSize: 14, color: Colors.grey),
                                   ),
@@ -81,18 +81,17 @@ class _DonateModalState extends State<DonateModal> {
                             ],
                           ),
                         ),
-                        FormBuilder(
+                        Form(
                           key: _formKey,
                           child: Column(
                             children: [
-                              FormBuilderTextField(
+                              TextFormField(
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
                                 // Only numbers can be entered
                                 initialValue: '100',
-                                name: "amount",
                                 style: TextStyle(fontSize: 25.0),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
@@ -115,12 +114,6 @@ class _DonateModalState extends State<DonateModal> {
                                         new TextStyle(color: Colors.grey[600]),
                                     hintText: "0 ₸",
                                     fillColor: HexColor('#F0F0F7')),
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(context,
-                                      errorText: 'Введите сумму'),
-                                  FormBuilderValidators.numeric(context,
-                                      errorText: 'Введите сумму'),
-                                ]),
                               ),
                               SizedBox(
                                 height: 15,
@@ -143,9 +136,9 @@ class _DonateModalState extends State<DonateModal> {
                                           elevation: 0,
                                           child: Text('100₸'),
                                           onPressed: () {
-                                            _formKey
-                                                .currentState.fields['amount']
-                                                .didChange('100');
+                                            // _formKey
+                                            //     .currentState.
+                                            //     .didChange('100');
                                           }),
                                     ),
                                   ),
@@ -166,9 +159,9 @@ class _DonateModalState extends State<DonateModal> {
                                             elevation: 0,
                                             child: Text('500₸'),
                                             onPressed: () {
-                                              _formKey
-                                                  .currentState.fields['amount']
-                                                  .didChange('500');
+                                              // _formKey
+                                              //     .currentState.fields['amount']
+                                              //     .didChange('500');
                                             }),
                                       ),
                                     ),
@@ -187,9 +180,9 @@ class _DonateModalState extends State<DonateModal> {
                                           elevation: 0,
                                           child: Text('1000₸'),
                                           onPressed: () {
-                                            _formKey
-                                                .currentState.fields['amount']
-                                                .didChange('1000');
+                                            // _formKey
+                                            //     .currentState.fields['amount']
+                                            //     .didChange('1000');
                                           }),
                                     ),
                                   ),
@@ -236,27 +229,27 @@ class _DonateModalState extends State<DonateModal> {
     setState(() => _isLoading = true);
     _formKey.currentState.save();
     if (_formKey.currentState.validate()) {
-      var url = globals.paymentUrl;
-      var api = new APIManager();
-
-      Map<String, String> data = new HashMap();
-      data['amount'] = _formKey.currentState.fields['amount'].value;
-      data['project_id'] = projectId.toString();
-
-      var response = await api.postAPICall(url, data);
-      var paymentUrl = response;
-      if (await canLaunch(paymentUrl)) {
-        await FlutterWebBrowser.openWebPage(
-            url: paymentUrl,
-            customTabsOptions:
-                CustomTabsOptions(toolbarColor: HexColor('#00D7FF')));
-        setState(() => _isLoading = false);
-        Navigator.of(context).pop();
-      } else {
-        setState(() => _isLoading = false);
-        Navigator.of(context).pop();
-        throw 'Could not launch $url';
-      }
+      // var url = globals.paymentUrl;
+      // var api = new APIManager();
+      //
+      // Map<String, String> data = new HashMap();
+      // data['amount'] = _formKey.currentState.fields['amount'].value;
+      // data['project_id'] = projectId.toString();
+      //
+      // var response = await api.postAPICall(url, data);
+      // var paymentUrl = response;
+      // if (await canLaunch(paymentUrl)) {
+      //   await FlutterWebBrowser.openWebPage(
+      //       url: paymentUrl,
+      //       customTabsOptions:
+      //           CustomTabsOptions(toolbarColor: HexColor('#00D7FF')));
+      //   setState(() => _isLoading = false);
+      //   Navigator.of(context).pop();
+      // } else {
+      //   setState(() => _isLoading = false);
+      //   Navigator.of(context).pop();
+      //   throw 'Could not launch $url';
+      // }
     }
   }
 }

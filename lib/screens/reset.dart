@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -23,7 +22,7 @@ class _ResetScreenState extends State<ResetScreen> {
   bool _isLoading = false;
   bool isAuth = false;
   String jwt = '';
-  final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
   var phoneFormatter = new MaskTextInputFormatter(
       mask: '+7 (###) ###-##-##', filter: {"#": RegExp(r'[0-9]')});
   @override
@@ -31,9 +30,6 @@ class _ResetScreenState extends State<ResetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return FutureBuilder(
-    //   builder: build,
-    // )
     return Scaffold(
         backgroundColor: HexColor('#00D7FF'),
         appBar: AppBar(
@@ -57,7 +53,7 @@ class _ResetScreenState extends State<ResetScreen> {
             child: SingleChildScrollView(
               child: Padding(
                   padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: FormBuilder(
+                  child: Form(
                     key: _formKey,
                     child: Column(
                       // mainAxisSize: MainAxisSize.max,
@@ -79,20 +75,10 @@ class _ResetScreenState extends State<ResetScreen> {
                               )
                             : Column(
                                 children: [
-                                  FormBuilderTextField(
-                                      name: "phone",
+                                  TextFormField(
                                       keyboardType: TextInputType.phone,
                                       decoration: uiInputDecoration(
                                           hintText: '+7 (___) ___-__-__'),
-                                      validator: FormBuilderValidators.compose([
-                                        FormBuilderValidators.required(context,
-                                            errorText:
-                                                'Введите номер телефона'),
-                                        FormBuilderValidators.match(context,
-                                            r'^\+7 \(([0-9]{3})\) ([0-9]{3})-([0-9]{2})-([0-9]{2})$',
-                                            errorText:
-                                                'Неверный номер телефона')
-                                      ]),
                                       inputFormatters: [phoneFormatter]),
                                   Container(
                                     margin: const EdgeInsets.only(top: 20.0),
@@ -178,51 +164,5 @@ class _ResetScreenState extends State<ResetScreen> {
   void reset() async {
     var errorMessage = '';
     if (_isLoading) return;
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    _formKey.currentState.save();
-    if (_formKey.currentState.validate()) {
-      if (globals.lastReset != null) {
-        print(globals.lastReset);
-        var currentTime = DateTime.now().millisecondsSinceEpoch;
-        var result = currentTime - globals.lastReset;
-        print(result);
-        if (result < 120000) {
-          var n = ((120000 - result) / 1000).round();
-          displayDialog(context, "Внимание",
-              'Повторно можете отправить смс через $n секунд');
-          return;
-        }
-      }
-      setState(() => _isLoading = true);
-
-      try {
-        await auth.resetPassword(_formKey.currentState.value);
-        displayDialog(context, "Внимание", 'Ваш новый пароль придет через смс');
-        globals.lastReset = DateTime.now().millisecondsSinceEpoch;
-        setState(() {
-          _isLoading = false;
-        });
-      } on DioError catch (error) {
-        Map<String, dynamic> response = jsonDecode(error.response.toString());
-        errorMessage = response['error'];
-        setState(() {
-          _isLoading = false;
-          jwt = null;
-        });
-      } catch (e) {
-        errorMessage = e.toString();
-        setState(() {
-          _isLoading = false;
-          jwt = '';
-        });
-      }
-
-      if (errorMessage?.isNotEmpty ?? false) {
-        displayDialog(context, "Ошибка!", errorMessage);
-        return;
-      }
-    } else {
-      print("validation failed");
-    }
   }
 }

@@ -1,23 +1,26 @@
+import 'dart:convert';
+import 'package:meyirim/globals.dart' as globals;
+
 class File {
   File({
     this.id,
-    this.title,
-    this.path,
+    this.directusFilesId,
   });
 
   int id;
-  dynamic title;
-  String path;
+  String directusFilesId;
 
   factory File.fromJson(Map<String, dynamic> json) => File(
         id: json["id"],
-        title: json["title"],
-        path: json["path"],
+        directusFilesId: json["directus_files_id"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "title": title,
-        "path": path,
+        "directus_files_id": directusFilesId,
       };
+
+  String get path {
+    return globals.apiUrl + '/assets/' + directusFilesId;
+  }
 }

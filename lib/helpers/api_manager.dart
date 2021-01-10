@@ -9,7 +9,6 @@ import 'package:meyirim/globals.dart' as globals;
 import 'auth.dart' as auth;
 import 'package:async/async.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
 
 class APIManager {
   Future<dynamic> postAPICall(String url, dynamic param) async {
@@ -40,8 +39,7 @@ class APIManager {
     print("Calling headers: $headers");
     Response response = await Dio().get(
       url,
-      options: buildCacheOptions(Duration(hours: 1),
-          options: Options(headers: headers)),
+      options: Options(headers: headers),
     );
     return _response(response);
   }

@@ -145,14 +145,15 @@ class _ReportScreenState extends State<ReportCard> {
                           margin: EdgeInsets.only(right: 10.0),
                           child: CircleAvatar(
                             backgroundColor: Colors.brown.shade800,
-                            backgroundImage: NetworkImage(report.fond.avatar),
+                            backgroundImage:
+                                NetworkImage(report.fond.getAvatar),
                           ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              report.fond.name,
+                              report.fond.title,
                             ),
                             Text(report.fond.region?.name ?? 'не указан город',
                                 style: TextStyle(

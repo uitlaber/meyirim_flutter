@@ -6,51 +6,67 @@ import 'region.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:meyirim/helpers/api_manager.dart';
 
-import 'package:http/http.dart' as http;
+User userFromJson(String str) => User.fromJson(json.decode(str));
+
+String userToJson(User data) => json.encode(data.toJson());
 
 class User {
   User(
-      {this.id,
-      this.name,
-      this.username,
-      this.email,
+      {this.firstName,
+      this.description,
+      this.lastName,
       this.phone,
-      this.userCode,
+      this.title,
+      this.id,
+      this.email,
       this.avatar,
+      this.userCode,
       this.region});
 
-  int id;
-  dynamic name;
-  String email;
+  dynamic firstName;
+  dynamic description;
+  dynamic lastName;
   String phone;
-  String username;
+  String title;
+  String id;
+  String email;
+  File avatar;
   String userCode;
-  String avatar;
   Region region;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        name: json["name"] != null ? json["name"] : 'Аноним',
-        email: json["email"],
+        firstName: json["first_name"],
+        description: json["description"],
+        lastName: json["last_name"],
         phone: json["phone"],
-        username: json["username"],
+        title: json["title"],
+        id: json["id"],
+        email: json["email"],
+        avatar: File.fromJson(json["avatar"]),
         userCode: json["user_code"],
-        avatar: json["avatar"],
-        region: json["region"] != null && json["region"].length > 0
-            ? Region.fromJson(json["region"])
-            : null,
+        region: Region.fromJson(json["region_id"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "email": email,
+        "first_name": firstName,
+        "description": description,
+        "last_name": lastName,
         "phone": phone,
-        "username": username,
+        "title": title,
+        "id": id,
+        "email": email,
+        "avatar": avatar.toJson(),
         "user_code": userCode,
-        "avatar": avatar,
         "region": region.toJson(),
       };
+
+  get getAvatar {
+    if (avatar != null) {
+      return globals.apiUrl + '/assets/' + avatar.directusFilesId;
+    } else {
+      return globals.dummyPhoto + '&id=${this.id}';
+    }
+  }
 }
 
 Future<User> fetchUser(int fondId) async {

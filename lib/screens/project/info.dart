@@ -34,9 +34,10 @@ class _ProjectInfoState extends State<ProjectInfo> {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: FondCard(fond: project.fond),
-            ),
+                padding: const EdgeInsets.all(15.0),
+                child:
+                    Container() //@TODO нужно добавить фонд  FondCard(fond: project.fond),
+                ),
             SliderWidget(photos: project.photos, videoUrl: videoUrl),
             ProjectStatus(project: project, full: true),
             Padding(

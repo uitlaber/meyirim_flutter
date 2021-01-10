@@ -3,6 +3,9 @@ import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/screens/project/card.dart';
 import 'package:dio/dio.dart';
+import 'package:directus/directus.dart';
+import 'package:meyirim/globals.dart' as globals;
+import 'package:directus/src/data_classes/one_query.dart';
 
 // ignore: must_be_immutable
 class LentaScreen extends StatefulWidget {
@@ -108,25 +111,32 @@ class LentaScreenState extends State<LentaScreen> {
       setState(() {
         _isLoading = true;
       });
-      try {
-        var result =
-            await fetchProjects(page: _currentPage, status: widget.isFinished);
 
-        List<Project> newProjects =
-            List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
+      try {
+        final sdk = await globals.sdk();
+
+        final result = await sdk.items('projects').readMany(
+            query: Query(limit: 5, offset: 0, fields: ['*.*']),
+            filters: Filters({'is_finished': Filter.eq(widget.isFinished)}));
+        List<Project> newProjects;
+        result.data.forEach((item) {
+          //Project project = Project.fromJson(item);
+          //print(project);
+          // newProjects.add(Project.fromJson(project));
+          item.forEach((key, value) {
+            if (key == 'fond_id') {
+              print(value);
+            }
+          });
+        });
 
         setState(() {
           _currentPage++;
-          _maxPage = result['meta']['pagination']['total_pages'] + 1;
           projects.addAll(newProjects);
           _isLoading = false;
         });
-      } on DioError catch (e) {
-        setState(() {
-          _isLoading = false;
-          _hasError = true;
-        });
       } catch (e) {
+        print(e);
         setState(() {
           _isLoading = false;
           _hasError = true;

@@ -7,7 +7,7 @@ import 'package:meyirim/models/user.dart';
 
 // ignore: must_be_immutable
 class FondScreen extends StatefulWidget {
-  int isFinished = 0;
+  bool isFinished = false;
   int fondId;
 
   FondScreen({Key key, this.isFinished, this.fondId}) : super(key: key);
@@ -140,23 +140,23 @@ class _FondScreenState extends State<FondScreen> {
             fond = resultFond;
           });
         }
-        var result = await fetchProjects(
-            page: _currentPage,
-            status: widget.isFinished,
-            fondId: widget.fondId);
-
-        List<Project> newProjects = List<Project>.from(result['data'].map((x) {
-          // print(x.runtimeType);
-          // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
-          return Project.fromJson(x);
-        }));
-
-        setState(() {
-          _currentPage++;
-          _maxPage = result['meta']['pagination']['total_pages'] + 1;
-          projects.addAll(newProjects);
-          _isLoading = false;
-        });
+        // var result = await fetchProjects(
+        //     page: _currentPage,
+        //     status: widget.isFinished,
+        //     fondId: widget.fondId);
+        //
+        // List<Project> newProjects = List<Project>.from(result['data'].map((x) {
+        //   // print(x.runtimeType);
+        //   // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
+        //   return Project.fromJson(x);
+        // }));
+        //
+        // setState(() {
+        //   _currentPage++;
+        //   _maxPage = result['meta']['pagination']['total_pages'] + 1;
+        //   projects.addAll(newProjects);
+        //   _isLoading = false;
+        // });
       } catch (e) {
         print(e);
         setState(() {

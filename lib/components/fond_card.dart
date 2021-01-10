@@ -17,14 +17,14 @@ class FondCard extends StatelessWidget {
             margin: EdgeInsets.only(right: 10.0),
             child: CircleAvatar(
               backgroundColor: Colors.brown.shade800,
-              backgroundImage: NetworkImage(fond.avatar),
+              backgroundImage: NetworkImage(fond.getAvatar),
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                fond.name,
+                fond.title,
                 // style: TextStyle(fontWeight: FontWeight.w500),
               ),
               Text(fond.region?.name ?? 'не указан город',

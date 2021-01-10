@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_share/flutter_share.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/models/report.dart';
@@ -8,8 +10,10 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'helpers/auth.dart';
 import 'models/region.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:directus/directus.dart';
+import 'package:dio/dio.dart';
 
-const String apiUrl = 'https://dev.meyirim.kz/api';
+const String apiUrl = 'https://dev.meyirim.kz:8055';
 
 const String siteUrl = 'https://dev.meyirim.kz';
 const String loginUrl = apiUrl + '/login';
@@ -19,6 +23,8 @@ const String addIndigentUrl = apiUrl + '/indigent/store';
 const String updateProfile = apiUrl + '/users/update';
 const String checkAuth = apiUrl + '/check';
 const String resetUrl = apiUrl + '/reset';
+
+const String defaultToken = 'tokenuser';
 
 var lastReset = null;
 
@@ -30,6 +36,13 @@ const String dummyPhoto = 'https://via.placeholder.com/468x300?text=meyirim.kz';
  */
 
 List<Region> regions;
+
+Future<Directus> sdk() async {
+  Map<String, String> headers = new HashMap();
+  headers['Authorization'] = 'Bearer ' + defaultToken;
+  final sdk = await Directus('https://dev.meyirim.kz').init();
+  return sdk;
+}
 
 /// Форматирование суммы
 String formatCur(dynamic amount) {
