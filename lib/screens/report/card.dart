@@ -155,7 +155,7 @@ class _ReportScreenState extends State<ReportCard> {
                             Text(
                               report.fond.title,
                             ),
-                            Text(report.fond.region?.name ?? 'не указан город',
+                            Text(report.fond.regionId ?? 'не указан город',
                                 style: TextStyle(
                                     color: HexColor('#8C8C8C'), fontSize: 12)),
                           ],

@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:directus/directus.dart';
 import 'package:dio/dio.dart';
 
-const String apiUrl = 'https://dev.meyirim.kz:8055';
+const String apiUrl = 'https://dev.meyirim.kz';
 
 const String siteUrl = 'https://dev.meyirim.kz';
 const String loginUrl = apiUrl + '/login';

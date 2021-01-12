@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:meyirim/models/file.dart';
+import 'package:meyirim/models/user.dart';
 import 'package:meyirim/globals.dart' as globals;
 
 Project projectFromJson(String str) => Project.fromJson(json.decode(str));
@@ -21,7 +22,7 @@ class Project {
     this.isFinished,
     this.indigentId,
     this.videoUrl,
-    this.fondId,
+    this.fond,
     this.photos,
   });
 
@@ -33,12 +34,12 @@ class Project {
   // DateTime dateUpdated;
   String title;
   String description;
-  String requiredAmount;
-  String collectedAmount;
+  double requiredAmount;
+  double collectedAmount;
   bool isFinished;
   dynamic indigentId;
   dynamic videoUrl;
-  String fondId;
+  User fond;
   List<File> photos;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
@@ -50,13 +51,15 @@ class Project {
         // dateUpdated: DateTime.parse(json["date_updated"]),
         title: json["title"],
         description: json["description"],
-        requiredAmount: json["required_amount"],
-        collectedAmount: json["collected_amount"],
+        requiredAmount: double.parse(json['required_amount']),
+        collectedAmount: double.parse(json['collected_amount']),
         isFinished: json["is_finished"],
         indigentId: json["indigent_id"],
         videoUrl: json["video_url"],
-        fondId: json["fond_id"],
-        photos: List<File>.from(json["photos"].map((x) => File.fromJson(x))),
+        fond: User.fromJson(json["fond_id"]),
+        photos: json["photos"] != null
+            ? List<File>.from(json["photos"].map((x) => File.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -73,8 +76,10 @@ class Project {
         "is_finished": isFinished,
         "indigent_id": indigentId,
         "video_url": videoUrl,
-        "fond_id": fondId,
-        "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
+        "fond": fond.toJson(),
+        "photos": photos != null
+            ? List<dynamic>.from(photos.map((x) => x.toJson()))
+            : null,
       };
 
   get firstPhotoUrl {

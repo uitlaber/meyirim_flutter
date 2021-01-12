@@ -77,7 +77,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             height: 20,
                           ),
                           TextFormField(
-                            initialValue: auth.userData.name,
+                            initialValue: auth.userData.firstName,
                             decoration: uiInputDecoration(hintText: 'Имя'),
                           ),
                           SizedBox(

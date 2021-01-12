@@ -1,13 +1,8 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meyirim/helpers/api_manager.dart';
 import 'package:meyirim/helpers/hex_color.dart';
 import 'package:meyirim/models/project.dart';
 import 'package:meyirim/globals.dart' as globals;
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_web_browser/flutter_web_browser.dart';
 
 // ignore: must_be_immutable
 class DonateModal extends StatefulWidget {
@@ -20,7 +15,22 @@ class DonateModal extends StatefulWidget {
 
 class _DonateModalState extends State<DonateModal> {
   final _formKey = GlobalKey<FormState>();
+  final amountController = new TextEditingController();
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    amountController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    amountController.text = '100';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +96,13 @@ class _DonateModalState extends State<DonateModal> {
                           child: Column(
                             children: [
                               TextFormField(
+                                controller: amountController,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
                                 // Only numbers can be entered
-                                initialValue: '100',
+                                // initialValue: '100',
                                 style: TextStyle(fontSize: 25.0),
                                 textAlign: TextAlign.center,
                                 decoration: InputDecoration(
@@ -136,9 +147,7 @@ class _DonateModalState extends State<DonateModal> {
                                           elevation: 0,
                                           child: Text('100₸'),
                                           onPressed: () {
-                                            // _formKey
-                                            //     .currentState.
-                                            //     .didChange('100');
+                                            amountController.text = '100';
                                           }),
                                     ),
                                   ),
@@ -159,9 +168,7 @@ class _DonateModalState extends State<DonateModal> {
                                             elevation: 0,
                                             child: Text('500₸'),
                                             onPressed: () {
-                                              // _formKey
-                                              //     .currentState.fields['amount']
-                                              //     .didChange('500');
+                                              amountController.text = '500';
                                             }),
                                       ),
                                     ),
@@ -180,9 +187,7 @@ class _DonateModalState extends State<DonateModal> {
                                           elevation: 0,
                                           child: Text('1000₸'),
                                           onPressed: () {
-                                            // _formKey
-                                            //     .currentState.fields['amount']
-                                            //     .didChange('1000');
+                                            amountController.text = '1000';
                                           }),
                                     ),
                                   ),

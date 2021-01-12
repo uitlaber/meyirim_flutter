@@ -118,17 +118,8 @@ class LentaScreenState extends State<LentaScreen> {
         final result = await sdk.items('projects').readMany(
             query: Query(limit: 5, offset: 0, fields: ['*.*']),
             filters: Filters({'is_finished': Filter.eq(widget.isFinished)}));
-        List<Project> newProjects;
-        result.data.forEach((item) {
-          //Project project = Project.fromJson(item);
-          //print(project);
-          // newProjects.add(Project.fromJson(project));
-          item.forEach((key, value) {
-            if (key == 'fond_id') {
-              print(value);
-            }
-          });
-        });
+        List<Project> newProjects =
+            List<Project>.from(result.data.map((x) => Project.fromJson(x)));
 
         setState(() {
           _currentPage++;

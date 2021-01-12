@@ -21,7 +21,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (widget.project.isFinished != 1)
+          if (!widget.project.isFinished)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,7 +50,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
               )
             ],
           ),
-          if (widget.project.isFinished == 1)
+          if (widget.project.isFinished)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,7 +60,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
-                      formatNum(widget.project.donations.length),
+                      '0', //formatNum(widget.project.donations.length),
                       style: TextStyle(
                         color: HexColor('#41BC73'),
                         fontSize: 24.0,
@@ -75,7 +75,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
                 )
               ],
             ),
-          if (widget.project.isFinished != 1)
+          if (!widget.project.isFinished)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,7 +101,7 @@ class _ProjectStatusState extends State<ProjectStatus> {
                 ),
               ],
             ),
-          if (widget.project.isFinished == 1)
+          if (widget.project.isFinished)
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

@@ -49,7 +49,7 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                               backgroundColor: Colors.white,
                               backgroundImage: (auth.userData != null &&
                                       auth.userData.avatar != null)
-                                  ? NetworkImage(auth.userData.avatar)
+                                  ? NetworkImage(auth.userData.getAvatar)
                                   : null,
                               child: (auth.userData == null ||
                                       auth.userData.avatar == null)
@@ -68,9 +68,9 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   (auth.userData != null)
-                                      ? auth.userData.name?.isEmpty ?? true
+                                      ? auth.userData.firstName?.isEmpty ?? true
                                           ? 'Аноним'
-                                          : auth.userData.name
+                                          : auth.userData.firstName
                                       : 'Войдите или создайте аккаунт',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -78,7 +78,7 @@ class _ProfileStatefullWidgetState extends State<ProfileScreen> {
                                 ),
                                 Text(
                                     (auth.userData != null)
-                                        ? auth.userData.username
+                                        ? auth.userData.firstName
                                         : 'Чтобы не потерять свои пожертвования',
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.white70)),

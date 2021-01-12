@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:directus/directus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,40 +26,52 @@ class ProjectScreen extends StatefulWidget {
 }
 
 class ProjectScreenState extends State<ProjectScreen> {
+  bool _isLoading = false;
+  bool _hasError = false;
+  Project project;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findProject(widget.params['id']);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: HexColor('#F2F2F7'),
-        appBar: AppBar(
-            backgroundColor: HexColor('#00D7FF'),
-            title: Text('Проект'),
-            elevation: 0),
-        body: Container(
-            child: FutureBuilder<Project>(
-                future: findProject(widget.params['id']),
-                builder:
-                    (BuildContext context, AsyncSnapshot<Project> snapshot) {
-                  Widget body;
-                  // print(snapshot.data);
-                  if (snapshot.hasData) {
-                    body = ProjectInfo(snapshot.data);
-                  } else if (snapshot.hasError) {
-                    // Navigator.of(context).pushNamed('Home');
-                    body = Message('Проект не найден');
-                  } else {
-                    body = Loading();
-                  }
-                  return body;
-                })));
+      backgroundColor: HexColor('#F2F2F7'),
+      appBar: AppBar(
+          backgroundColor: HexColor('#00D7FF'),
+          title: Text('Проект'),
+          elevation: 0),
+      body: Container(
+          child: (_isLoading)
+              ? Loading()
+              : (_hasError)
+                  ? Message('Проект не найден')
+                  : ProjectInfo(project)),
+    );
   }
 
-  Future<Project> findProject(String id) async {
+  Future<Project> findProject(int id) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final sdk = await globals.sdk();
-      final result = await sdk.items('projects').readOne(id);
-      return Project.fromJson(result.data);
+      final result = await sdk
+          .items('projects')
+          .readOne(id.toString(), query: Query(fields: ['*.*']));
+      setState(() {
+        _isLoading = false;
+        project = Project.fromJson(result.data);
+      });
     } catch (e) {
-      print(e);
+      setState(() {
+        _hasError = true;
+        _isLoading = false;
+      });
     }
   }
 }

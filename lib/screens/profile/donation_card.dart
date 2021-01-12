@@ -79,7 +79,7 @@ class _DonationCardState extends State<DonationCard> {
                         style: TextStyle(
                             color: HexColor('#DBDBDB'), fontSize: 11)),
                   ),
-                  Text(project.fond.name,
+                  Text('Имя фонда',
                       style:
                           TextStyle(color: HexColor('#3B3B3B'), fontSize: 12)),
                 ],

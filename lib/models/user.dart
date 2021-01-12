@@ -21,7 +21,7 @@ class User {
       this.email,
       this.avatar,
       this.userCode,
-      this.region});
+      this.regionId});
 
   dynamic firstName;
   dynamic description;
@@ -30,9 +30,9 @@ class User {
   String title;
   String id;
   String email;
-  File avatar;
+  String avatar;
   String userCode;
-  Region region;
+  int regionId;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         firstName: json["first_name"],
@@ -42,9 +42,9 @@ class User {
         title: json["title"],
         id: json["id"],
         email: json["email"],
-        avatar: File.fromJson(json["avatar"]),
+        avatar: json["avatar"],
         userCode: json["user_code"],
-        region: Region.fromJson(json["region_id"]),
+        regionId: json["region_id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,14 +55,14 @@ class User {
         "title": title,
         "id": id,
         "email": email,
-        "avatar": avatar.toJson(),
+        "avatar": avatar,
         "user_code": userCode,
-        "region": region.toJson(),
+        "region_id": regionId,
       };
 
   get getAvatar {
     if (avatar != null) {
-      return globals.apiUrl + '/assets/' + avatar.directusFilesId;
+      return globals.apiUrl + '/assets/' + avatar;
     } else {
       return globals.dummyPhoto + '&id=${this.id}';
     }

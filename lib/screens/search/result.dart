@@ -191,14 +191,14 @@ class _SearchResultState extends State<SearchResult> {
       });
 
       try {
-        var result = await searchProjects(page: _currentPage, query: query);
-        List<Project> newProjects =
-            List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
+        // var result = await searchProjects(page: _currentPage, query: query);
+        // List<Project> newProjects =
+        //     List<Project>.from(result['data'].map((x) => Project.fromJson(x)));
 
         setState(() {
           _currentPage++;
-          _maxPage = result['meta']['pagination']['total_pages'];
-          projects.addAll(newProjects);
+          // _maxPage = result['meta']['pagination']['total_pages'];
+          // projects.addAll(newProjects);
           _isLoading = false;
         });
       } catch (e) {
@@ -214,19 +214,19 @@ class _SearchResultState extends State<SearchResult> {
     if (!_isLoading && _maxPage > _currentPage) {
       setState(() => _isLoading = true);
       try {
-        var result = await searchProjects(page: _currentPage, query: query);
-
-        List<Project> newProjects = List<Project>.from(result['data'].map((x) {
-          print(x.runtimeType);
-          // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
-          return Project.fromJson(x);
-        }));
+        // var result = await searchProjects(page: _currentPage, query: query);
+        //
+        // List<Project> newProjects = List<Project>.from(result['data'].map((x) {
+        //   print(x.runtimeType);
+        //   // x.forEach((k, v) => print('${k}: ${v.runtimeType}'));
+        //   return Project.fromJson(x);
+        // }));
 
         // print(newProjects);
         setState(() {
           _currentPage++;
           _maxPage = 3;
-          projects.addAll(newProjects);
+          // projects.addAll(newProjects);
           _isLoading = false;
         });
       } catch (e) {

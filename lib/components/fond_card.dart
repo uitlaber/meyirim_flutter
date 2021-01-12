@@ -27,7 +27,7 @@ class FondCard extends StatelessWidget {
                 fond.title,
                 // style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              Text(fond.region?.name ?? 'не указан город',
+              Text(fond.regionId ?? 'не указан город',
                   style: TextStyle(color: HexColor('#8C8C8C'), fontSize: 12)),
             ],
           )
