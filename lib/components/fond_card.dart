@@ -16,7 +16,7 @@ class FondCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 10.0),
             child: CircleAvatar(
-              backgroundColor: Colors.brown.shade800,
+              backgroundColor: Colors.white,
               backgroundImage: NetworkImage(fond.avatar),
             ),
           ),

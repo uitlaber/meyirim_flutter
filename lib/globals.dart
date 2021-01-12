@@ -8,6 +8,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'helpers/auth.dart';
 import 'models/region.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share/share.dart';
 
 const String apiUrl = 'https://dev.meyirim.kz/api';
 
@@ -66,7 +67,7 @@ Future<String> makeReportUrl(report) async {
 Future<String> makeProjectUrl(project) async {
   String url = await _createDynamicLink(
       siteUrl +
-          '?page=Project/' +
+          '/project/' +
           project.id.toString() +
           '&user_code=' +
           await userCode(),
@@ -86,14 +87,17 @@ Future shareReport(Report report) async {
 }
 
 Future shareProject(Project project) async {
+  var link = await makeProjectUrl(project);
+  var title = project.title;
+  var text = project.description.length > 50
+      ? project.description.replaceRange(50, project.description.length, '...')
+      : project.description;
+
   await FlutterShare.share(
-      title: project.title,
-      text: project.description.length > 50
-          ? project.description
-              .replaceRange(50, project.description.length, '...')
-          : project.description,
+      title: title,
+      text: '**$title** \n$text',
       linkUrl: await makeProjectUrl(project),
-      chooserTitle: project.title);
+      chooserTitle: link);
 }
 
 Future<String> _createDynamicLink(String link, bool short) async {

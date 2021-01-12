@@ -9,6 +9,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:meyirim/globals.dart' as globals;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
+import 'package:meyirim/components/fond_card.dart';
 
 // ignore: must_be_immutable
 class DonateModal extends StatefulWidget {
@@ -51,35 +52,7 @@ class _DonateModalState extends State<DonateModal> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(bottom: 20.0),
-                          child: Wrap(
-                            spacing: 10.0,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(project.fond.avatar),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    project.fond.name,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  //@Todo нужно добавить регион
-                                  Text(
-                                    project.fond.region?.name ??
-                                        'не указан город',
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                          child: FondCard(fond: project.fond),
                         ),
                         FormBuilder(
                           key: _formKey,
@@ -90,7 +63,6 @@ class _DonateModalState extends State<DonateModal> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                // Only numbers can be entered
                                 initialValue: '100',
                                 name: "amount",
                                 style: TextStyle(fontSize: 25.0),

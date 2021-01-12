@@ -25,7 +25,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool _isLoading = false;
   bool photoUpdated = false;
 
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = new GlobalKey<FormBuilderState>();
   List<Region> regions;
 
   var phoneFormatter = new MaskTextInputFormatter(
@@ -73,14 +73,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               maxHeight: 258.0,
                               name: 'photo',
                               maxImages: 1,
-                              key: UniqueKey(),
                               bottomSheetPadding: EdgeInsets.all(40)),
                           SizedBox(
                             height: 20,
                           ),
                           FormBuilderTextField(
                             name: "name",
-                            key: UniqueKey(),
                             initialValue: auth.userData.name,
                             decoration: uiInputDecoration(hintText: 'Имя'),
                             validator: FormBuilderValidators.compose([
@@ -93,7 +91,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           ),
                           FormBuilderDropdown(
                             name: 'region',
-                            key: UniqueKey(),
                             initialValue: auth.userData.region?.id,
                             decoration:
                                 uiInputDecoration(hintText: 'Регион или город'),
@@ -111,7 +108,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           ),
                           FormBuilderTextField(
                               name: "email",
-                              key: UniqueKey(),
                               initialValue: auth.userData.email,
                               decoration: uiInputDecoration(hintText: 'E-mail'),
                               validator: FormBuilderValidators.compose([

@@ -11,6 +11,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:meyirim/models/region.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meyirim/ui/input_decoration.dart';
 
 class AddIndigentScreen extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class AddIndigentScreen extends StatefulWidget {
 
 class _AddIndigentScreenState extends State<AddIndigentScreen> {
   bool _isLoading = false;
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = new GlobalKey<FormBuilderState>();
   List<Region> regions;
   var phoneFormatter = new MaskTextInputFormatter(
       mask: '+# (###) ###-##-##', filter: {"#": RegExp(r'[0-9]')});
@@ -63,34 +64,14 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                               ),
                               name: 'photo',
                               maxImages: 5,
-                              key: UniqueKey(),
                               bottomSheetPadding: EdgeInsets.all(40)),
                           SizedBox(
                             height: 20,
                           ),
                           FormBuilderTextField(
                             name: "fio",
-                            key: UniqueKey(),
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(left: 20.0, right: 20.0),
-                                border: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(30.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                        color: Colors.transparent)),
-                                enabledBorder: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(30.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                        color: Colors.transparent)),
-                                filled: true,
-                                hintStyle:
-                                    new TextStyle(color: Colors.grey[600]),
-                                hintText: "ФИО нуждающегося",
-                                fillColor: Colors.white),
+                            decoration:
+                                uiInputDecoration(hintText: 'ФИО нуждающегося'),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(context,
                                   errorText: 'Введите ФИО нуждающегося'),
@@ -101,26 +82,7 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                           ),
                           FormBuilderDropdown(
                             name: 'region',
-                            key: UniqueKey(),
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(left: 20.0, right: 20.0),
-                                border: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(30.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                        color: Colors.transparent)),
-                                enabledBorder: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(30.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                        color: Colors.transparent)),
-                                filled: true,
-                                hintStyle:
-                                    new TextStyle(color: Colors.grey[600]),
-                                fillColor: Colors.white),
+                            decoration: uiInputDecoration(),
                             // initialValue: 'Male',
                             allowClear: true,
                             hint: Text('Город нуждающегося'),
@@ -136,34 +98,14 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                           ),
                           FormBuilderTextField(
                             name: "address",
-                            key: UniqueKey(),
-                            decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(left: 20.0, right: 20.0),
-                                border: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(30.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                        color: Colors.transparent)),
-                                enabledBorder: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(30.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                        color: Colors.transparent)),
-                                filled: true,
-                                hintStyle:
-                                    new TextStyle(color: Colors.grey[600]),
-                                hintText: "Адрес нуждающегося",
-                                fillColor: Colors.white),
+                            decoration: uiInputDecoration(
+                                hintText: 'Адрес нуждающегося'),
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           FormBuilderTextField(
                             name: "note",
-                            key: UniqueKey(),
                             maxLines: 5,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
@@ -194,28 +136,9 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
                           ),
                           FormBuilderTextField(
                               name: "phone",
-                              key: UniqueKey(),
                               keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.only(left: 20.0, right: 20.0),
-                                  border: new OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(30.0),
-                                      ),
-                                      borderSide: new BorderSide(
-                                          color: Colors.transparent)),
-                                  enabledBorder: new OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(30.0),
-                                      ),
-                                      borderSide: new BorderSide(
-                                          color: Colors.transparent)),
-                                  filled: true,
-                                  hintStyle:
-                                      new TextStyle(color: Colors.grey[600]),
-                                  hintText: "+7 (___) ___-__-__",
-                                  fillColor: Colors.white),
+                              decoration: uiInputDecoration(
+                                  hintText: '+7 (___) ___-__-__'),
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(context,
                                     errorText: 'Введите ваш телефон'),
@@ -269,8 +192,8 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
   requestForm() async {
     var errorMessage = '';
     if (_isLoading) return;
-    _formKey.currentState.save();
     if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
       setState(() => _isLoading = true);
       var url = globals.addIndigentUrl;
       var api = new APIManager();
@@ -281,21 +204,26 @@ class _AddIndigentScreenState extends State<AddIndigentScreen> {
           'address': _formKey.currentState.value['address'],
           'phone': _formKey.currentState.value['phone'],
           'note': _formKey.currentState.value['note'],
-          'photo': Iterable<dynamic>.generate(
-                  _formKey.currentState.value['photo'].length)
-              ?.toList(),
+          'photo': _formKey.currentState.value['photo'] != null
+              ? Iterable<dynamic>.generate(
+                      _formKey.currentState.value['photo'].length)
+                  ?.toList()
+              : null,
         };
 
-        for (var i = 0; i < _formKey.currentState.value['photo'].length; i++) {
-          if (_formKey.currentState.value != null &&
-              _formKey.currentState.value['photo'].length > 0 &&
-              _formKey.currentState.value['photo'][i] is File) {
-            final mimeTypeData = lookupMimeType(
-                _formKey.currentState.value['photo'][i].path,
-                headerBytes: [0xFF, 0xD8]).split('/');
-            data['photo'][i] = await MultipartFile.fromFile(
-                _formKey.currentState.value['photo'][i].path,
-                contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+        if (_formKey.currentState.value['photo'] != null) {
+          for (var i = 0;
+              i < _formKey.currentState.value['photo'].length;
+              i++) {
+            if (_formKey.currentState.value['photo'].length > 0 &&
+                _formKey.currentState.value['photo'][i] is File) {
+              final mimeTypeData = lookupMimeType(
+                  _formKey.currentState.value['photo'][i].path,
+                  headerBytes: [0xFF, 0xD8]).split('/');
+              data['photo'][i] = await MultipartFile.fromFile(
+                  _formKey.currentState.value['photo'][i].path,
+                  contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+            }
           }
         }
 

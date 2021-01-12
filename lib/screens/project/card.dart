@@ -81,8 +81,8 @@ class _ProjectCardState extends State<ProjectCard> {
                           child: Container(
                         decoration: BoxDecoration(
                           gradient: new LinearGradient(
-                            end: const Alignment(0.0, -1),
-                            begin: const Alignment(0.0, 0.6),
+                            end: const Alignment(0.0, 0),
+                            begin: const Alignment(0.0, 0.5),
                             colors: <Color>[
                               const Color(0x8A000000),
                               Colors.black12.withOpacity(0.0)

@@ -130,43 +130,6 @@ class _ReportScreenState extends State<ReportCard> {
                   )),
               //Статус проекта
               ReportStatus(project: report.project),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                child: Divider(color: Colors.black12),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10.0),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.brown.shade800,
-                            backgroundImage: NetworkImage(report.fond.avatar),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              report.fond.name,
-                            ),
-                            Text(report.fond.region?.name ?? 'не указан город',
-                                style: TextStyle(
-                                    color: HexColor('#8C8C8C'), fontSize: 12)),
-                          ],
-                        )
-                      ],
-                    ),
-                    IconButton(
-                        icon: Icon(Icons.share),
-                        onPressed: () => shareReport(report)),
-                  ],
-                ),
-              )
             ],
           )),
     );

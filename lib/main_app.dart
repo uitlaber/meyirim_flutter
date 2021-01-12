@@ -96,7 +96,6 @@ class _MainAppState extends State<MainApp> {
                     Map params = {'id': int.parse(path[1])};
                     return new ReportScreen(params);
                   }
-
                   if (path[0].startsWith('Fond')) {
                     return new FondScreen(
                         fondId: int.parse(path[1]), isFinished: 0);
